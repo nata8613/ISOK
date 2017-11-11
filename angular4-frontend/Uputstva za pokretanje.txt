@@ -1,0 +1,24 @@
+1. Preuzeti i instalirati Node.js ( https://nodejs.org/en/download/ )
+
+Radi provjere da li je Node.js pravilno instaliran, ukucajte u terminalu sledecu komandu:
+	npm -v
+Trebalo bi da prikaze verziju Node.js
+Ako je sve u redu, predji na naredni korak.
+
+2. Instalirati Angular CLI ( u terminalu pokrenuti: npm install -g @angular/cli )
+
+Radi provjere da li je Angular CLI pravilno instaliran, ukucati u terminalu sledecu komandu:
+	ng --version
+Trebalo bi da prikaze verziju Angular CLI
+Ako je sve u redu, predji na naredni korak.
+
+3. Otvoriti terminal u folderu aplikacije
+4. Za pokretanje koristiti: ng serve --open (sam ce pokrenuti aplikaciju u default-nom browser-u)
+Mozda ce prvi put trajati malo duze pokretanje ali to je to.
+
+Ukoliko izbaci neki error, javite.
+(Ukoliko izbaci error na nekom od koraka 1-4)
+Moguce da ce izmedju koraka 2 i 3, trebati pozicioniranje u folder aplikacije.
+Potom pokretanje terminala u tom folderu i izvrsavanje komande:
+
+npm install

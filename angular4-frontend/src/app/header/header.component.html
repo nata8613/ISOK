@@ -1,0 +1,35 @@
+  <!-- Header -->
+  <header id="header">
+    <div class="container">
+
+       <div id="logo" class="pull-left hoverClick" (click)="redirectToMain()">
+        <h1><a>ISOK</a></h1>
+      </div>
+
+
+      <nav id="nav-menu-container">
+        <ul class="nav-menu">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#features">Features</a></li>
+          <li class="menu-has-children"><a href="">Offers</a>
+            <ul>
+              <li class="hoverClick"> <span class="fa fa-male"></span> <a>For individuals</a></li>
+              <li class="hoverClick"> <span class="fa fa-group"></span><a>For family</a></li>
+              <li class="hoverClick"> <span class="fa fa-car"></span><a>For drivers</a></li>
+              <li class="hoverClick"> <span class="fa fa-globe"></span><a>For travelers and tourists</a></li>
+              <li class="hoverClick" (click)="redirectToPage('HomeInsurance')" >
+                <span class="fa fa-home"></span> <a>For property owners</a></li>
+              <li class="hoverClick"> <span class="fa fa-dashboard"></span> <a>Special offers</a></li>
+            </ul>
+          </li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </nav>
+      <!-- #nav-menu-container -->
+
+      <nav class="nav social-nav pull-right d-none d-lg-inline">
+        <a href="#"><i class="fa fa-twitter"></i></a> <a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i class="fa fa-linkedin"></i></a> <a href="#"><i class="fa fa-envelope"></i></a>
+      </nav>
+    </div>
+  </header>
+  <!-- #header -->
