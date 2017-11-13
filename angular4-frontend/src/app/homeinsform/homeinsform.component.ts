@@ -1,4 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import {InsuranceType } from "../InsuranceType";
+import {HomeAge } from "../HomeAge";
+import {HomeSurface } from "../HomeSurface";
+import {HomeValue } from "../HomeValue";
+import {HomeInsuranceService} from "../home-insurance.service";
+
+import { Headers,Response, Http } from '@angular/http';
+
+import {Observable} from 'rxjs/Rx';
+
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 declare let paypal: any;
 
@@ -8,11 +20,51 @@ declare let paypal: any;
   styleUrls: ['./homeinsform.component.css']
 })
 export class HomeinsformComponent implements OnInit {
+  
+  insuranceTypes : InsuranceType[];
+  homeAges : HomeAge[];
+  homeSurfaces : HomeSurface[];
+  homeValues : HomeValue[];
+  selectedValue = "";
 
-  constructor() { }
+  constructor(
+  	private homeInsuranceService : HomeInsuranceService
+  	) { }
 
   ngOnInit() {
+  	this.getAllInsuranceTypes();
+    this.getAllHomeAges();
+    this.getAllHomeSurfaces();
+    this.getAllHomeValues();
   }
+
+    getAllInsuranceTypes(): void {
+  	this.homeInsuranceService.getAllInsuranceTypes().subscribe(data => this.insuranceTypes = data,
+      err => {
+        console.log(err);
+      });
+    }
+
+    getAllHomeAges(): void {
+    this.homeInsuranceService.getAllHomeAges().subscribe(data => this.homeAges = data,
+      err => {
+        console.log(err);
+      });
+    }
+
+    getAllHomeSurfaces(): void {
+    this.homeInsuranceService.getAllHomeSurfaces().subscribe(data => this.homeSurfaces = data,
+      err => {
+        console.log(err);
+      });
+    }
+
+    getAllHomeValues(): void {
+    this.homeInsuranceService.getAllHomeValues().subscribe(data => this.homeValues = data,
+      err => {
+        console.log(err);
+      });
+    }
 
   ngAfterViewInit(): void {
    
@@ -22,8 +74,8 @@ export class HomeinsformComponent implements OnInit {
 
 
         client: {
-          production: 'EGwY_-5zByiyP8Km2cTU4Wf70CHlwZr9AJqF9BIwLBf-xyDcMg6tbVGBPLo-NZTlP4pcgVBCCrDIdi1k',
-          sandbox: 'AQSA9iBWQSdWQWVGyusPw70GcuVoB91i-nVZCSCuW2QpFJa7-HWUT2ABimq3PMCnqOsOLIH1zREZEnl4'
+          production: 'ENIWfurOGHWFiXo9oI49RRuerS6U-yhplCDwYqdjQ8ofJVgqYP0HoE4frOv9jAp_Bp9Qna_KbXIlIenM',
+          sandbox: 'Abs8kOJm295DLqdwbbUyoLCIjUGEUyLZ3nTTv9RO-lPZWeITx_oIZL4IsP9BgEwhyrlUXHCypLOiqBxv'
         },
         commit: true,
         payment: function (data, actions) {
@@ -31,7 +83,7 @@ export class HomeinsformComponent implements OnInit {
             payment: {
               transactions: [
                 {
-                  amount: { total: '1.00', currency: 'USD' }
+                  amount: { total: '1.00', currency: 'EUR' }
                 }
               ]
             }

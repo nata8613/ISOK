@@ -1,3 +1,6 @@
+////////////////////////////////////////////////////////
+/////////////////////// PODESAVANJE ANGULARA////////////////
+
 1. Preuzeti i instalirati Node.js ( https://nodejs.org/en/download/ )
 
 Radi provjere da li je Node.js pravilno instaliran, ukucajte u terminalu sledecu komandu:
@@ -12,13 +15,34 @@ Radi provjere da li je Angular CLI pravilno instaliran, ukucati u terminalu sled
 Trebalo bi da prikaze verziju Angular CLI
 Ako je sve u redu, predji na naredni korak.
 
-3. Otvoriti terminal u folderu aplikacije
-4. Za pokretanje koristiti: ng serve --open (sam ce pokrenuti aplikaciju u default-nom browser-u)
+3. Otvoriti terminal u folderu angular aplikacije
+
+4. Pokrenuti komandu: 
+	npm install
+
+5. Za pokretanje koristiti: ng serve --open (sam ce pokrenuti aplikaciju u default-nom browser-u)
 Mozda ce prvi put trajati malo duze pokretanje ali to je to.
 
-Ukoliko izbaci neki error, javite.
-(Ukoliko izbaci error na nekom od koraka 1-4)
-Moguce da ce izmedju koraka 2 i 3, trebati pozicioniranje u folder aplikacije.
-Potom pokretanje terminala u tom folderu i izvrsavanje komande:
+////////////////////////////////////////////////////////
+/////////////////////// PODESAVANJE BAZE////////////////
 
-npm install
+napraviti semu: isokdb
+loznika: root
+
+U folderu spring aplikacije ima skripta za popunjavanje tabela
+isokDBSeed.sql fajl
+
+////////////////////////////////////////////////////////
+/////////////////////// PODESAVANJE SPRINGA////////////////
+
+Standardni maven projekat
+
+////////////////////////////////////////////////////////
+/////////////////////// PODESAVANJE PAYPAL////////////////
+
+Kredencijali za kupovinu:
+email: isokisokovic-buyer@yahoo.com
+lozinka: rootroot123
+
+Kao rezultat akcije, samo paypal servisa, vratice se na aplikaciju ali nema nikakvog prikaza
+Ako ne izbaci gresku, sve je ok proslo

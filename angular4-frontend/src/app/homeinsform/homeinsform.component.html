@@ -45,53 +45,65 @@
 </div>
 
 
-<!-- Text input-->
+<!-- select input-->
        
-<div class="form-group">
-  <label class="col-md-4 control-label">Insurance type</label>  
-    <div class="col-md-4 inputGroupContainer">
+<div class="form-group"> 
+  <label class="col-md-4 control-label">Insurance type</label>
+    <div class="col-md-4 selectContainer">
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-home"></i></span>
-  <input name="insurance_type" placeholder="Insurance type" class="form-control" type="text">
-    </div>
+      <select name="insuranceTypes" class="form-control selectpicker">
+       <option value="" >Please select your state</option>
+      <option *ngFor="let iT of insuranceTypes" [ngValue]="iT">{{iT.typeName}}</option>
+    </select>
   </div>
 </div>
-
-<!-- Text input-->
-      
-<div class="form-group">
-  <label class="col-md-4 control-label">Object surface</label>  
-    <div class="col-md-4 inputGroupContainer">
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-info"></i></span>
-  <input name="surface" placeholder="Surface" class="form-control" type="number">
-    </div>
-  </div>
 </div>
 
-<!-- Text input-->
- 
-<div class="form-group">
-  <label class="col-md-4 control-label">Object age</label>  
-    <div class="col-md-4 inputGroupContainer">
+<!-- select input-->
+       
+<div class="form-group"> 
+  <label class="col-md-4 control-label">Object surface</label>
+    <div class="col-md-4 selectContainer">
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-info"></i></span>
-  <input name="age" placeholder="Age" class="form-control"  type="number">
-    </div>
+      <select name="homeSurfaces" class="form-control selectpicker">
+       <option value="" >Please select surface range</option>
+      <option *ngFor="let hs of homeSurfaces" [ngValue]="hs">{{hs.surfaceNum}}</option>
+    </select>
   </div>
+</div>
 </div>
 
 
-
-<!-- Text input-->
-
-<div class="form-group">
-  <label class="col-md-4 control-label">Approximate value</label>  
-    <div class="col-md-4 inputGroupContainer">
+<!-- select input-->
+       
+<div class="form-group"> 
+  <label class="col-md-4 control-label">Object age</label>
+    <div class="col-md-4 selectContainer">
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-info"></i></span>
-  <input name="approximate_value" placeholder="Approximate value" class="form-control"  type="number">
-    </div>
+      <select name="homeAges" class="form-control selectpicker">
+       <option value="" >Please select age range</option>
+      <option *ngFor="let ha of homeAges" [ngValue]="ha">{{ha.ageNum}}</option>
+    </select>
+  </div>
+</div>
+</div>
+
+
+<!-- select input-->
+       
+<div class="form-group"> 
+  <label class="col-md-4 control-label">Approximate value</label>
+    <div class="col-md-4 selectContainer">
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-info"></i></span>
+      <select name="homeValue" class="form-control selectpicker">
+       <option value="" >Please select surface range</option>
+      <option *ngFor="let hv of homeValues" [ngValue]="hv">{{hv.approxValue}}</option>
+    </select>
+  </div>
 </div>
 </div>
 

@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule }    from '@angular/http';
+import { FormsModule } from '@angular/forms';
+
+import {HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -14,6 +17,8 @@ import { ContactComponent } from './contact/contact.component';
 import { HomeinsuranceComponent } from './homeinsurance/homeinsurance.component';
 
 import { UserserviceService } from './userservice.service';
+
+import { HomeInsuranceService } from './home-insurance.service';
 import { MainComponent } from './main/main.component';
 import { HomeinsformComponent } from './homeinsform/homeinsform.component';
 
@@ -47,9 +52,11 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forRoot(appRoutes),
     BrowserModule,
-    HttpModule
+    HttpModule,
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [UserserviceService],
+  providers: [UserserviceService, HomeInsuranceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
