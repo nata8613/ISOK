@@ -1,4 +1,4 @@
-package netgloo.models.homeInsurance;
+package netgloo.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,41 +10,30 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "homeInsurance")
 public class HomeInsurance {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	@NotNull
-	private int length;
-
-	@NotNull
-	private double startPrice;
-	
-	//TODO: povezati sa ostalima
+	private int insuranceLength;
 
 	public HomeInsurance() {
 		super();
 	}
 
-	public int getLength() {
-		return length;
+	public int getInsuranceLength() {
+		return insuranceLength;
 	}
 
-	public void setLength(int length) {
-		this.length = length;
-	}
-
-	public double getStartPrice() {
-		return startPrice;
-	}
-
-	public void setStartPrice(double startPrice) {
-		this.startPrice = startPrice;
+	public void setInsuranceLength(int insuranceLength) {
+		this.insuranceLength = insuranceLength;
 	}
 
 	public long getId() {
 		return id;
 	}
-
+	
+	
+	
 }

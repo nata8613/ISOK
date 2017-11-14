@@ -9,13 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import netgloo.dao.HomeAgeDAO;
-import netgloo.dao.HomeInsuranceDAO;
 import netgloo.dao.HomeOwnerDAO;
 import netgloo.dao.HomeSurfaceDAO;
 import netgloo.dao.HomeValueDAO;
 import netgloo.dao.InsuranceTypeDAO;
 import netgloo.models.homeInsurance.HomeAge;
-import netgloo.models.homeInsurance.HomeInsurance;
 import netgloo.models.homeInsurance.HomeOwner;
 import netgloo.models.homeInsurance.HomeSurface;
 import netgloo.models.homeInsurance.HomeValue;
@@ -47,18 +45,6 @@ public class HomeInsuranceController {
 		try {
 			List<HomeAge> listHomeAges = (List<HomeAge>) homeAgeDao.findAll();
 			return listHomeAges;
-		} catch (Exception ex) {
-			return null;
-		}
-	}
-	
-	@RequestMapping("/getAllHomeInsurances")
-	@ResponseBody
-	public List<HomeInsurance> getAllHomeInsurances() {
-
-		try {
-			List<HomeInsurance> listHomeInsurance = (List<HomeInsurance>) homeInsuranceDao.findAll();
-			return listHomeInsurance;
 		} catch (Exception ex) {
 			return null;
 		}
@@ -118,7 +104,5 @@ public class HomeInsuranceController {
 	
 	@Autowired
 	private HomeValueDAO homeValueDao;
-	
-	@Autowired
-	private HomeInsuranceDAO homeInsuranceDao;
+
 }
