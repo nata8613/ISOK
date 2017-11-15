@@ -3,6 +3,9 @@ import {InsuranceType } from "../InsuranceType";
 import {HomeAge } from "../HomeAge";
 import {HomeSurface } from "../HomeSurface";
 import {HomeValue } from "../HomeValue";
+import {HomeInsuranceView } from "../HomeInsuranceView";
+import {HomeInsuranceOption} from "../HomeInsuranceOption";
+
 import {HomeInsuranceService} from "../home-insurance.service";
 
 import { Headers,Response, Http } from '@angular/http';
@@ -20,47 +23,33 @@ declare let paypal: any;
   styleUrls: ['./homeinsform.component.css']
 })
 export class HomeinsformComponent implements OnInit {
-  
+
+  homeInsuranceViews: HomeInsuranceView[];
+  selectedOption:HomeInsuranceOption;
   insuranceTypes : InsuranceType[];
   homeAges : HomeAge[];
   homeSurfaces : HomeSurface[];
   homeValues : HomeValue[];
   selectedValue = "";
+  priceSum : number;
 
   constructor(
   	private homeInsuranceService : HomeInsuranceService
   	) { }
 
   ngOnInit() {
-  	this.getAllInsuranceTypes();
-    this.getAllHomeAges();
-    this.getAllHomeSurfaces();
-    this.getAllHomeValues();
+
+    
+    this.getHomeInsuranceView();
+    this.priceSum = 19;
   }
 
-    getAllInsuranceTypes(): void {
-  	this.homeInsuranceService.getAllInsuranceTypes().subscribe(data => this.insuranceTypes = data,
-      err => {
-        console.log(err);
-      });
-    }
+  onChange(value) : void {
+    console.log('Course Value',value);
+  }
 
-    getAllHomeAges(): void {
-    this.homeInsuranceService.getAllHomeAges().subscribe(data => this.homeAges = data,
-      err => {
-        console.log(err);
-      });
-    }
-
-    getAllHomeSurfaces(): void {
-    this.homeInsuranceService.getAllHomeSurfaces().subscribe(data => this.homeSurfaces = data,
-      err => {
-        console.log(err);
-      });
-    }
-
-    getAllHomeValues(): void {
-    this.homeInsuranceService.getAllHomeValues().subscribe(data => this.homeValues = data,
+   getHomeInsuranceView(): void {
+    this.homeInsuranceService.getHomeInsuranceView().subscribe(data => this.homeInsuranceViews = data,
       err => {
         console.log(err);
       });

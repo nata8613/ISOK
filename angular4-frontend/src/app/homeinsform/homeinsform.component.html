@@ -10,8 +10,6 @@
 <!-- Text input-->
 
 <div class="form-group">
-
-
   <label class="col-md-4 control-label">Full Name</label>  
   <div class="col-md-4 inputGroupContainer">
   <div class="input-group">
@@ -46,66 +44,22 @@
 
 
 <!-- select input-->
-       
-<div class="form-group"> 
-  <label class="col-md-4 control-label">Insurance type</label>
-    <div class="col-md-4 selectContainer">
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-home"></i></span>
-      <select name="insuranceTypes" class="form-control selectpicker">
-       <option value="" >Please select your state</option>
-      <option *ngFor="let iT of insuranceTypes" [ngValue]="iT">{{iT.typeName}}</option>
-    </select>
-  </div>
-</div>
-</div>
-
-<!-- select input-->
-       
-<div class="form-group"> 
-  <label class="col-md-4 control-label">Object surface</label>
+   
+<div class="form-group" *ngFor="let item of homeInsuranceViews;"> 
+  <label class="col-md-4 control-label">{{item.labelName}}</label>
     <div class="col-md-4 selectContainer">
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-info"></i></span>
-      <select name="homeSurfaces" class="form-control selectpicker">
-       <option value="" >Please select surface range</option>
-      <option *ngFor="let hs of homeSurfaces" [ngValue]="hs">{{hs.surfaceNum}}</option>
+      <select name="" class="form-control selectpicker" (change)="onChange($event.target)">
+       <option value="" >--Select--</option>
+      <option *ngFor="let iT of item.optionList" [value]="iT">{{iT.name}}</option>
     </select>
   </div>
 </div>
 </div>
 
-
-<!-- select input-->
        
-<div class="form-group"> 
-  <label class="col-md-4 control-label">Object age</label>
-    <div class="col-md-4 selectContainer">
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-info"></i></span>
-      <select name="homeAges" class="form-control selectpicker">
-       <option value="" >Please select age range</option>
-      <option *ngFor="let ha of homeAges" [ngValue]="ha">{{ha.ageNum}}</option>
-    </select>
-  </div>
-</div>
-</div>
 
-
-<!-- select input-->
-       
-<div class="form-group"> 
-  <label class="col-md-4 control-label">Approximate value</label>
-    <div class="col-md-4 selectContainer">
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-info"></i></span>
-      <select name="homeValue" class="form-control selectpicker">
-       <option value="" >Please select surface range</option>
-      <option *ngFor="let hv of homeValues" [ngValue]="hv">{{hv.approxValue}}</option>
-    </select>
-  </div>
-</div>
-</div>
 
 <!-- Text input-->
 <div class="form-group">
@@ -125,17 +79,11 @@
    <div class="col-md-4 inputGroupContainer">
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-  <input name="price_sum" placeholder="" class="form-control" type="number" readonly>
+  <input name="price_sum" placeholder="" class="form-control" type="text" [ngModel]="priceSum" readonly />
     </div>
   </div>
 </div>
 
-<!-- Button <div class="form-group">
-  <label class="col-md-4 control-label"></label>
-  <div class="col-md-4">
-    <button type="submit" class="btn btn-success" >Send &nbsp; <span class="fa fa-send"></span></button>
-  </div>
-</div>-->
 
 <div class="form-group"> 
    <div class="col-md-4 inputGroupContainer">

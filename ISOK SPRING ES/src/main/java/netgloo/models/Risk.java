@@ -14,23 +14,12 @@ public class Risk {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-
-	@NotNull
-	private String riskType;
 	
 	@NotNull
 	private String riskName;
 
 	public Risk() {
 		super();
-	}
-
-	public String getRiskType() {
-		return riskType;
-	}
-
-	public void setRiskType(String riskType) {
-		this.riskType = riskType;
 	}
 
 	public String getRiskName() {

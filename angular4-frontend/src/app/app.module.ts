@@ -16,7 +16,7 @@ import { ParallaxComponent } from './parallax/parallax.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeinsuranceComponent } from './homeinsurance/homeinsurance.component';
 
-import { UserserviceService } from './userservice.service';
+
 
 import { HomeInsuranceService } from './home-insurance.service';
 import { MainComponent } from './main/main.component';
@@ -56,7 +56,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule
   ],
-  providers: [UserserviceService, HomeInsuranceService],
+  providers: [ HomeInsuranceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

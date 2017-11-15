@@ -5,6 +5,8 @@ import {HomeAge } from "./HomeAge";
 import {HomeSurface } from "./HomeSurface";
 import {HomeValue } from "./HomeValue";
 
+import {HomeInsuranceView} from "./HomeInsuranceView";
+
 import { Headers,Response, Http } from '@angular/http';
 
 import {Observable} from 'rxjs/Rx';
@@ -19,27 +21,9 @@ export class HomeInsuranceService {
 
   constructor(private http: Http) {}
 
-  getAllInsuranceTypes():  Observable<InsuranceType[]> {
-    return this.http.get(this.baseUrl + '/homeInsurance/getAllInsuranceTypes/')
-	  .map((response:Response) => {return response.json()})
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
-  }
-
-  getAllHomeAges():  Observable<HomeAge[]> {
-    return this.http.get(this.baseUrl + '/homeInsurance/getAllHomeAges/')
-	  .map((response:Response) => {return response.json()})
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
-  }
-
-  getAllHomeSurfaces():  Observable<HomeSurface[]> {
-    return this.http.get(this.baseUrl + '/homeInsurance/getAllHomeSurfaces/')
-	  .map((response:Response) => {return response.json()})
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
-  }
-
-  getAllHomeValues():  Observable<HomeValue[]> {
-    return this.http.get(this.baseUrl + '/homeInsurance/getAllHomeValues/')
-	  .map((response:Response) => {return response.json()})
+  getHomeInsuranceView():  Observable<HomeInsuranceView[]> {
+    return this.http.get(this.baseUrl + '/homeInsurance/getHomeInsuranceData/')
+    .map((response:Response) => {return response.json()})
       .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 
