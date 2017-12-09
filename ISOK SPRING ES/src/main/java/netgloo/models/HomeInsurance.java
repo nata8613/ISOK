@@ -14,6 +14,9 @@ public class HomeInsurance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	
+	@NotNull
+	private long homeOwnerID;
 
 	@NotNull
 	private int insuranceLength;
@@ -32,6 +35,14 @@ public class HomeInsurance {
 
 	public long getId() {
 		return id;
+	}
+
+	public long getHomeOwnerID() {
+		return homeOwnerID;
+	}
+
+	public void setHomeOwnerID(long homeOwnerID) {
+		this.homeOwnerID = homeOwnerID;
 	}
 	
 	
