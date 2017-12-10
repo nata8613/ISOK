@@ -1,0 +1,107 @@
+<app-header></app-header>
+<section id="section1" *ngIf="section1">
+  <div class="container">
+    
+    <form class="well form-horizontal" method="post" (ngSubmit)="onSubmit()">
+    
+    <fieldset>
+    <legend>&nbsp; Protect your journey today!</legend>
+    
+    <!-- Text input-->
+    
+    <div class="form-group">
+      <label for="duration" class="col-md-4 control-label">Duration of insurance</label>  
+      <div class="col-md-4 inputGroupContainer">
+      <div class="input-group">
+      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+      <input id="duration" [(ngModel)]="travelInsurance.duration" name="duration" placeholder="enter number of days" class="form-control"  type="text" >
+        </div>
+      </div>
+    </div>
+    
+    <!-- select input-->
+      
+    <div class="form-group"> 
+      <label for="region" class="col-md-4 control-label">Destination region</label>
+        <div class="col-md-4 selectContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+          <select id="region" name="region" [(ngModel)]="travelInsurance.region" class="form-control selectpicker" >
+          <option value="" >--Select--</option>
+          <option *ngFor="let reg of regions" [value]="reg" >{{reg}}</option>
+        </select>
+      </div>
+    </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="numberOfPeople" class="col-md-4 control-label">Number of travelers</label>  
+      <div class="col-md-4 inputGroupContainer">
+      <div class="input-group">
+      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+      <input id="numberOfPeople" [(ngModel)]="travelInsurance.numberOfPeople" name="numberOfPeople" placeholder="enter number of travelers" class="form-control"  type="text" >
+        </div>
+      </div>
+    </div>    
+    
+    
+    <div class="form-group"> 
+      <label for="ages" class="col-md-4 control-label">Age range</label>
+        <div class="col-md-4 selectContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+          <select id="ages" class="form-control selectpicker"name="ages" [(ngModel)]="travelInsurance.ages" >
+          <option value="" >--Select--</option>
+          <option  *ngFor="let age of all_ages" [value]="age" >{{age}}</option>
+        </select>
+      </div>
+    </div>
+    </div>
+    
+    <div class="form-group"> 
+      <label for="sport" class="col-md-4 control-label">Sport</label>
+        <div class="col-md-4 selectContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+          <select id="sport" name="sport" [(ngModel)]="travelInsurance.sport" class="form-control selectpicker" >
+          <option value="" >--Select--</option>
+          <option *ngFor="let sp of sports" [value]="sp" >{{sp}}</option>
+        </select>
+      </div>
+    </div>
+    </div>
+
+    <div class="form-group"> 
+      <label for="ammount" class="col-md-4 control-label">Insurance value</label>
+        <div class="col-md-4 selectContainer">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+          <select id="ammount" name="ammount" [(ngModel)]="travelInsurance.ammount" class="form-control selectpicker" >
+          <option value="" >--Select--</option>
+          <option *ngFor="let iv of insuranceValues" [value]="iv" >{{iv}}</option>
+        </select>
+      </div>
+    </div>
+    </div>
+
+    <div class="form-group"> 
+      <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+      <div id="paypal-button"></div>
+        </div>
+      </div>
+    </div>
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+  
+    </fieldset>
+    </form>
+
+    </div><!-- /.container -->
+  </section>
+  <app-people [arrayOfPeople]="arr" [people]="people" [price1]="price1" *ngIf="section2"></app-people>
+
+  <div class="container imgRight">
+    
+    <img src="../../assets/img/home-insurance.jpg">
+  </div>

@@ -1,0 +1,115 @@
+<div class="container" *ngIf="section5">
+    <div>
+        Current price is {{price1}}
+    </div>
+  <form class="well form-horizontal" method="post" (ngSubmit)="onSubmit()">
+    <fieldset>
+      <legend>&nbsp; Protect your home today!</legend>
+      
+      <div class="form-group">
+        <label for='firstName' class="col-md-4 control-label">First Name</label>  
+        <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <input  name="firstName" id="firstName"  [(ngModel)]="homeInsurance.firstName" placeholder="First Name" class="form-control"  type="text">
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+          <label for="lastName" class="col-md-4 control-label">Last Name</label>  
+          <div class="col-md-4 inputGroupContainer">
+          <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-user"></i></span>
+          <input  name="lastName" id="lastName" placeholder="Last Name"  [(ngModel)]="homeInsurance.lastName" class="form-control"  type="text">
+            </div>
+          </div>
+        </div>
+
+      <div class="form-group">
+          <label for="jmbg" class="col-md-4 control-label">JMBG</label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-address-card"></i></span>
+          <input name="jmbg" id="jmbg"  [(ngModel)]="homeInsurance.jmbg" placeholder="JMBG" class="form-control"  type="text">
+            </div>
+          </div>
+        </div>    
+
+      <div class="form-group">
+        <label for="address" class="col-md-4 control-label" >Address</label> 
+          <div class="col-md-4 inputGroupContainer">
+          <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+        <input name="address" id="address"  [(ngModel)]="homeInsurance.address" placeholder="Address" class="form-control"  type="text">
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group"> 
+          <label for="homeSurfaces" class="col-md-4 control-label">Home Surface</label>
+            <div class="col-md-4 selectContainer">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-info"></i></span>
+              <select id="homeSurfaces" name="homeSurfaces" [(ngModel)]="homeInsurance.homeSurfaces" class="form-control selectpicker" >
+              <option value="" >--Select--</option>
+              <option *ngFor="let surface of homeSurfaces" [value]="surface" >{{surface}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group"> 
+          <label for="homeAges" class="col-md-4 control-label">Home Age</label>
+            <div class="col-md-4 selectContainer">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-info"></i></span>
+              <select id="homeAges" name="homeAges" [(ngModel)]="homeInsurance.homeAges" class="form-control selectpicker" >
+              <option value="" >--Select--</option>
+              <option *ngFor="let age of homeAges" [value]="age" >{{age}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group"> 
+          <label for="homeValues" class="col-md-4 control-label">Home Value</label>
+            <div class="col-md-4 selectContainer">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-info"></i></span>
+              <select id="homeValues" name="homeValues" [(ngModel)]="homeInsurance.homeValues" class="form-control selectpicker" >
+              <option value="" >--Select--</option>
+              <option *ngFor="let val of homeValues" [value]="val" >{{val}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group"> 
+          <label for="insuranceReasons" class="col-md-4 control-label">Insurance Reason</label>
+            <div class="col-md-4 selectContainer">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-info"></i></span>
+              <select id="insuranceReasons" name="insuranceReasons" [(ngModel)]="homeInsurance.insuranceReasons" class="form-control selectpicker" >
+              <option value="" >--Select--</option>
+              <option *ngFor="let val of insuranceReasons" [value]="val" >{{val}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="insuranceLength" class="col-md-4 control-label">Insurance length</label>  
+        <div class="col-md-4 inputGroupContainer">
+          <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-info"></i></span>
+        <input name="insuranceLength" id="insuranceLength"  [(ngModel)]="homeInsurance.insuranceLength" placeholder="Insurance length" class="form-control" type="number">
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <button type="submit" class="btn btn-default">Submit</button>  
+  </form>
+</div>
+
+<app-carinsform [price1]="price1" *ngIf="section6"></app-carinsform>

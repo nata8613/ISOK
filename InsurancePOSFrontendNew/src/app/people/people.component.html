@@ -1,0 +1,88 @@
+<section id="section2" *ngIf="section3">
+    <div>
+        Current price is {{price1}}
+    </div>
+    <div div class="container"  >
+        <form class="well form-horizontal" method="post"  (ngSubmit)="onSubmitPeople()">
+      <div *ngFor="let i of arrayOfPeople; let ind = index">
+          
+              
+              <fieldset>
+              <legend>&nbsp; Tell us who is traveling</legend>
+              
+              <div class="form-group">
+                <label for="firstName" class="col-md-4 control-label">First Name</label>  
+                <div class="col-md-4 inputGroupContainer">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input id="firstName" [(ngModel)]="people[ind].firstName" name="firstName" placeholder="enter firstName" class="form-control"  type="text" >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                  <label for="lastName" class="col-md-4 control-label">Last Name</label>  
+                  <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                      <input id="lastName" [(ngModel)]="people[ind].lastName" name="lastName" placeholder="enter lastName" class="form-control"  type="text" >
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="form-group">
+                    <label for="jmbg" class="col-md-4 control-label">JMBG</label>  
+                    <div class="col-md-4 inputGroupContainer">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input id="jmbg" [(ngModel)]="people[ind].jmbg" name="jmbg" placeholder="enter jmbg" class="form-control"  type="text" >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="passportNumber" class="col-md-4 control-label">Passport number</label>  
+                      <div class="col-md-4 inputGroupContainer">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                          <input id="passportNumber" [(ngModel)]="people[ind].passportNumber" name="passportNumber" placeholder="enter passport number" class="form-control"  type="text" >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address" class="col-md-4 control-label">Address</label>  
+                        <div class="col-md-4 inputGroupContainer">
+                          <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <input id="address" [(ngModel)]="people[ind].address" name="address" placeholder="enter address" class="form-control"  type="text" >
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="telNum" class="col-md-4 control-label">Telephone number</label>  
+                          <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group">
+                              <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                              <input id="telNum" [(ngModel)]="people[ind].telNum" name="telNum" placeholder="enter telephone number" class="form-control"  type="text" >
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group" *ngIf="ind==0">
+                            <label for="email" class="col-md-4 control-label">Email</label>  
+                            <div class="col-md-4 inputGroupContainer">
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input id="email" [(ngModel)]="people[ind].email" name="email" placeholder="enter email" class="form-control"  type="text" >
+                              </div>
+                            </div>
+                          </div>
+            </fieldset>
+          
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button></form>   
+    </div>
+  </section>
+  <app-homeinsform [price1]="price1" *ngIf="section4"></app-homeinsform>
