@@ -1,7 +1,4 @@
 <div class="container" *ngIf="section5">
-    <div>
-        Current price is {{price1}}
-    </div>
   <form class="well form-horizontal" method="post" (ngSubmit)="onSubmit()">
     <fieldset>
       <legend>&nbsp; Protect your home today!</legend>
@@ -112,4 +109,4 @@
   </form>
 </div>
 
-<app-carinsform [price1]="price1" *ngIf="section6"></app-carinsform>
+<app-carinsform (priceEvent)="receivePrice($event)" [price1]="price1" *ngIf="section6"></app-carinsform>

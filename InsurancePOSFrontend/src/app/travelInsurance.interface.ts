@@ -4,5 +4,5 @@ export interface TravelInsurance {
     numberOfPeople : number,
     ages : string,
     sport : string,
-    ammount : number
+    ammount : string
 }

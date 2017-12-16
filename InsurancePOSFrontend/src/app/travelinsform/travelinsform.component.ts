@@ -11,7 +11,7 @@ import {Person} from '../person.interface';
 })
 export class TravelinsformComponent implements OnInit {
 
-  travelInsurance : TravelInsurance = {duration: 0, region: '', numberOfPeople: 0, ages: '', sport: '', ammount: 0}
+  travelInsurance : TravelInsurance = {duration: 0, region: '', numberOfPeople: 0, ages: '', sport: '', ammount: ''}
   section1 : Boolean = true;
 
   regions : String[];
@@ -31,6 +31,11 @@ export class TravelinsformComponent implements OnInit {
     this.getAges();
     this.getSports();
     this.getInsuranceValues();
+  }
+
+  receivePrice($event) {
+    console.log("received "+$event);
+    this.price1 = $event;
   }
 
   getTravelRegions():void{

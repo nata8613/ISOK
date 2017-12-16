@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {CarInsuranceService} from '../car-insurance.service';
 
 import {CarInsurance} from '../carInsurance.interface';
@@ -11,6 +11,7 @@ import {CarInsurance} from '../carInsurance.interface';
 export class CarinsformComponent implements OnInit {
 
   @Input() price1 : number;
+  @Output() priceEvent = new EventEmitter<number>();
   section7 : Boolean = true;
   carInsurance : CarInsurance;
 
@@ -65,6 +66,7 @@ export class CarinsformComponent implements OnInit {
         console.log('[POST] create Car Insurance successfully', value);
         this.price1 = value + this.price1;
         this.section7 = false;
+        this.priceEvent.emit(this.price1);
       }, error => {
         console.log('FAIL to create Insurance!' + error);
       },

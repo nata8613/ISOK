@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {HomeInsuranceService} from '../home-insurance.service';
 
 import {HomeInsurance} from '../homeInsurance.interface';
@@ -11,7 +11,8 @@ import {HomeInsurance} from '../homeInsurance.interface';
 export class HomeinsformComponent implements OnInit {
 
   @Input() price1 : number;
-  
+  @Output() priceEvent = new EventEmitter<number>();
+
   homeInsurance : HomeInsurance;
 
   homeSurfaces : String[];
@@ -30,6 +31,11 @@ export class HomeinsformComponent implements OnInit {
     this.getHomeValues();
     this.getInsuranceReasons();
     this.homeInsurance = {firstName:'', lastName:'', address:'', jmbg:0, homeSurface:'', homeAge:'', homeValue:'', insuranceReason:'', insuranceLength:0};
+  }
+
+  receivePrice($event) {
+    this.price1 = $event;
+    this.priceEvent.emit(this.price1);
   }
 
   getHomeSurfaces():void{
@@ -67,6 +73,7 @@ export class HomeinsformComponent implements OnInit {
         this.price1 = value + this.price1;
         this.section5 = false; 
         this.section6 = true;
+        this.priceEvent.emit(this.price1);
       }, error => {
         console.log('FAIL to create Insurance!' + error);
       },

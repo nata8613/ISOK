@@ -1,7 +1,4 @@
 <section id="section2" *ngIf="section3">
-    <div>
-        Current price is {{price1}}
-    </div>
     <div div class="container"  >
         <form class="well form-horizontal" method="post"  (ngSubmit)="onSubmitPeople()">
       <div *ngFor="let i of arrayOfPeople; let ind = index">
@@ -18,7 +15,7 @@
                     <input id="firstName" [(ngModel)]="people[ind].firstName" name="firstName" placeholder="enter firstName" class="form-control"  type="text" >
                   </div>
                 </div>
-              </div>
+              </div> 
 
               <div class="form-group">
                   <label for="lastName" class="col-md-4 control-label">Last Name</label>  
@@ -85,4 +82,4 @@
       <button type="submit" class="btn btn-default">Submit</button></form>   
     </div>
   </section>
-  <app-homeinsform [price1]="price1" *ngIf="section4"></app-homeinsform>
+  <app-homeinsform (priceEvent)="receivePrice($event)" [price1]="price1" *ngIf="section4"></app-homeinsform>

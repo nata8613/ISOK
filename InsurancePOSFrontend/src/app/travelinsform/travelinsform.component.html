@@ -99,8 +99,12 @@
 
     </div><!-- /.container -->
   </section>
-  <app-people [arrayOfPeople]="arr" [people]="people" [price1]="price1" *ngIf="section2"></app-people>
+  <app-people (priceEvent)="receivePrice($event)" [arrayOfPeople]="arr" [people]="people" [price1]="price1" *ngIf="section2"></app-people>
 
+  <div class="container input-group">
+    <span class="input-group-addon">
+   <i >Current price is {{price1}}</i></span>
+  </div>
   <div class="container imgRight">
     
     <img src="../../assets/img/home-insurance.jpg">
