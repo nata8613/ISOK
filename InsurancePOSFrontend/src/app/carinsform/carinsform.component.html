@@ -1,0 +1,141 @@
+<div class="container" *ngIf="section7">
+    <form class="well form-horizontal" method="post" (ngSubmit)="onSubmit()">
+      <fieldset>
+        <legend>&nbsp; Help on the road</legend>
+        
+        <div class="form-group">
+          <label for='insuranceLength' class="col-md-4 control-label">Insurance Length</label>  
+          <div class="col-md-4 inputGroupContainer">
+          <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-info"></i></span>
+          <input  name="insuranceLength" id="insuranceLength"  [(ngModel)]="carInsurance.insuranceLength" placeholder="Insurance Length" class="form-control"  type="number">
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group"> 
+            <label for="numberOfKm" class="col-md-4 control-label">Towing Range</label>
+              <div class="col-md-4 selectContainer">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                <select id="numberOfKm" name="numberOfKm" [(ngModel)]="carInsurance.numberOfKm" class="form-control selectpicker" >
+                <option value="" >--Select--</option>
+                <option *ngFor="let val of numberOfKms" [value]="val" >{{val}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group"> 
+            <label for="repairPrice" class="col-md-4 control-label">Repair Price Range</label>
+              <div class="col-md-4 selectContainer">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                <select id="repairPrice" name="repairPrice" [(ngModel)]="carInsurance.repairPrice" class="form-control selectpicker" >
+                <option value="" >--Select--</option>
+                <option *ngFor="let val of repairPrices" [value]="val" >{{val}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group"> 
+            <label for="numberOfHotelDays" class="col-md-4 control-label">Number of Days in Hotel</label>
+              <div class="col-md-4 selectContainer">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                <select id="numberOfHotelDays" name="numberOfHotelDays" [(ngModel)]="carInsurance.numberOfHotelDays" class="form-control selectpicker" >
+                <option value="" >--Select--</option>
+                <option *ngFor="let val of numbersOfHotelDays" [value]="val" >{{val}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group"> 
+            <label for="alternativeVehicle" class="col-md-4 control-label">Alternative Transport</label>
+              <div class="col-md-4 selectContainer">
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                <select id="alternativeVehicle" name="alternativeVehicle" [(ngModel)]="carInsurance.alternativeVehicle" class="form-control selectpicker" >
+                <option value="" >--Select--</option>
+                <option *ngFor="let val of alternativeVehicles" [value]="val" >{{val}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+            <label for='typeOfVehicle' class="col-md-4 control-label">Car Type and Model</label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+            <input  name="typeOfVehicle" id="typeOfVehicle"  [(ngModel)]="carInsurance.typeOfVehicle" placeholder="Car Type and Model" class="form-control"  type="text">
+              </div>
+            </div>
+          </div>
+
+        <div class="form-group">
+            <label for='yearOfProduction' class="col-md-4 control-label">Year of Car Production</label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+            <input  name="yearOfProduction" id="yearOfProduction"  [(ngModel)]="carInsurance.yearOfProduction" placeholder="Year of Car Production" class="form-control"  type="number">
+              </div>
+            </div>
+          </div>
+
+        <div class="form-group">
+            <label for='regTable' class="col-md-4 control-label">Car Registrations</label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+            <input  name="regTable" id="regTable"  [(ngModel)]="carInsurance.regTable" placeholder="Registration table" class="form-control"  type="text">
+              </div>
+            </div>
+          </div>
+
+        <div class="form-group">
+            <label for='chassisNumber' class="col-md-4 control-label">Car Chassis Number</label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+            <input  name="chassisNumber" id="chassisNumber"  [(ngModel)]="carInsurance.chassisNumber" placeholder="Car Chassis Number" class="form-control"  type="text">
+              </div>
+            </div>
+          </div>
+
+        <div class="form-group">
+            <label for='firstName' class="col-md-4 control-label">First Name</label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+            <input  name="firstName" id="firstName"  [(ngModel)]="carInsurance.firstName" placeholder="First Name" class="form-control"  type="text">
+              </div>
+            </div>
+          </div>
+
+        <div class="form-group">
+            <label for='lastName' class="col-md-4 control-label">Last Name</label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+            <input  name="lastName" id="lastName"  [(ngModel)]="carInsurance.lastName" placeholder="Last Name" class="form-control"  type="text">
+              </div>
+            </div>
+          </div>
+
+        <div class="form-group">
+            <label for='jmbg' class="col-md-4 control-label">JMBG</label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-info"></i></span>
+            <input  name="jmbg" id="jmbg"  [(ngModel)]="carInsurance.jmbg" placeholder="JMBG" class="form-control"  type="number">
+              </div>
+            </div>
+          </div>
+
+      </fieldset>
+      <button type="submit" class="btn btn-default">Submit</button>  
+    </form>
+  </div>
