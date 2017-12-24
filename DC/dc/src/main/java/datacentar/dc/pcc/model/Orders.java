@@ -2,7 +2,6 @@ package datacentar.dc.pcc.model;
 
 import static javax.persistence.CascadeType.ALL;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "orders")
@@ -34,7 +35,8 @@ public class Orders {
 	@NotNull
 	private long amount;
 
-	@OneToMany(cascade={ALL}, fetch=FetchType.LAZY, mappedBy="order_num")
+	@OneToMany(cascade={ALL}, fetch=FetchType.LAZY, mappedBy="orderNum")
+	@JsonIgnore
 	private Set<Transactions> transactions = new HashSet<Transactions>();
 	
 	public Orders() {

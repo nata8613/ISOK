@@ -326,7 +326,7 @@ public class PccController {
 		Orders order = ordersRepo.findOne(orderId);
 		if (order == null)
 			return null;
-		Transactions transaction = transactionsRepo.findByOrder(order);
+		Transactions transaction = transactionsRepo.findByOrderNum(order);
 		return transaction;
 	}
 	
@@ -571,7 +571,7 @@ public class PccController {
 	@Transactional("pccTransactionManager")
 	@RequestMapping(value = "/updateOrder/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public Orders updateCard(@PathVariable("id") long id, @RequestBody Orders order) {
+	public Orders updateOrder(@PathVariable("id") long id, @RequestBody Orders order) {
 		
 		Orders order1 = ordersRepo.findOne(order.getOrderID());		
 		if(order1 == null)

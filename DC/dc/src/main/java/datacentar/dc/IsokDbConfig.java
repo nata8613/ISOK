@@ -21,22 +21,22 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory",
+@EnableJpaRepositories(entityManagerFactoryRef = "isokEntityManagerFactory",
     basePackages = {"datacentar.dc.isok.repo"})
 
 public class IsokDbConfig {
 	
 	@Primary
-	@Bean(name = "isokdataSource")
+	@Bean(name = "isokDataSource")
 	@ConfigurationProperties(prefix = "isok.datasource")
 	public DataSource dataSource() {
 		return DataSourceBuilder.create().build();
 	}
 
 	@Primary
-	  @Bean(name = "entityManagerFactory")
+	  @Bean(name = "isokEntityManagerFactory")
 	  public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-	      EntityManagerFactoryBuilder builder, @Qualifier("isokdataSource") DataSource dataSource) {
+	      EntityManagerFactoryBuilder builder, @Qualifier("isokDataSource") DataSource dataSource) {
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put("hibernate.physical_naming_strategy", "datacentar.dc.PhysicalNamingStrategyImpl");
 	    return builder.dataSource(dataSource).packages("datacentar.dc.isok.model").persistenceUnit("isok")
@@ -45,9 +45,9 @@ public class IsokDbConfig {
 	  }
 
 	 @Primary
-	  @Bean(name = "transactionManager")
+	  @Bean(name = "isokTransactionManager")
 	  public PlatformTransactionManager transactionManager(
-	      @Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
+	      @Qualifier("isokEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
 	    return new JpaTransactionManager(entityManagerFactory);
 	  }
 }

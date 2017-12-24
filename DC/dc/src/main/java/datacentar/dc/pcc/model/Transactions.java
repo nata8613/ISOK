@@ -1,5 +1,6 @@
 package datacentar.dc.pcc.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,8 +43,8 @@ public class Transactions {
 	private Merchant merchant;
 	
 	@ManyToOne()
-	@JoinColumn(name="order_num")
-	private Orders order_num;
+	@JoinColumn(name="orderNum")
+	private Orders orderNum;
 	
 	public Transactions() {
 		super();
@@ -58,7 +59,7 @@ public class Transactions {
 		this.acquirer = acquirer;
 		this.issuer = issuer;
 		this.merchant = merchant;
-		this.order_num = order_num;
+		this.orderNum = order_num;
 	}
 
 
@@ -114,12 +115,12 @@ public class Transactions {
 
 
 	public Orders getOrder() {
-		return order_num;
+		return orderNum;
 	}
 
 
 	public void setOrder(Orders order) {
-		this.order_num = order;
+		this.orderNum = order;
 	}
 
 }
