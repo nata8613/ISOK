@@ -2,6 +2,7 @@ package datacentar.dc.controller;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import datacentar.dc.isok.model.Client;
 import datacentar.dc.isok.model.HomeInsurance;
@@ -38,10 +42,7 @@ import datacentar.dc.isok.repo.VehicleInsuranceRepo;
 @RequestMapping("/dc/isok")
 public class IsokController {
 	
-	//TODO: SREDITI NEKE METODE ZBOG JSON IGNORE
-	
-	
-	/////////////////CLIENT METODE/////////////
+	/////////////////TODO: CLIENT METODE/////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getClients", method = RequestMethod.GET)
 	@ResponseBody
@@ -89,9 +90,13 @@ public class IsokController {
 		if(client == null)
 			return false;
 		try {
+			for(Policy p : client.getPolicies()){
+				Policy temp = policyRepo.findOne(p.getId());
+				temp.getClients().remove(client);
+				policyRepo.save(temp);
+			}
 			clientRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -123,7 +128,7 @@ public class IsokController {
 	}
 	
 	
-	/////////////////CATEGORY METODE//////////////////
+	/////////////////TODO: CATEGORY METODE//////////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getCategories", method = RequestMethod.GET)
 	@ResponseBody
@@ -153,6 +158,11 @@ public class IsokController {
 		if(cat == null)
 			return null;
 		cat.setCategoryName(category.getCategoryName());
+		cat.getRisks().clear();
+		for(Risk r : category.getRisks()){
+			Risk temp = riskRepo.findOne(r.getId());
+			cat.getRisks().add(temp);
+		}
 		cat = insCatRepo.save(cat);
 		return cat;
 	}
@@ -167,7 +177,6 @@ public class IsokController {
 		try {
 			insCatRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -183,7 +192,7 @@ public class IsokController {
 	}
 	
 	
-	//////////////////////////HOME INSURANCE METODE////////////////////
+	/////////////////////TODO: HOME INSURANCE METODE////////////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getHomeIns", method = RequestMethod.GET)
 	@ResponseBody
@@ -227,7 +236,6 @@ public class IsokController {
 		try {
 			homeInsRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -243,7 +251,7 @@ public class IsokController {
 	}
 	
 	
-	///////////POLICY METODE///////////////////
+	///////////TODO: POLICY METODE///////////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getPolicies", method = RequestMethod.GET)
 	@ResponseBody
@@ -313,7 +321,6 @@ public class IsokController {
 		try {
 			policyRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -362,7 +369,7 @@ public class IsokController {
 	}
 	
 	
-	//////////////////PriceImpact METODE//////////////
+	//////////////////TODO: PriceImpact METODE//////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getImpacts", method = RequestMethod.GET)
 	@ResponseBody
@@ -374,27 +381,50 @@ public class IsokController {
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/saveImpact/", method = RequestMethod.POST)
 	@ResponseBody
-	public PriceImpacts saveImpact(@RequestBody PriceImpacts impact) {
-		PriceImpacts pol = priceImpRepo.findOne(impact.getId());
-		if (pol != null)
+	public PriceImpacts saveImpact(@RequestBody HashMap<String, Object> impact) {
+		ObjectMapper mapper = new ObjectMapper();
+		PriceImpacts pol = mapper.convertValue(impact.get("impact"), PriceImpacts.class);
+		RiskItem item = mapper.convertValue(impact.get("item"),  new TypeReference<RiskItem>() {});
+		PriceImpacts postoji = priceImpRepo.findOne(pol.getId());
+		if (postoji != null)
 			return null;
-		pol = priceImpRepo.save(impact);
+		if(item != null){
+			item = riskItemRepo.findOne(item.getId());
+			pol.setItem(item);
+		}
+		pol = priceImpRepo.save(pol);
 		return pol;
 	}
 	
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/updateImpact/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public PriceImpacts updateImpact(@PathVariable("id") long id, @RequestBody PriceImpacts impact) {
-		PriceImpacts cat = priceImpRepo.findOne(impact.getId());		
-		if(cat == null)
+	public PriceImpacts updateImpact(@PathVariable("id") long id, @RequestBody HashMap<String, Object> impact) {
+		ObjectMapper mapper = new ObjectMapper();
+		PriceImpacts pol = mapper.convertValue(impact.get("impact"), PriceImpacts.class);
+		RiskItem item = mapper.convertValue(impact.get("item"),  new TypeReference<RiskItem>() {});
+		List<Pricelist> pricelists = mapper.convertValue(impact.get("pricelists"),  new TypeReference<List<Pricelist>>() {}); 
+		PriceImpacts postoji = priceImpRepo.findOne(pol.getId());
+		if (postoji == null)
 			return null;
-		//izmeniti
-		cat.setValidFrom(impact.getValidFrom());
-		cat.setValidTo(impact.getValidTo());
-		cat.setValue(impact.getValue());
-		cat = priceImpRepo.save(cat);
-		return cat;
+		item = riskItemRepo.findOne(item.getId());
+		postoji.setItem(item);
+		postoji.setValidFrom(pol.getValidFrom());
+		postoji.setValidTo(pol.getValidTo());
+		postoji.setValue(pol.getValue());
+		postoji.getPricelists().clear();
+		if(!pricelists.isEmpty()){
+			for(Pricelist p : pricelists){
+				Pricelist temp = pricelistRepo.findOne(p.getId());
+				if(!temp.getImpacts().contains(postoji)){
+					temp.getImpacts().add(postoji);
+					pricelistRepo.save(temp);
+					postoji.getPricelists().add(temp); //mozda nije bitno
+				}
+			}
+		}
+		postoji = priceImpRepo.save(postoji);
+		return postoji;
 	}
 	
 	@Transactional("isokTransactionManager")
@@ -405,9 +435,13 @@ public class IsokController {
 		if(cat == null)
 			return false;
 		try {
+			for(Pricelist p : cat.getPricelists()){
+				Pricelist temp = pricelistRepo.findOne(p.getId());
+				temp.getImpacts().remove(cat);
+				pricelistRepo.save(temp);
+			}
 			priceImpRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -439,7 +473,7 @@ public class IsokController {
 	}
 	
 	
-	////////////////PRICELIST METODE
+	////////////////TODO: PRICELIST METODE/////////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getPricelists", method = RequestMethod.GET)
 	@ResponseBody
@@ -498,7 +532,6 @@ public class IsokController {
 		try {
 			pricelistRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -521,7 +554,7 @@ public class IsokController {
 	}
 	
 	
-	////////////RISKITEM METODE/////////////////////
+	////////////TODO: RISKITEM METODE/////////////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getRiskItems", method = RequestMethod.GET)
 	@ResponseBody
@@ -533,31 +566,53 @@ public class IsokController {
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/saveRiskItem/", method = RequestMethod.POST)
 	@ResponseBody
-	public RiskItem saveItem(@RequestBody RiskItem risk) {
-		RiskItem pol = riskItemRepo.findOne(risk.getId());
-		if (pol != null)
+	public RiskItem saveItem(@RequestBody HashMap<String, Object> risk) {
+		ObjectMapper mapper = new ObjectMapper();
+		RiskItem pol = mapper.convertValue(risk.get("item"), RiskItem.class);
+		Risk parentRisk = mapper.convertValue(risk.get("risk"),  new TypeReference<Risk>() {}); 
+		RiskItem item = riskItemRepo.findOne(pol.getId());
+		if (item != null)
 			return null;
-		pol = riskItemRepo.save(risk);
+		if(parentRisk != null){
+			parentRisk = riskRepo.findOne(parentRisk.getId());
+			pol.setRisk(parentRisk);
+		}
+		pol = riskItemRepo.save(pol);
 		return pol;
 	}
 	
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/updateRiskItem/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public RiskItem updateRiskItem(@PathVariable("id") long id, @RequestBody RiskItem item) {
-		RiskItem cat = riskItemRepo.findOne(item.getId());		
+	public RiskItem updateRiskItem(@PathVariable("id") long id, @RequestBody HashMap<String,Object> item) {
+		ObjectMapper mapper = new ObjectMapper();
+		RiskItem pol = mapper.convertValue(item.get("item"), RiskItem.class);
+		Risk risk = mapper.convertValue(item.get("risk"), Risk.class);
+		List<Policy> policies = mapper.convertValue(item.get("policies"),  new TypeReference<List<Policy>>() {});
+		RiskItem cat = riskItemRepo.findOne(pol.getId());		
 		if(cat == null)
 			return null;
-		//izmeniti
-		cat.setItemName(item.getItemName());
-		if(!item.getImpacts().isEmpty()){
+		
+		cat.setItemName(pol.getItemName());
+		if(risk != null){
+			risk = riskRepo.findOne(risk.getId());
+			cat.setRisk(risk);
+		}
+		if(!pol.getImpacts().isEmpty()){
 			cat.getImpacts().clear();
-			for(PriceImpacts p : item.getImpacts()){
+			for(PriceImpacts p : pol.getImpacts()){
 				PriceImpacts p1 = priceImpRepo.findOne(p.getId());
 				cat.getImpacts().add(p1);
 			}
 		}
 		cat = riskItemRepo.save(cat);
+		if(!policies.isEmpty()){
+			for(Policy p : policies){
+				Policy temp = policyRepo.findOne(p.getId());
+				temp.getRiskItems().add(cat);
+				policyRepo.save(temp);
+			}
+		}
 		return cat;
 	}
 	
@@ -571,7 +626,6 @@ public class IsokController {
 		try {
 			riskItemRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -590,7 +644,7 @@ public class IsokController {
 	}
 	
 	
-	/////////////////////RISK METODE//////////////////	
+	///////////////////TODO: RISK METODE//////////////////	
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getRisks", method = RequestMethod.GET)
 	@ResponseBody
@@ -601,34 +655,71 @@ public class IsokController {
 		return risks;
 	}
 	
+	/**
+	 * @param mapa koja ima objekat rizika (key="risk") i listu objekata kategorije (key="categories")
+	 * */
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/saveRisk/", method = RequestMethod.POST)
 	@ResponseBody
-	public Risk saveRisk(@RequestBody Risk risk) {
-		Risk pol = riskRepo.findOne(risk.getId());
-		if (pol != null)
+	public Risk saveRisk(@RequestBody HashMap<String,Object> risk) {
+		ObjectMapper mapper = new ObjectMapper();
+		Risk pol = mapper.convertValue(risk.get("risk"), Risk.class);
+		System.out.println(pol.getRiskName());
+		List<InsuranceCategory> categories = mapper.convertValue(risk.get("categories"),  new TypeReference<List<InsuranceCategory>>() {}); 
+		
+		if (pol == null)
 			return null;
-		pol = riskRepo.save(risk);
+		pol = riskRepo.save(pol);
+		
+		//jer je manytomany veza namapirana sa strane kategorija
+		if(!categories.isEmpty()){
+			for(InsuranceCategory cat : categories){
+				InsuranceCategory temp = insCatRepo.findOne(cat.getId());
+				//System.out.println(temp.getCategoryName());
+				//System.out.println("=====================================");
+				temp.getRisks().add(pol);
+				temp = insCatRepo.save(temp);
+			}
+		}
 		return pol;
 	}
 	
+	/**
+	 * @param id - id rizika koji se menja
+	 * @param mapa koja ima objekat rizika (key="risk") i listu objekata kategorije (key="categories")
+	 * */
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/updateRisk/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public Risk updateRisk(@PathVariable("id") long id, @RequestBody Risk risk) {
-		Risk cat = riskRepo.findOne(risk.getId());		
+	public Risk updateRisk(@PathVariable("id") long id, @RequestBody  HashMap<String,Object> risk) {
+		ObjectMapper mapper = new ObjectMapper();
+		Risk pol = mapper.convertValue(risk.get("risk"), Risk.class);
+		List<InsuranceCategory> categories = mapper.convertValue(risk.get("categories"),  new TypeReference<List<InsuranceCategory>>() {}); 
+		Risk cat = riskRepo.findOne(pol.getId());		
 		if(cat == null)
-			return null;
-		//izmeniti
-		cat.setRiskName(risk.getRiskName());
-		if(!risk.getRiskItems().isEmpty()){
+			return null;		
+
+		cat.setRiskName(pol.getRiskName());
+		if(!pol.getRiskItems().isEmpty()){
 			cat.getRiskItems().clear();
-			for(RiskItem p : risk.getRiskItems()){
+			for(RiskItem p : pol.getRiskItems()){
 				RiskItem p1 = riskItemRepo.findOne(p.getId());
 				cat.getRiskItems().add(p1);
 			}
 		}
 		cat = riskRepo.save(cat);
+		for(InsuranceCategory ins : cat.getCategories()){
+			InsuranceCategory temp = insCatRepo.findOne(ins.getId());
+			temp.getRisks().remove(cat);
+			temp = insCatRepo.save(temp);
+		}
+		if(!categories.isEmpty()){
+			for(InsuranceCategory ins : categories){
+				InsuranceCategory temp = insCatRepo.findOne(ins.getId());
+				temp.getRisks().add(cat);
+				temp = insCatRepo.save(temp);
+			}
+		}
 		return cat;
 	}
 	
@@ -640,9 +731,13 @@ public class IsokController {
 		if(cat == null)
 			return false;
 		try {
+			for(InsuranceCategory ins : cat.getCategories()){
+				InsuranceCategory temp = insCatRepo.findOne(ins.getId());
+				temp.getRisks().remove(cat);
+				insCatRepo.save(temp);
+			}
 			riskRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -658,7 +753,7 @@ public class IsokController {
 	}
 	
 	
-	//////////////TRAVEL INSURANCE//////////////////////
+	//////////////TODO: TRAVEL INSURANCE//////////////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getTravelInsurance", method = RequestMethod.GET)
 	@ResponseBody
@@ -702,7 +797,6 @@ public class IsokController {
 		try {
 			travelInsRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -717,7 +811,7 @@ public class IsokController {
 	}
 	
 		
-	//////////////////////VEHICLEINSURANCE METODE////////////////////////
+	//////////////////TODO: VEHICLEINSURANCE METODE////////////////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getVehicleInsurance", method = RequestMethod.GET)
 	@ResponseBody
@@ -763,7 +857,6 @@ public class IsokController {
 		try {
 			vehicleInsRepo.delete(id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}

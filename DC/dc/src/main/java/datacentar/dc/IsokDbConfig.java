@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(entityManagerFactoryRef = "isokEntityManagerFactory",
+	transactionManagerRef = "isokTransactionManager",
     basePackages = {"datacentar.dc.isok.repo"})
 
 public class IsokDbConfig {
@@ -39,6 +40,7 @@ public class IsokDbConfig {
 	      EntityManagerFactoryBuilder builder, @Qualifier("isokDataSource") DataSource dataSource) {
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put("hibernate.physical_naming_strategy", "datacentar.dc.PhysicalNamingStrategyImpl");
+		properties.put("hibernate.id.new_generator_mappings", false);
 	    return builder.dataSource(dataSource).packages("datacentar.dc.isok.model").persistenceUnit("isok")
 	    	.properties(properties)
 	        .build();
