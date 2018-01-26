@@ -13,6 +13,6 @@ import datacentar.dc.isok.model.RiskItem;
 public interface PriceImpactsRepo extends CrudRepository<PriceImpacts, Long>{
 
 	List<PriceImpacts> findByItem(RiskItem item);
-	List<PriceImpacts> findByValidTo(Date validTo);
-	List<PriceImpacts> findByValidFrom(Date validFrom);
+	//List<PriceImpacts> findByValidTo(Date validTo);
+	//List<PriceImpacts> findByValidFrom(Date validFrom);
 }

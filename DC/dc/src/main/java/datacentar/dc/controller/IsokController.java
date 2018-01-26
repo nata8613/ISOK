@@ -25,6 +25,7 @@ import datacentar.dc.isok.model.PriceImpacts;
 import datacentar.dc.isok.model.Pricelist;
 import datacentar.dc.isok.model.Risk;
 import datacentar.dc.isok.model.RiskItem;
+import datacentar.dc.isok.model.Rules;
 import datacentar.dc.isok.model.TravelInsurance;
 import datacentar.dc.isok.model.VehicleInsurance;
 import datacentar.dc.isok.repo.ClientRepo;
@@ -35,6 +36,7 @@ import datacentar.dc.isok.repo.PriceImpactsRepo;
 import datacentar.dc.isok.repo.PricelistRepo;
 import datacentar.dc.isok.repo.RiskItemRepo;
 import datacentar.dc.isok.repo.RiskRepo;
+import datacentar.dc.isok.repo.RulesRepo;
 import datacentar.dc.isok.repo.TravelInsuranceRepo;
 import datacentar.dc.isok.repo.VehicleInsuranceRepo;
 
@@ -220,7 +222,9 @@ public class IsokController {
 		HomeInsurance cat = homeInsRepo.findOne(insurance.getId());		
 		if(cat == null)
 			return null;
-		cat.setHomeOwner(insurance.getHomeOwner());
+		cat.setOwnerName(insurance.getOwnerName());
+		cat.setOwnerSurname(insurance.getOwnerSurname());
+		cat.setJmbg(insurance.getJmbg());
 		cat.setInsuranceLength(insurance.getInsuranceLength());
 		cat = homeInsRepo.save(cat);
 		return cat;
@@ -246,7 +250,9 @@ public class IsokController {
 	@RequestMapping(value = "/homeInsOwner/{owner}", method = RequestMethod.POST)
 	@ResponseBody
 	public List<HomeInsurance> findHomeOwner(@PathVariable("owner") String owner) {
-		List<HomeInsurance> insurances = homeInsRepo.findByHomeOwner(owner);		
+		String[] ownerDetails = owner.split(" ");
+		List<HomeInsurance> insurances = homeInsRepo.findByOwnerNameContainingOrOwnerSurnameContaining(ownerDetails[0],
+				ownerDetails[1]);		
 		return insurances;
 	}
 	
@@ -409,8 +415,6 @@ public class IsokController {
 			return null;
 		item = riskItemRepo.findOne(item.getId());
 		postoji.setItem(item);
-		postoji.setValidFrom(pol.getValidFrom());
-		postoji.setValidTo(pol.getValidTo());
 		postoji.setValue(pol.getValue());
 		postoji.getPricelists().clear();
 		if(!pricelists.isEmpty()){
@@ -456,7 +460,7 @@ public class IsokController {
 		List<PriceImpacts> cat = priceImpRepo.findByItem(item);
 		return cat;
 	}
-	
+	/*
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/ImpactDateFrom/", method = RequestMethod.POST)
 	@ResponseBody
@@ -470,7 +474,7 @@ public class IsokController {
 	public List<PriceImpacts> getImpactDateTo(@RequestBody Date dateTo) {
 		List<PriceImpacts> cat = priceImpRepo.findByValidTo(dateTo);
 		return cat;
-	}
+	}*/
 	
 	
 	////////////////TODO: PRICELIST METODE/////////////////
@@ -541,9 +545,9 @@ public class IsokController {
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/PricelistDateFrom/", method = RequestMethod.POST)
 	@ResponseBody
-	public List<Pricelist> getPricelistDateFrom(@RequestBody Date dateFrom) {
-		List<Pricelist> cat = pricelistRepo.findByValidFrom(dateFrom);
-		return cat;
+	public Pricelist getPricelistDateFrom(@RequestBody Date dateFrom) {
+		List<Pricelist> cat = pricelistRepo.findByValidFromGreaterThanAndValidToLessThanOrderByValidFromDesc(dateFrom, dateFrom);
+		return cat.get(0);
 	}
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/PricelistDateTo/", method = RequestMethod.POST)
@@ -561,6 +565,15 @@ public class IsokController {
 	public List<RiskItem> getRiskItems(){
 		List<RiskItem> items = (List<RiskItem>) riskItemRepo.findAll();
 		return items;
+	}
+	
+	@Transactional("isokTransactionManager")
+	@RequestMapping(value="/getRiskItem/", method = RequestMethod.GET)
+	@ResponseBody
+	public RiskItem getRiskItem(@RequestBody String id){
+		Long id2 = Long.parseLong(id);
+		RiskItem item = riskItemRepo.findOne(id2);
+		return item;
 	}
 	
 	@Transactional("isokTransactionManager")
@@ -753,6 +766,55 @@ public class IsokController {
 	}
 	
 	
+	//////////////TODO: RULES//////////////////////
+	@Transactional("isokTransactionManager")
+	@RequestMapping(value="/getRules", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Rules> getAllRules(){
+		List<Rules> rules = (List<Rules>) rulesRepo.findAll();
+		return rules;
+	}
+	
+	@Transactional("isokTransactionManager")
+	@RequestMapping(value = "/saveRule/", method = RequestMethod.POST)
+	@ResponseBody
+	public Rules saveRule(@RequestBody Rules rule) {
+		Rules pol = rulesRepo.findOne(rule.getId());
+		if (pol != null)
+			return null;
+		pol = rulesRepo.save(rule);
+		return pol;
+	}
+	
+	@Transactional("isokTransactionManager")
+	@RequestMapping(value = "/updateRules/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public Rules updateRule(@PathVariable("id") long id, @RequestBody Rules rule) {
+		Rules cat = rulesRepo.findOne(rule.getId());		
+		if(cat == null)
+			return null;
+		cat.setRule(rule.getRule());
+		cat = rulesRepo.save(cat);
+		return cat;
+	}
+	
+	@Transactional("isokTransactionManager")
+	@RequestMapping(value = "/deleteRule/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean deleteRule(@PathVariable("id") long id) {
+		Rules cat = rulesRepo.findOne(id);
+		if(cat == null)
+			return false;
+		try {
+			rulesRepo.delete(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	
 	//////////////TODO: TRAVEL INSURANCE//////////////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getTravelInsurance", method = RequestMethod.GET)
@@ -840,7 +902,9 @@ public class IsokController {
 			return null;
 		cat.setBrandAndType(travel.getBrandAndType());
 		cat.setChassisNum(travel.getChassisNum());
-		cat.setNameSurnameJmbg(travel.getNameSurnameJmbg());
+		cat.setOwnerName(travel.getOwnerName());
+		cat.setOwnerSurname(travel.getOwnerSurname());
+		cat.setJmbg(travel.getJmbg());
 		cat.setProductionYear(travel.getProductionYear());
 		cat.setRegNum(travel.getRegNum());
 		cat = vehicleInsRepo.save(cat);
@@ -894,6 +958,9 @@ public class IsokController {
 	
 	@Autowired
 	private RiskItemRepo riskItemRepo;
+	
+	@Autowired
+	private RulesRepo rulesRepo;
 	
 	@Autowired
 	private TravelInsuranceRepo travelInsRepo;

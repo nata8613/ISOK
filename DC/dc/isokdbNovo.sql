@@ -40,7 +40,7 @@ CREATE TABLE `category_risk` (
 
 LOCK TABLES `category_risk` WRITE;
 /*!40000 ALTER TABLE `category_risk` DISABLE KEYS */;
-INSERT INTO `category_risk` VALUES (1,1),(1,2),(1,3),(1,4),(2,5),(2,6),(2,7),(2,8),(3,9), (3,10), (3,11), (3, 12), (3,13), (1,14),(2,14), (3,14), (1, 15), (2,15),(3,15);
+INSERT INTO `category_risk` VALUES (1,1),(1,2),(1,3),(1,4),(2,5),(2,6),(2,7),(2,8),(3,9),(3,10),(3,11),(3,12);
 /*!40000 ALTER TABLE `category_risk` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,8 +82,10 @@ DROP TABLE IF EXISTS `home_insurance`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `home_insurance` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `home_owner` varchar(255) NOT NULL,
   `insurance_length` int(11) NOT NULL,
+  `jmbg` varchar(255) NOT NULL,
+  `owner_name` varchar(255) NOT NULL,
+  `owner_surname` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -107,8 +109,10 @@ DROP TABLE IF EXISTS `insurance_category`;
 CREATE TABLE `insurance_category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(255) NOT NULL,
+  `client_fee` double NOT NULL,
+  `starting_price` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,8 +121,35 @@ CREATE TABLE `insurance_category` (
 
 LOCK TABLES `insurance_category` WRITE;
 /*!40000 ALTER TABLE `insurance_category` DISABLE KEYS */;
-INSERT INTO `insurance_category` VALUES (1,'HomeInsurance'),(2,'TravelInsurance'), (3, 'VehicleInsurance');
+INSERT INTO `insurance_category` VALUES (1,'HomeInsurance',0,100),(2,'TravelInsurance',20,200),(3,'VehicleInsurance',0,100);
 /*!40000 ALTER TABLE `insurance_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `merchant_license`
+--
+
+DROP TABLE IF EXISTS `merchant_license`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `merchant_license` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `bank` varchar(255) NOT NULL,
+  `merchant_id` varchar(255) NOT NULL,
+  `user` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK59k0mrqi4v6halsnemi2awl3t` (`user`),
+  CONSTRAINT `FK59k0mrqi4v6halsnemi2awl3t` FOREIGN KEY (`user`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `merchant_license`
+--
+
+LOCK TABLES `merchant_license` WRITE;
+/*!40000 ALTER TABLE `merchant_license` DISABLE KEYS */;
+/*!40000 ALTER TABLE `merchant_license` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -256,7 +287,7 @@ CREATE TABLE `price_impact_pricelist` (
 
 LOCK TABLES `price_impact_pricelist` WRITE;
 /*!40000 ALTER TABLE `price_impact_pricelist` DISABLE KEYS */;
-INSERT INTO `price_impact_pricelist` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(1,29),(1,30),(1,31),(1,32),(1,33),(1,34),(1,35),(1,36),(1,37),(1,38),(1,39),(1,40),(1,41),(1,42),(1,43),(1,44), (1,45),(1,46),(1,47),(1,48),(1,49),(1,50),(1,51),(1,52),(1,53),(1,54),(1,55),(1,56),(1,57),(1,58);
+INSERT INTO `price_impact_pricelist` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(1,29),(1,30),(1,31),(1,32),(1,33),(1,34),(1,35),(1,36),(1,37),(1,38),(1,39),(1,40),(1,41),(1,42),(1,43),(1,44),(1,45),(1,46),(1,47),(1,48),(1,49),(1,50),(1,51),(1,52),(1,53),(1,54);
 /*!40000 ALTER TABLE `price_impact_pricelist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,14 +300,12 @@ DROP TABLE IF EXISTS `price_impacts`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `price_impacts` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `valid_from` datetime NOT NULL,
-  `valid_to` datetime NOT NULL,
   `value` double NOT NULL,
   `item` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FKlhn0khtufcbmkg2g5m8urjeew` (`item`),
   CONSTRAINT `FKlhn0khtufcbmkg2g5m8urjeew` FOREIGN KEY (`item`) REFERENCES `risk_item` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +314,7 @@ CREATE TABLE `price_impacts` (
 
 LOCK TABLES `price_impacts` WRITE;
 /*!40000 ALTER TABLE `price_impacts` DISABLE KEYS */;
-INSERT INTO `price_impacts` VALUES (1,'2017-10-15 00:00:00','2018-02-15 00:00:00',0.2,1),(2,'2017-10-15 00:00:00','2018-02-15 00:00:00',0.4,2),(3,'2017-10-15 00:00:00','2018-02-15 00:00:00',0.5,3),(4,'2017-10-15 00:00:00','2018-02-15 00:00:00',0.8,4),(5,'2017-10-15 00:00:00','2018-02-15 00:00:00',0.9,5),(6,'2017-10-22 00:00:00','2018-03-30 00:00:00',0.2,6),(7,'2017-10-22 00:00:00','2018-03-30 00:00:00',0.3,7),(8,'2017-10-22 00:00:00','2018-03-30 00:00:00',0.4,8),(9,'2017-10-22 00:00:00','2018-03-30 00:00:00',0.6,9),(10,'2017-10-22 00:00:00','2018-03-30 00:00:00',0.8,10),(11,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.4, 11), (12,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.5, 12),(13,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.6, 13), (14,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.2, 14),(15,'2017-11-03 00:00:00','2018-03-30 00:00:00',0.3,15),(16,'2017-12-20 00:00:00','2018-02-10 00:00:00',0.4,16),(17,'2017-12-20 00:00:00','2018-02-10 00:00:00',0.5,17),(18,'2017-12-21 00:00:00','2018-02-10 00:00:00',0.6,18),(19,'2017-12-20 00:00:00','2018-02-10 00:00:00',0.8,19),(20,'2017-12-20 00:00:00','2018-02-10 00:00:00',0.7,20),(21,'2017-12-20 00:00:00','2018-02-10 00:00:00',0.5,21),(22,'2017-12-20 00:00:00','2018-02-10 00:00:00',0.2,22),(23,'2017-12-20 00:00:00','2018-02-10 00:00:00',0.3,23),(24,'2017-12-20 00:00:00','2018-02-10 00:00:00',0.8,24),(25,'2017-12-25 00:00:00','2018-02-19 00:00:00',0.2,25),(26,'2017-12-25 00:00:00','2018-02-19 00:00:00',0.4,26),(27,'2017-12-25 00:00:00','2018-02-19 00:00:00',0.5,27),(28,'2017-12-25 00:00:00','2018-02-19 00:00:00',0.7,28),(29,'2017-12-25 00:00:00','2018-02-19 00:00:00',0.8,29),(30,'2017-12-25 00:00:00','2018-02-19 00:00:00',0.3,30),(31,'2017-12-25 00:00:00','2018-02-19 00:00:00',0.5,31),(32,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.4,32),(33,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.55,33),(34,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.75,34),(35,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.9,35),(36,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.4,36),(37,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.2,37),(38,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.3,38),(39,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.25,39),(40,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.3,40),(41,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.5,41),(42,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.6,42),(43,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.65,43),(44,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.7,44),(45,'2017-12-28 00:00:00','2018-02-22 00:00:00',0.5,45), (46,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.2, 46),(47,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.4, 47),(48,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.7, 48), (49,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.3, 49),(50,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.5, 50), (51,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.7, 51),(52,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.9, 52),(53,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.3, 53),(54,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.4, 54),(55,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.1, 55),(56,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.2, 56),(57,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.4, 57),(58,'2017-12-25 00:00:00', '2018-04-10 00:00:00', 0.6, 58);
+INSERT INTO `price_impacts` VALUES (1,0.2,1),(2,0.4,2),(3,0.5,3),(4,0.8,4),(5,0.9,5),(6,0.2,6),(7,0.3,7),(8,0.4,8),(9,0.6,9),(10,0.8,10),(11,0.4,11),(12,0.5,12),(13,0.6,13),(14,0.2,14),(15,0.3,15),(16,0.4,16),(17,0.5,17),(18,0.6,18),(19,0.8,19),(20,0.7,20),(21,0.5,21),(22,0.2,22),(23,0.3,23),(24,0.8,24),(25,0.2,25),(26,0.4,26),(27,0.5,27),(28,0.7,28),(29,0.8,29),(30,0.3,30),(31,0.5,31),(32,0.4,32),(33,0.55,33),(34,0.75,34),(35,0.9,35),(36,0.4,36),(37,0.2,37),(38,0.3,38),(39,0.25,39),(40,0.3,40),(41,0.5,41),(42,0.6,42),(43,0.65,43),(44,0.7,44),(45,0.5,45),(46,0.2,46),(47,0.4,47),(48,0.7,48),(49,0.3,49),(50,0.5,50),(51,0.7,51),(52,0.9,52),(53,0.3,53),(54,0.4,54);
 /*!40000 ALTER TABLE `price_impacts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -325,7 +354,7 @@ CREATE TABLE `risk` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `risk_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -334,7 +363,7 @@ CREATE TABLE `risk` (
 
 LOCK TABLES `risk` WRITE;
 /*!40000 ALTER TABLE `risk` DISABLE KEYS */;
-INSERT INTO `risk` VALUES (1,'Home Age'),(2,'Home surface'),(3,'Insurance reason'),(4,'Home value'),(5,'Age'),(6,'Destination'),(7,'Sport'),(8,'Insurance value'),(9,'Vehicle Insurance type'), (10,'Repair Price'), (11,'Hotel Days'), (12,'Alt vehicle'), (13,'Transport km'), (14, 'Starting Price'), (15, 'Client Fee');
+INSERT INTO `risk` VALUES (1,'Home age'),(2,'Home surface'),(3,'Insurance Reason'),(4,'Home value'),(5,'Personal age'),(6,'Destination'),(7,'Sport'),(8,'Insurance value'),(9,'Repair Price'),(10,'Hotel Days'),(11,'Alt vehicle'),(12,'Transport km');
 /*!40000 ALTER TABLE `risk` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -352,7 +381,7 @@ CREATE TABLE `risk_item` (
   PRIMARY KEY (`id`),
   KEY `FKad1un1gq99my84kicdu68klde` (`risk`),
   CONSTRAINT `FKad1un1gq99my84kicdu68klde` FOREIGN KEY (`risk`) REFERENCES `risk` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -361,7 +390,7 @@ CREATE TABLE `risk_item` (
 
 LOCK TABLES `risk_item` WRITE;
 /*!40000 ALTER TABLE `risk_item` DISABLE KEYS */;
-INSERT INTO `risk_item` VALUES (1,'0-10',1),(2,'11-30',1),(3,'31-60',1),(4,'61-100',1),(5,'101+',1),(6,'1-20',2),(7,'21-40',2),(8,'41-70',2),(9,'71-100',2),(10,'100+',2),(11,'Flood',3),(12,'Fire',3),(13,'Robbery',3),(14,'Other',3),(15,'1-15000',4),(16,'15001-30000',4),(17,'30001-60000',4),(18,'60001-100000',4),(19,'100001+',4),(20,'0-10',5),(21,'11-18',5),(22,'19-40',5),(23,'41-65',5),(24,'66+',5),(25,'Europe',6),(26,'Eastern Asia',6),(27,'Western Asia',6),(28,'Africa',6),(29,'Australia',6),(30,'North America',6),(31,'South America',6),(32,'Diving',7),(33,'Skiing',7),(34,'Mountain climbing',7),(35,'Motorsports',7),(36,'Athletics',7),(37,'Parenting',7),(38,'Water Sports',7),(39,'0-10000',8),(40,'10000-35000',8),(41,'35000+',8),(42,'Vehicle Repair',9),(43,'Transport',9),(44,'Replacement vehicle',9),(45,'Hotel arrangement',9), (46, '0 - 500e',10), (47,'500 - 1500e', 10),(48,'1500e +', 10), (49,'0-2', 11), (50,'2-5', 11),(51,'5-10', 11),(52,'10+', 11), (53,'Car', 12), (54,'Van', 12), (55,'0-5', 13), (56,'5-50', 13), (57,'50-100', 13), (58,'100+', 13), (59, '50',14), (60, '20',15);
+INSERT INTO `risk_item` VALUES (1,'0-10',1),(2,'11-30',1),(3,'31-60',1),(4,'61-100',1),(5,'101+',1),(6,'1-20',2),(7,'21-40',2),(8,'41-70',2),(9,'71-100',2),(10,'100+',2),(11,'Flood',3),(12,'Fire',3),(13,'Robbery',3),(14,'Other',3),(15,'1-15000',4),(16,'15001-30000',4),(17,'30001-60000',4),(18,'60001-100000',4),(19,'100001+',4),(20,'0-10',5),(21,'11-18',5),(22,'19-40',5),(23,'41-65',5),(24,'66+',5),(25,'Europe',6),(26,'Eastern Asia',6),(27,'Western Asia',6),(28,'Africa',6),(29,'Australia',6),(30,'North America',6),(31,'South America',6),(32,'Diving',7),(33,'Skiing',7),(34,'Mountain climbing',7),(35,'Motorsports',7),(36,'Athletics',7),(37,'Parenting',7),(38,'Water Sports',7),(39,'0-10000',8),(40,'10000-35000',8),(41,'35000+',8),(42,'0 - 500e',9),(43,'500 - 1500e',9),(44,'1500e +',9),(45,'0-2',10),(46,'2-5',10),(47,'5-10',10),(48,'10+',10),(49,'Car',11),(50,'Van',11),(51,'0-5',12),(52,'5-50',12),(53,'50-100',12),(54,'100+',12);
 /*!40000 ALTER TABLE `risk_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,6 +441,29 @@ CREATE TABLE `role_permission` (
 LOCK TABLES `role_permission` WRITE;
 /*!40000 ALTER TABLE `role_permission` DISABLE KEYS */;
 /*!40000 ALTER TABLE `role_permission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rules`
+--
+
+DROP TABLE IF EXISTS `rules`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rules` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `rule` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rules`
+--
+
+LOCK TABLES `rules` WRITE;
+/*!40000 ALTER TABLE `rules` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rules` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -500,7 +552,9 @@ CREATE TABLE `vehicle_insurance` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `brand_and_type` varchar(255) NOT NULL,
   `chassis_num` varchar(255) NOT NULL,
-  `name_surname_jmbg` varchar(255) NOT NULL,
+  `jmbg` varchar(255) NOT NULL,
+  `owner_name` varchar(255) NOT NULL,
+  `owner_surname` varchar(255) NOT NULL,
   `production_year` varchar(255) NOT NULL,
   `reg_num` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -525,4 +579,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-08 15:41:41
+-- Dump completed on 2018-01-26  0:18:35

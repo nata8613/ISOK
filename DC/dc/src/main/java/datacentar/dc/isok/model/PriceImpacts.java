@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,15 +26,15 @@ public class PriceImpacts {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@NotNull
+	@Column(nullable = false)
 	private double value;
 	
-	@NotNull
+	/*@Column(nullable = false)
 	private Date validFrom;
 	
-	@NotNull
+	@Column(nullable = false)
 	private Date validTo;
-	
+	*/
 	@NotNull
 	@ManyToOne()
 	@JoinColumn(name="item")
@@ -48,16 +49,12 @@ public class PriceImpacts {
 		super();
 	}
 
-	public PriceImpacts(double value, Date validFrom, Date validTo, RiskItem item, Set<Pricelist> pricelists) {
+	public PriceImpacts(double value, RiskItem item, Set<Pricelist> pricelists) {
 		super();
 		this.value = value;
-		this.validFrom = validFrom;
-		this.validTo = validTo;
 		this.item = item;
 		this.pricelists = pricelists;
 	}
-
-
 
 	public double getValue() {
 		return value;
@@ -67,7 +64,7 @@ public class PriceImpacts {
 		this.value = value;
 	}
 
-	public Date getValidFrom() {
+/*	public Date getValidFrom() {
 		return validFrom;
 	}
 
@@ -82,7 +79,7 @@ public class PriceImpacts {
 	public void setValidTo(Date validTo) {
 		this.validTo = validTo;
 	}
-
+*/
 	public long getId() {
 		return id;
 	}

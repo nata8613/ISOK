@@ -13,6 +13,6 @@ import datacentar.dc.isok.model.Pricelist;
 public interface PricelistRepo extends CrudRepository<Pricelist, Long>{
 
 	List<Pricelist> findByValidTo(Date validTo);
-	List<Pricelist> findByValidFrom(Date validFrom);
+	List<Pricelist> findByValidFromGreaterThanAndValidToLessThanOrderByValidFromDesc(Date validTo, Date validFrom);
 
 }
