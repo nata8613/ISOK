@@ -2,36 +2,69 @@
 <section id="section1" *ngIf="section1">
   <div class="container">
     
-    <form class="well form-horizontal" method="post" (ngSubmit)="onSubmit()">
+    <form class="well form-horizontal" #travelForm="ngForm" method="post" (ngSubmit)="onSubmit(travelForm)">
     
     <fieldset>
     <legend>&nbsp; Protect your journey today!</legend>
     
     <!-- Text input-->
-    
     <div class="form-group">
-      <label for="duration" class="col-md-4 control-label">Duration of insurance</label>  
-      <div class="col-md-4 inputGroupContainer">
-      <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-user"></i></span>
-      <input id="duration" [(ngModel)]="travelInsurance.duration" name="duration" placeholder="enter number of days" class="form-control"  type="text" >
-        </div>
+      <label for="startingDate" class="col-md-4 control-label">Starting date of insurance</label>  
+    <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <input class="form-control" type="date" customDateStart="" #startingDate="ngModel" [(ngModel)]="travelInsurance.startingDate" name="startingDate" id="datetimepicker" placeholder="select date" required>
       </div>
+        </div>
     </div>
+    <div *ngIf="startingDate.invalid && (startingDate.dirty || startingDate.touched || travelForm.submitted)"
+        class="alert alert-danger">
+      <div *ngIf="startingDate.errors.required">
+        Starting date is required.
+      </div>
+      <div *ngIf="startingDate.errors.customDateStart">
+          Starting date must be after today.
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="endingDate" class="col-md-4 control-label">Ending date of insurance</label>  
+      <div class="col-md-4 inputGroupContainer">
+          <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-user"></i></span>
+          <input class="form-control" type="date" #endingDate="ngModel"  customDateEnd="{{startingDate.value}}" [(ngModel)]="travelInsurance.endingDate" name="endingDate" id="datetimepicker2" placeholder="select date" required>
+        </div>
+          </div>
+      </div>
+      <div *ngIf="endingDate.invalid && (endingDate.dirty || endingDate.touched|| travelForm.submitted)"
+          class="alert alert-danger">
+        <div *ngIf="endingDate.errors.required">
+          Ending date is required.
+        </div>
+        <div *ngIf="endingDate.errors.customDateEnd">
+            Ending date must be after starting date.
+          </div>
+      </div>
     
     <!-- select input-->
       
-    <div class="form-group"> 
+    <div class="form-group required"> 
       <label for="region" class="col-md-4 control-label">Destination region</label>
         <div class="col-md-4 selectContainer">
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-          <select id="region" name="region" [(ngModel)]="travelInsurance.region" class="form-control selectpicker" >
+          <select id="region" name="region" #region="ngModel" [(ngModel)]="travelInsurance.region" class="form-control selectpicker" required >
           <option value="" >--Select--</option>
-          <option *ngFor="let reg of regions" [value]="reg" >{{reg}}</option>
+          <option *ngFor="let reg of regions" [value]="reg.id" >{{reg.name}}</option>
         </select>
       </div>
     </div>
+    </div>
+    <div *ngIf="region.invalid && (region.dirty || region.touched || travelForm.submitted)"
+        class="alert alert-danger">
+      <div *ngIf="region.errors.required">
+        Region is required.
+      </div>
     </div>
     
     <div class="form-group">
@@ -39,10 +72,19 @@
       <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
       <span class="input-group-addon"><i class="fa fa-user"></i></span>
-      <input id="numberOfPeople" [(ngModel)]="travelInsurance.numberOfPeople" name="numberOfPeople" placeholder="enter number of travelers" class="form-control"  type="text" >
+      <input id="numberOfPeople" [(ngModel)]="travelInsurance.numberOfPeople" customMin="1" #numberOfPeople="ngModel" name="numberOfPeople" placeholder="enter number of travelers" class="form-control"  type="text" required>
         </div>
       </div>
-    </div>    
+    </div>  
+    <div *ngIf="numberOfPeople.invalid && (numberOfPeople.dirty || numberOfPeople.touched || travelForm.submitted)"
+        class="alert alert-danger">
+      <div *ngIf="numberOfPeople.errors.required">
+          Number of people is required.
+        </div>
+      <div *ngIf="numberOfPeople.errors.customMin">
+        Number of people must be larger than 0.
+      </div>
+    </div>  
     
     
     <div class="form-group"> 
@@ -50,12 +92,18 @@
         <div class="col-md-4 selectContainer">
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-          <select id="ages" class="form-control selectpicker"name="ages" [(ngModel)]="travelInsurance.ages" >
+          <select id="ages" class="form-control selectpicker" name="ages" #ages="ngModel" [(ngModel)]="travelInsurance.ages" required>
           <option value="" >--Select--</option>
-          <option  *ngFor="let age of all_ages" [value]="age" >{{age}}</option>
+          <option  *ngFor="let age of all_ages" [value]="age.id" >{{age.name}}</option>
         </select>
       </div>
     </div>
+    </div>
+    <div *ngIf="ages.invalid && (ages.dirty || ages.touched || travelForm.submitted)"
+        class="alert alert-danger">
+      <div *ngIf="ages.errors.required">
+        Age range is required.
+      </div>
     </div>
     
     <div class="form-group"> 
@@ -65,7 +113,7 @@
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
           <select id="sport" name="sport" [(ngModel)]="travelInsurance.sport" class="form-control selectpicker" >
           <option value="" >--Select--</option>
-          <option *ngFor="let sp of sports" [value]="sp" >{{sp}}</option>
+          <option *ngFor="let sp of sports" [value]="sp.id" >{{sp.name}}</option>
         </select>
       </div>
     </div>
@@ -76,12 +124,18 @@
         <div class="col-md-4 selectContainer">
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-          <select id="ammount" name="ammount" [(ngModel)]="travelInsurance.ammount" class="form-control selectpicker" >
+          <select id="ammount" name="ammount" #ammount="ngModel" [(ngModel)]="travelInsurance.ammount" class="form-control selectpicker" required >
           <option value="" >--Select--</option>
-          <option *ngFor="let iv of insuranceValues" [value]="iv" >{{iv}}</option>
+          <option *ngFor="let iv of insuranceValues" [value]="iv.id" >{{iv.name}}</option>
         </select>
       </div>
     </div>
+    </div>
+    <div *ngIf="ammount.invalid && (ammount.dirty || ammount.touched || travelForm.submitted)"
+        class="alert alert-danger">
+      <div *ngIf="ammount.errors.required">
+        Insurance value is required.
+      </div>
     </div>
 
     <div class="form-group"> 
@@ -92,20 +146,21 @@
       </div>
     </div>
     
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-default">Continue</button>
   
     </fieldset>
     </form>
 
     </div><!-- /.container -->
   </section>
-  <app-people (priceEvent)="receivePrice($event)" [arrayOfPeople]="arr" [people]="people" [price1]="price1" *ngIf="section2"></app-people>
+  <app-people (priceEvent)="receivePrice($event)" (goBackEmitter)="showEvent()" [policy]="policy" [price1]="price1" *ngIf="section2"></app-people>
 
   <div class="container input-group">
     <span class="input-group-addon">
    <i >Current price is {{price1}}</i></span>
   </div>
-  <div class="container imgRight">
+  <div class="container imgRight" *ngIf="!section2">
     
     <img src="../../assets/img/home-insurance.jpg">
   </div>
+  <div>

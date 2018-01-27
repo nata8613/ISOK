@@ -2,6 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {HomeInsuranceService} from '../home-insurance.service';
 
 import {HomeInsurance} from '../homeInsurance.interface';
+import {Policy} from '../policy.interface';
+import {RiskItem} from '../riskItem.interface';
+import { NgForm } from '@angular/forms/src/directives/ng_form';
 
 @Component({
   selector: 'app-homeinsform',
@@ -11,26 +14,26 @@ import {HomeInsurance} from '../homeInsurance.interface';
 export class HomeinsformComponent implements OnInit {
 
   @Input() price1 : number;
+  @Input() policy: Policy;
   @Output() priceEvent = new EventEmitter<number>();
+  @Output() goBackEmitter = new EventEmitter();
 
   homeInsurance : HomeInsurance;
 
-  homeSurfaces : String[];
-  homeAges : String[];
-  homeValues : String[];
-  insuranceReasons : String[];
+  homeSurfaces : RiskItem[];
+  homeAges : RiskItem[];
+  homeValues : RiskItem[];
+  insuranceReasons : RiskItem[];
 
   section5 : Boolean = true;
   section6 : Boolean = false;
 
-  constructor( private insuranceService : HomeInsuranceService) { }
+  constructor( private insuranceService : HomeInsuranceService) {
+    this.getData();
+   }
 
   ngOnInit() {
-    this.getHomeSurfaces();
-    this.getHomeAges();
-    this.getHomeValues();
-    this.getInsuranceReasons();
-    this.homeInsurance = {firstName:'', lastName:'', address:'', jmbg:0, homeSurface:'', homeAge:'', homeValue:'', insuranceReason:'', insuranceLength:0};
+    this.homeInsurance = this.policy.homeInsurance;
   }
 
   receivePrice($event) {
@@ -38,35 +41,16 @@ export class HomeinsformComponent implements OnInit {
     this.priceEvent.emit(this.price1);
   }
 
-  getHomeSurfaces():void{
+  getData():void{
     this.insuranceService.getHomeSurfaces().subscribe(data => this.homeSurfaces = data,
-      err => {
-        console.log(err);
-      });
+    ()=> this.insuranceService.getHomeAges().subscribe(data => this.homeAges = data, 
+    () => this.insuranceService.getHomeValues().subscribe(data => this.homeValues = data, 
+    () => this.insuranceService.getInsuranceReasons().subscribe(data => this.insuranceReasons = data))));
   }
 
-  getHomeAges():void{
-    this.insuranceService.getHomeAges().subscribe(data => this.homeAges = data, 
-      err => {
-        console.log(err );
-      });
-  }
-
-  getHomeValues():void{
-    this.insuranceService.getHomeValues().subscribe(data => this.homeValues = data,
-      err => {
-        console.log(err);
-      });
-  }
-
-  getInsuranceReasons():void{
-    this.insuranceService.getInsuranceReasons().subscribe(data => this.insuranceReasons = data,
-      err => {
-        console.log(err);
-      });
-  }
-
-  onSubmit() {
+  onSubmit(form:NgForm) {
+    if(form.invalid)
+      return;
     this.insuranceService.createInsurance(this.homeInsurance).subscribe(
       value => {
         console.log('[POST] create Insurance successfully', value);
@@ -74,11 +58,20 @@ export class HomeinsformComponent implements OnInit {
         this.section5 = false; 
         this.section6 = true;
         this.priceEvent.emit(this.price1);
-      }, error => {
-        console.log('FAIL to create Insurance!' + error);
-      },
-      () => {
-        console.log('POST Insurance - now completed.');
+        this.policy = Object.assign({}, this.policy, {homeInsurance: this.homeInsurance});
       });
+  }
+  continue() {
+        this.section5 = false; 
+        this.section6 = true;
+        this.priceEvent.emit(this.price1);
+        this.policy = Object.assign({}, this.policy, {homeInsurance: null});
+  }
+  showEvent(){
+    this.section5=true;
+    this.section6 = false;
+  }
+  goBack(){
+    this.goBackEmitter.emit();
   }
 }

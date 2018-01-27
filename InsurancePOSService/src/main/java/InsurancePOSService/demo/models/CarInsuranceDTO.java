@@ -1,6 +1,6 @@
 package InsurancePOSService.demo.models;
 
-public class CarInsurance {
+public class CarInsuranceDTO {
 
 	private int insuranceLength;
 	private String numberOfKm;
@@ -15,10 +15,10 @@ public class CarInsurance {
 	private String lastName;
 	private int jmbg;
 	
-	public CarInsurance() {
+	public CarInsuranceDTO() {
 		super();
 	}
-	public CarInsurance(int insuranceLength, String numberOfKm, String repairPrice,
+	public CarInsuranceDTO(int insuranceLength, String numberOfKm, String repairPrice,
 			String numberOfHotelDays, String alternativeVehicle, String typeOfVehicle, int yearOfProduction,
 			String regTable, String chassisNumber, String firstName, String lastName, int jmbg) {
 		super();

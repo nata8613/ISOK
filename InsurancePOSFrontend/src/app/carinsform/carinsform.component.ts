@@ -2,6 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {CarInsuranceService} from '../car-insurance.service';
 
 import {CarInsurance} from '../carInsurance.interface';
+import {Policy} from '../policy.interface';
+import {RiskItem} from '../riskItem.interface';
+import { NgForm } from '@angular/forms/src/directives/ng_form';
 
 @Component({
   selector: 'app-carinsform',
@@ -11,67 +14,65 @@ import {CarInsurance} from '../carInsurance.interface';
 export class CarinsformComponent implements OnInit {
 
   @Input() price1 : number;
+  @Input() policy : Policy;
   @Output() priceEvent = new EventEmitter<number>();
+  @Output() goBackEmitter = new EventEmitter();
   section7 : Boolean = true;
   carInsurance : CarInsurance;
 
-  numberOfKms : String[];
-  repairPrices : String[];
-  numbersOfHotelDays : String[];
-  alternativeVehicles : String[];
+  numberOfKms : RiskItem[];
+  repairPrices : RiskItem[];
+  numbersOfHotelDays : RiskItem[];
+  alternativeVehicles : RiskItem[];
 
-  constructor(private carService : CarInsuranceService) { }
+  constructor(private carService : CarInsuranceService) {
+    this.getData();
+   }
 
   ngOnInit() {
-    this.getNumberOfKms();
-    this.getNumbersOfHotelDays();
-    this.getRepairPrices();
-    this.getVehicles();
-    this.carInsurance = {insuranceLength:0, numberOfKm:'', repairPrice:'', numberOfHotelDays:'', 
-    alternativeVehicle:'', typeOfVehicle:'', yearOfProduction:0, regTable:'', chassisNumber:'', 
-    firstName:'', lastName:'', jmbg:0};
+   
+    this.carInsurance = this.policy.carInsurance;
   }
 
-  getNumberOfKms():void{
+  getData():void{
     this.carService.getKilometers().subscribe(data => this.numberOfKms = data,
       err => {
         console.log(err);
-      });
-  }
-
-  getRepairPrices():void{
-    this.carService.getPrices().subscribe(data => this.repairPrices = data,
+      },
+    ()=>this.carService.getPrices().subscribe(data => this.repairPrices = data,
       err => {
         console.log(err);
-      });
-  }
-
-  getNumbersOfHotelDays():void{
-    this.carService.getHotelDays().subscribe(data => this.numbersOfHotelDays = data,
+      }, 
+    () => this.carService.getHotelDays().subscribe(data => this.numbersOfHotelDays = data,
       err => {
         console.log(err);
-      });
-  }
-
-  getVehicles():void{
-    this.carService.getAltVehicle().subscribe(data => this.alternativeVehicles = data,
+      },
+    () => this.carService.getAltVehicle().subscribe(data => this.alternativeVehicles = data,
       err => {
         console.log(err);
-      });
+      }))));
+      
   }
 
-  onSubmit() {
+  onSubmit(form:NgForm) {
+    if(form.invalid)
+      return;
     this.carService.createInsurance(this.carInsurance).subscribe(
       value => {
-        console.log('[POST] create Car Insurance successfully', value);
         this.price1 = value + this.price1;
-        this.section7 = false;
         this.priceEvent.emit(this.price1);
-      }, error => {
-        console.log('FAIL to create Insurance!' + error);
-      },
-      () => {
-        console.log('POST Insurance - now completed.');
+        this.policy = Object.assign({}, this.policy, {carInsurance: this.carInsurance});
       });
+  }
+
+  onFinish() {
+    this.carService.sendPolicy(this.policy).subscribe(
+      value => {
+        this.section7 = false;
+      }
+    )
+  }
+  goBack(){
+    this.goBackEmitter.emit();
   }
 }

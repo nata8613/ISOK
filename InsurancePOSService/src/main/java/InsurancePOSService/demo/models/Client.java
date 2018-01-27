@@ -1,60 +1,47 @@
-package datacentar.dc.isok.model;
-
-import static javax.persistence.CascadeType.ALL;
-
+package InsurancePOSService.demo.models;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "client")
 public class Client {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@NotNull
 	private String clientName;
 	
-	@NotNull
+	
 	private String clientSurname;
 	
-	@NotNull
+	
 	private String passportNum;
 	
-	@NotNull
+	
 	private String jmbg;
 	
-	@NotNull
+	
 	private String address;
 	
-	@NotNull
+	
 	private String telNum;
 	
-	@NotNull
+	
 	private String clientEmail;
 
-	@OneToMany(cascade={ALL}, fetch=FetchType.LAZY, mappedBy="insuranceOwner")
-	@JsonIgnore
-	private Set<Policy> policiesOwned = new HashSet<Policy>();
-	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "clients")
-	@JsonIgnore
-	private Set<Policy> policies = new HashSet<Policy>(); 
-	
+	public Client(long id, String clientName, String clientSurname, String passportNum, String jmbg, String address,
+			String telNum, String clientEmail, Set<Policy> policiesOwned, Set<Policy> policies) {
+		super();
+		this.id = id;
+		this.clientName = clientName;
+		this.clientSurname = clientSurname;
+		this.passportNum = passportNum;
+		this.jmbg = jmbg;
+		this.address = address;
+		this.telNum = telNum;
+		this.clientEmail = clientEmail;
+		this.policiesOwned = policiesOwned;
+		this.policies = policies;
+	}
+
 	public Client(String clientName, String clientSurname, String passportNum, String jmbg, String address,
 			String telNum, String clientEmail, Set<Policy> policiesOwned, Set<Policy> policies) {
 		super();
@@ -68,10 +55,12 @@ public class Client {
 		this.policiesOwned = policiesOwned;
 		this.policies = policies;
 	}
-	public Client() {
-		super();
-	}
 	
+	public Client(){}
+	
+	private Set<Policy> policiesOwned = new HashSet<Policy>();
+
+	private Set<Policy> policies = new HashSet<Policy>();
 
 	public String getClientName() {
 		return clientName;
@@ -129,10 +118,6 @@ public class Client {
 		this.clientEmail = clientEmail;
 	}
 
-	public long getId() {
-		return id;
-	}
-
 	public Set<Policy> getPoliciesOwned() {
 		return policiesOwned;
 	}
@@ -148,6 +133,14 @@ public class Client {
 	public void setPolicies(Set<Policy> policies) {
 		this.policies = policies;
 	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	} 
 	
 	
 }

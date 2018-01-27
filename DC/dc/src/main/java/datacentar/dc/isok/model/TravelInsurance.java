@@ -55,6 +55,24 @@ public class TravelInsurance {
 	public long getId() {
 		return id;
 	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public TravelInsurance(long id, String contactMail, int numOfPersons, double priceSum) {
+		super();
+		this.id = id;
+		this.contactMail = contactMail;
+		this.numOfPersons = numOfPersons;
+		this.priceSum = priceSum;
+	}
 	
+	public TravelInsurance( String contactMail, int numOfPersons, double priceSum) {
+		super();
+		this.contactMail = contactMail;
+		this.numOfPersons = numOfPersons;
+		this.priceSum = priceSum;
+	}
 	
 }

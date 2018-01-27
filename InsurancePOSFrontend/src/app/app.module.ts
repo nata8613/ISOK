@@ -19,6 +19,10 @@ import {CarInsuranceService} from './car-insurance.service';
 import {PeopleService} from './people.service';
 import { PeopleComponent } from './people/people.component';
 import { CarinsformComponent } from './carinsform/carinsform.component';
+import { CustomMinDirective } from './validators/minValidator.directive';
+import {CustomDateStartDirective} from './validators/dateStartValidator.directive';
+import {CustomDateEndDirective} from './validators/dateEndValidator.directive';
+
 const appRoutes: Routes = [
   {
     path: 'HomeInsurance',
@@ -46,7 +50,10 @@ const appRoutes: Routes = [
     HomeinsformComponent,
     TravelinsformComponent,
     PeopleComponent,
-    CarinsformComponent
+    CarinsformComponent,
+    CustomMinDirective,
+    CustomDateStartDirective,
+    CustomDateEndDirective
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

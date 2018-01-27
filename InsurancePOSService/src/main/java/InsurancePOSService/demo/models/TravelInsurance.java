@@ -2,62 +2,63 @@ package InsurancePOSService.demo.models;
 
 public class TravelInsurance {
 
-	private int duration;
-	private String region;
-	private int numberOfPeople;
-	private String ages;
-	private String sport;
-	private String ammount;
+	private long id; 
 	
+	private String contactMail;
+		 
+	private int numOfPersons;
+	 
+	private double priceSum;
+
+	public TravelInsurance(long id, String contactMail, int numOfPersons, double priceSum) {
+		super();
+		this.id = id;
+		this.contactMail = contactMail;
+		this.numOfPersons = numOfPersons;
+		this.priceSum = priceSum;
+	}
+	public TravelInsurance(String contactMail, int numOfPersons, double priceSum) {
+		super();
+		this.contactMail = contactMail;
+		this.numOfPersons = numOfPersons;
+		this.priceSum = priceSum;
+	}
+
 	public TravelInsurance() {
 		super();
 	}
-	public TravelInsurance(int duration, String region, int numberOfPeople, String ages, String sport, String ammount) {
-		super();
-		this.duration = duration;
-		this.region = region;
-		this.numberOfPeople = numberOfPeople;
-		this.ages = ages;
-		this.sport = sport;
-		this.ammount = ammount;
+
+	public String getContactMail() {
+		return contactMail;
 	}
-	public int getDuration() {
-		return duration;
+
+	public void setContactMail(String contactMail) {
+		this.contactMail = contactMail;
 	}
-	public void setDuration(int duration) {
-		this.duration = duration;
+
+	public int getNumOfPersons() {
+		return numOfPersons;
 	}
-	public String getRegion() {
-		return region;
+
+	public void setNumOfPersons(int numOfPersons) {
+		this.numOfPersons = numOfPersons;
 	}
-	public void setRegion(String region) {
-		this.region = region;
+
+	public double getPriceSum() {
+		return priceSum;
 	}
-	public int getNumberOfPeople() {
-		return numberOfPeople;
+
+	public void setPriceSum(double priceSum) {
+		this.priceSum = priceSum;
 	}
-	public void setNumberOfPeople(int numberOfPeople) {
-		this.numberOfPeople = numberOfPeople;
+
+	public long getId() {
+		return id;
 	}
-	public String getAges() {
-		return ages;
+
+	public void setId(long id) {
+		this.id = id;
 	}
-	public void setAges(String ages) {
-		this.ages = ages;
-	}
-	public String getSport() {
-		return sport;
-	}
-	public void setSport(String sport) {
-		this.sport = sport;
-	}
-	public String getAmmount() {
-		return ammount;
-	}
-	public void setAmmount(String ammount) {
-		this.ammount = ammount;
-	}
-	
-	
+
 	
 }

@@ -5,5 +5,6 @@ export interface Person {
     passportNumber : number,
     address : String,
     telNum : String,
-    email : String
+    email : String,
+    index: number
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import InsurancePOSService.demo.models.Person;
-import InsurancePOSService.demo.models.TravelInsurance;
 
 @Controller
 @RequestMapping("/persons")

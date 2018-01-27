@@ -1,5 +1,5 @@
 <div class="container" *ngIf="section7">
-    <form class="well form-horizontal" method="post" (ngSubmit)="onSubmit()">
+    <form class="well form-horizontal" method="post" #carForm="ngForm" (ngSubmit)="onSubmit(carForm)">
       <fieldset>
         <legend>&nbsp; Help on the road</legend>
         
@@ -8,9 +8,17 @@
           <div class="col-md-4 inputGroupContainer">
           <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-info"></i></span>
-          <input  name="insuranceLength" id="insuranceLength"  [(ngModel)]="carInsurance.insuranceLength" placeholder="Insurance Length" class="form-control"  type="number">
+          <input  name="insuranceLength" id="insuranceLength" #insuranceLength="ngModel" customMin="1" [(ngModel)]="carInsurance.insuranceLength" placeholder="Insurance Length" class="form-control"  type="number" required>
             </div>
           </div>
+        </div>
+        <div *ngIf="insuranceLength.invalid && (carForm.submitted)" class="alert alert-danger">
+            <div *ngIf="insuranceLength.errors.required">
+              Insurance length is required.
+            </div>
+            <div *ngIf="insuranceLength.errors.customMin">
+                Insurance length must be larger than 0.
+              </div>
         </div>
         
         <div class="form-group"> 
@@ -20,7 +28,7 @@
                   <span class="input-group-addon"><i class="fa fa-info"></i></span>
                 <select id="numberOfKm" name="numberOfKm" [(ngModel)]="carInsurance.numberOfKm" class="form-control selectpicker" >
                 <option value="" >--Select--</option>
-                <option *ngFor="let val of numberOfKms" [value]="val" >{{val}}</option>
+                <option *ngFor="let val of numberOfKms" [value]="val.id" >{{val.name}}</option>
               </select>
             </div>
           </div>
@@ -33,7 +41,7 @@
                   <span class="input-group-addon"><i class="fa fa-info"></i></span>
                 <select id="repairPrice" name="repairPrice" [(ngModel)]="carInsurance.repairPrice" class="form-control selectpicker" >
                 <option value="" >--Select--</option>
-                <option *ngFor="let val of repairPrices" [value]="val" >{{val}}</option>
+                <option *ngFor="let val of repairPrices" [value]="val.id" >{{val.name}}</option>
               </select>
             </div>
           </div>
@@ -46,7 +54,7 @@
                   <span class="input-group-addon"><i class="fa fa-info"></i></span>
                 <select id="numberOfHotelDays" name="numberOfHotelDays" [(ngModel)]="carInsurance.numberOfHotelDays" class="form-control selectpicker" >
                 <option value="" >--Select--</option>
-                <option *ngFor="let val of numbersOfHotelDays" [value]="val" >{{val}}</option>
+                <option *ngFor="let val of numbersOfHotelDays" [value]="val.id" >{{val.name}}</option>
               </select>
             </div>
           </div>
@@ -59,7 +67,7 @@
                   <span class="input-group-addon"><i class="fa fa-info"></i></span>
                 <select id="alternativeVehicle" name="alternativeVehicle" [(ngModel)]="carInsurance.alternativeVehicle" class="form-control selectpicker" >
                 <option value="" >--Select--</option>
-                <option *ngFor="let val of alternativeVehicles" [value]="val" >{{val}}</option>
+                <option *ngFor="let val of alternativeVehicles" [value]="val.id" >{{val.name}}</option>
               </select>
             </div>
           </div>
@@ -70,19 +78,33 @@
             <div class="col-md-4 inputGroupContainer">
             <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-            <input  name="typeOfVehicle" id="typeOfVehicle"  [(ngModel)]="carInsurance.typeOfVehicle" placeholder="Car Type and Model" class="form-control"  type="text">
+            <input  name="typeOfVehicle" #typeOfVehicle="ngModel" id="typeOfVehicle"  [(ngModel)]="carInsurance.typeOfVehicle" placeholder="Car Type and Model" class="form-control"  type="text" required>
               </div>
             </div>
           </div>
+          <div *ngIf="typeOfVehicle.invalid && (carForm.submitted)" class="alert alert-danger">
+              <div *ngIf="typeOfVehicle.errors.required">
+                Type of vehicle is required.
+              </div>
+          </div>
+
 
         <div class="form-group">
             <label for='yearOfProduction' class="col-md-4 control-label">Year of Car Production</label>  
             <div class="col-md-4 inputGroupContainer">
             <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-            <input  name="yearOfProduction" id="yearOfProduction"  [(ngModel)]="carInsurance.yearOfProduction" placeholder="Year of Car Production" class="form-control"  type="number">
+            <input  name="yearOfProduction" #yearOfProduction="ngModel" id="yearOfProduction" customMin="1950"  [(ngModel)]="carInsurance.yearOfProduction" placeholder="Year of Car Production" class="form-control"  type="number" required>
               </div>
             </div>
+          </div>
+          <div *ngIf="yearOfProduction.invalid && (carForm.submitted)" class="alert alert-danger">
+              <div *ngIf="yearOfProduction.errors.required">
+                Year of car production is required.
+              </div>
+              <div *ngIf="yearOfProduction.errors.customMin">
+                Year of car production must be after 1950.
+              </div>
           </div>
 
         <div class="form-group">
@@ -90,9 +112,17 @@
             <div class="col-md-4 inputGroupContainer">
             <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-            <input  name="regTable" id="regTable"  [(ngModel)]="carInsurance.regTable" placeholder="Registration table" class="form-control"  type="text">
+            <input  name="regTable" id="regTable" #regTable="ngModel" minlength="4"  [(ngModel)]="carInsurance.regTable" placeholder="Registration table" class="form-control"  type="text" required>
               </div>
             </div>
+          </div>
+          <div *ngIf="regTable.invalid && (carForm.submitted)" class="alert alert-danger">
+              <div *ngIf="regTable.errors.required">
+                Car registrations is required.
+              </div>
+              <div *ngIf="regTable.errors.minlength">
+                  Invalid car registrations.
+              </div>
           </div>
 
         <div class="form-group">
@@ -100,19 +130,31 @@
             <div class="col-md-4 inputGroupContainer">
             <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-            <input  name="chassisNumber" id="chassisNumber"  [(ngModel)]="carInsurance.chassisNumber" placeholder="Car Chassis Number" class="form-control"  type="text">
+            <input  name="chassisNumber" id="chassisNumber" #chassisNumber="ngModel" [(ngModel)]="carInsurance.chassisNumber" placeholder="Car Chassis Number" class="form-control"  type="text" required>
               </div>
             </div>
-          </div>
-
+        </div>
+        <div *ngIf="chassisNumber.invalid && (carForm.submitted)" class="alert alert-danger">
+            <div *ngIf="chassisNumber.errors.required">
+              Car chassis number is required.
+            </div>
+        </div>
+        <div>
+          Car owner: 
+        </div>
         <div class="form-group">
             <label for='firstName' class="col-md-4 control-label">First Name</label>  
             <div class="col-md-4 inputGroupContainer">
             <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-            <input  name="firstName" id="firstName"  [(ngModel)]="carInsurance.firstName" placeholder="First Name" class="form-control"  type="text">
+            <input  name="firstName" id="firstName" #firstName="ngModel" [(ngModel)]="carInsurance.firstName" placeholder="First Name" class="form-control"  type="text" required>
               </div>
             </div>
+          </div>
+          <div *ngIf="firstName.invalid && (carForm.submitted)" class="alert alert-danger">
+              <div *ngIf="firstName.errors.required">
+                First name is required.
+              </div>
           </div>
 
         <div class="form-group">
@@ -120,22 +162,40 @@
             <div class="col-md-4 inputGroupContainer">
             <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-            <input  name="lastName" id="lastName"  [(ngModel)]="carInsurance.lastName" placeholder="Last Name" class="form-control"  type="text">
+            <input  name="lastName" id="lastName" #lastName="ngModel"  [(ngModel)]="carInsurance.lastName" placeholder="Last Name" class="form-control"  type="text" required>
               </div>
             </div>
+          </div>
+          <div *ngIf="lastName.invalid && (carForm.submitted)" class="alert alert-danger">
+              <div *ngIf="lastName.errors.required">
+                Last name is required.
+              </div>
           </div>
 
         <div class="form-group">
-            <label for='jmbg' class="col-md-4 control-label">JMBG</label>  
+            <label for='jmbg' class="col-md-4 control-label">Personal Identification Number</label>  
             <div class="col-md-4 inputGroupContainer">
             <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-            <input  name="jmbg" id="jmbg"  [(ngModel)]="carInsurance.jmbg" placeholder="JMBG" class="form-control"  type="number">
+            <input  name="jmbg" id="jmbg" #jmbg="ngModel"  [(ngModel)]="carInsurance.jmbg" placeholder="JMBG" class="form-control"  type="number" required minlength="13" maxlength="13">
               </div>
             </div>
           </div>
+          <div *ngIf="jmbg.invalid && (carForm.submitted)" class="alert alert-danger">
+              <div *ngIf="jmbg.errors.required">
+                Personal identification number is required.
+              </div>
+              <div *ngIf="jmbg.errors.minlength || jmbg.errors.maxlength">
+                  Personal identification number must have 13 digits.
+                </div>
+          </div>
 
       </fieldset>
-      <button type="submit" class="btn btn-default">Submit</button>  
+      <button type="button" (click)="goBack()" class="btn btn-default">Back</button>&nbsp;&nbsp;
+      <button type="submit" class="btn btn-default">Get Price</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="submit" (click)="onFinish()" class="btn btn-default">Go to Paying</button>
     </form>
+    <div><br/>
+      
+    </div>
   </div>

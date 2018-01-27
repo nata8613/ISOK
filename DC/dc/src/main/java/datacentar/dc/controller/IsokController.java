@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -747,8 +748,10 @@ public class IsokController {
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/RiskName/", method = RequestMethod.POST)
 	@ResponseBody
-	public Risk getRiskByName(@RequestBody String name) {
-		Risk cat = riskRepo.findByRiskName(name);
+	public Risk getRiskByName(@RequestBody HashMap<String, String> params) {
+		System.out.println("NAME JE" + params.get("name"));
+		Risk cat = riskRepo.findByRiskName(params.get("name"));
+		System.out.println("FOUND " + cat.getRiskItems().size());
 		return cat;
 	}
 	

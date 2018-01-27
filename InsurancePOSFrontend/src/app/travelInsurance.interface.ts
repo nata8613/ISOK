@@ -1,5 +1,6 @@
 export interface TravelInsurance {
-    duration : number,
+    startingDate: Date,
+    endingDate: Date,
     region : string,
     numberOfPeople : number,
     ages : string,

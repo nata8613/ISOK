@@ -3,8 +3,8 @@ package InsurancePOSService.demo.models;
 public class Person {
 	private String firstName;
 	private String lastName;
-	private int jmbg;
-	private int passportNumber;
+	private String jmbg;
+	private String passportNumber;
 	private String address;
 	private String telNum;
 	private String email;
@@ -13,7 +13,7 @@ public class Person {
 		super();
 	}
 
-	public Person(String firstName, String lastName, int jmbg, int passportNumber, String address, String telNum, String email) {
+	public Person(String firstName, String lastName, String jmbg, String passportNumber, String address, String telNum, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -40,19 +40,19 @@ public class Person {
 		this.lastName = lastName;
 	}
 
-	public int getJmbg() {
+	public String getJmbg() {
 		return jmbg;
 	}
 
-	public void setJmbg(int jmbg) {
+	public void setJmbg(String jmbg) {
 		this.jmbg = jmbg;
 	}
 
-	public int getPassportNumber() {
+	public String getPassportNumber() {
 		return passportNumber;
 	}
 
-	public void setPassportNumber(int passportNumber) {
+	public void setPassportNumber(String passportNumber) {
 		this.passportNumber = passportNumber;
 	}
 
