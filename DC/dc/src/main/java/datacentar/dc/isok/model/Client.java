@@ -5,6 +5,7 @@ import static javax.persistence.CascadeType.ALL;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,25 +27,25 @@ public class Client {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@NotNull
+	@Column(nullable = false)
 	private String clientName;
 	
-	@NotNull
+	@Column(nullable = false)
 	private String clientSurname;
 	
-	@NotNull
-	private String passportNum;
-	
-	@NotNull
+	@Column(nullable = false)
 	private String jmbg;
 	
-	@NotNull
+	@Column(nullable = false)
+	private String passportNum;
+	
+	@Column(nullable = false)
 	private String address;
 	
-	@NotNull
+	@Column(nullable = false)
 	private String telNum;
 	
-	@NotNull
+	@Column(nullable = false)
 	private String clientEmail;
 
 	@OneToMany(cascade={ALL}, fetch=FetchType.LAZY, mappedBy="insuranceOwner")

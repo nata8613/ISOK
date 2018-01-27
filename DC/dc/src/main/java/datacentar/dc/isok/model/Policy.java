@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -66,13 +67,13 @@ public class Policy {
 					nullable = true) })
 	private Set<Client> clients = new HashSet<Client>();
 	
-	@NotNull
+	@Column(nullable = false)
 	private double priceSummed;
 
-	@NotNull
+	@Column(nullable = false)
 	private Date contractStart;
 
-	@NotNull
+	@Column(nullable = false)
 	private Date contractEnd;
 
 	public Policy() {

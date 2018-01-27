@@ -1,5 +1,6 @@
 package datacentar.dc.isok.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,35 +16,73 @@ public class VehicleInsurance {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@NotNull
+	@Column(nullable = false)
 	private String brandAndType;
 	
-	@NotNull
+	@Column(nullable = false)
 	private String productionYear;
 	
-	@NotNull
+	@Column(nullable = false)
 	private String regNum;
 	
-	@NotNull
+	@Column(nullable = false)
 	private String chassisNum;
 	
-	@NotNull
-	private String nameSurnameJmbg;
+	@Column(nullable = false)
+	private String ownerName;
+	
+	@Column(nullable = false)
+	private String ownerSurname;
+	
+	@Column(nullable = false)
+	private String jmbg;
 
 	public VehicleInsurance() {
 		super();
 	}
 
+
 	public VehicleInsurance(String brandAndType, String productionYear, String regNum, String chassisNum,
-			String nameSurnameJmbg) {
+			String ownerName, String ownerSurname, String jmbg) {
 		super();
 		this.brandAndType = brandAndType;
 		this.productionYear = productionYear;
 		this.regNum = regNum;
 		this.chassisNum = chassisNum;
-		this.nameSurnameJmbg = nameSurnameJmbg;
+		this.ownerName = ownerName;
+		this.ownerSurname = ownerSurname;
+		this.jmbg = jmbg;
 	}
 
+
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
+
+
+	public String getOwnerSurname() {
+		return ownerSurname;
+	}
+
+
+	public void setOwnerSurname(String ownerSurname) {
+		this.ownerSurname = ownerSurname;
+	}
+
+
+	public String getJmbg() {
+		return jmbg;
+	}
+
+
+	public void setJmbg(String jmbg) {
+		this.jmbg = jmbg;
+	}
 
 
 	public String getBrandAndType() {
@@ -76,14 +115,6 @@ public class VehicleInsurance {
 
 	public void setChassisNum(String chassisNum) {
 		this.chassisNum = chassisNum;
-	}
-
-	public String getNameSurnameJmbg() {
-		return nameSurnameJmbg;
-	}
-
-	public void setNameSurnameJmbg(String nameSurnameJmbg) {
-		this.nameSurnameJmbg = nameSurnameJmbg;
 	}
 
 	public long getId() {

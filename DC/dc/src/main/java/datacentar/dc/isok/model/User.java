@@ -1,5 +1,7 @@
 package datacentar.dc.isok.model;
 
+import static javax.persistence.CascadeType.ALL;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Null;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User implements Serializable{
@@ -27,6 +33,10 @@ public class User implements Serializable{
 	@Column(nullable = false)
 	private String password;
 	
+	@Null
+	@OneToMany(cascade={ALL}, fetch=FetchType.LAZY, mappedBy="user")
+	@JsonIgnore
+	private Set<MerchantLicense> lincenses = new HashSet<MerchantLicense>();
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role", joinColumns = {
@@ -38,13 +48,38 @@ public class User implements Serializable{
 	public User() {
 	}
 
-	public User(String username, String password) {
+
+	public User(String username, String password, Set<MerchantLicense> lincenses, Set<Role> allowed) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.lincenses = lincenses;
+		this.allowed = allowed;
 	}
 
-	
+
+	public Set<MerchantLicense> getLincenses() {
+		return lincenses;
+	}
+
+	public void setLincenses(Set<MerchantLicense> lincenses) {
+		this.lincenses = lincenses;
+	}
+
+
+
+	public Set<Role> getAllowed() {
+		return allowed;
+	}
+
+
+
+	public void setAllowed(Set<Role> allowed) {
+		this.allowed = allowed;
+	}
+
+
+
 	public Set<Role> getRoles() {
 		return allowed;
 	}

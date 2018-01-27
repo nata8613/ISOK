@@ -1,5 +1,6 @@
 package datacentar.dc.isok.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,13 +16,13 @@ public class TravelInsurance {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@NotNull
+	@Column(nullable = false)
 	private String contactMail;
 		
-	@NotNull
+	@Column(nullable = false)
 	private int numOfPersons;
 	
-	@NotNull
+	@Column(nullable = false)
 	private double priceSum;
 
 	public TravelInsurance() {
