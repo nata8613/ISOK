@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import InsurancePOSService.demo.models.InsuranceCategory;
+import InsurancePOSService.demo.models.PriceImpacts;
 import InsurancePOSService.demo.models.Risk;
 import InsurancePOSService.demo.models.RiskItem;
 import InsurancePOSService.demo.models.RiskItemDTO;
@@ -71,9 +73,18 @@ public class TravelInsuranceController {
 	public ResponseEntity<Double> insuranceValue(@RequestBody TravelInsuranceDTO insurance) {
 		
 		// 	TO DO : Na osnovu dobijenih podataka izracunati cenu samo za putno osiguranje i vratiti
- 		
-		
-		return ResponseEntity.ok(new Double(300));
+		this.params.put("name", "TravelInsurance");
+		 this.requestEntity = new HttpEntity<Map<String, String>>(this.params, this.headers);
+ 		InsuranceCategory category = (InsuranceCategory)rest.postForObject(this.urlBase+"categoryName/TravelInsurance", this.requestEntity,InsuranceCategory.class);
+		double startingFee = category.getStartingPrice() + insurance.getNumberOfPeople()*category.getClientFee();
+		double ageFee = this.getPriceImpactByRiskItemId(insurance.getAges());
+		double regionFee = this.getPriceImpactByRiskItemId(insurance.getRegion());
+		double sportFee = 0;
+		if(insurance.getSport()!="")
+			sportFee = this.getPriceImpactByRiskItemId(insurance.getSport());
+		double ammountFee = this.getPriceImpactByRiskItemId(insurance.getAmmount());
+		double sum = startingFee * (1 + ageFee + regionFee + sportFee + ammountFee);
+		return ResponseEntity.ok(sum);
 	}
 	
 	private List<RiskItemDTO> getRiskByName(String name){
@@ -87,4 +98,13 @@ public class TravelInsuranceController {
 		 }
 		 return retVal;
 	}
+	private double getPriceImpactByRiskItemId(String riskId){
+		System.out.println("I GOT " + riskId);
+		Map<String, String> params2 = new HashMap<String, String>();
+		params2.put("riskId", riskId);
+		HttpEntity<Map<String, String>> requestEntity2 = new HttpEntity<Map<String, String>>(params2, this.headers);
+		PriceImpacts impact = (PriceImpacts)rest.postForObject(this.urlBase+"ImpactRisk/", requestEntity2, PriceImpacts.class);
+		return impact.getValue();
+	}
+	
 }

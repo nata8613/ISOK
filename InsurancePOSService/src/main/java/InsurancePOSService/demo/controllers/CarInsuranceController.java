@@ -84,88 +84,6 @@ public class CarInsuranceController {
 		return ResponseEntity.ok(new Double(700));
 	}
 	
-	@RequestMapping(value="/savePolicy", method=RequestMethod.POST)
-	public ResponseEntity<String> savePolicy(@RequestBody PolicyDTO policy) {
-		
-		TravelInsuranceDTO travelInsDTO = policy.getTravelInsurance();
-		HomeInsuranceDTO homeInsDTO = policy.getHomeInsurance();
-		CarInsuranceDTO carInsDTO = policy.getCarInsurance();
-		List<Person> people = policy.getPeople();
-		
-		Policy policyDal = new Policy();
-		Set<Client> clients = new HashSet<Client>();
-		Client insuranceOwner = new Client();
-		Set<RiskItem> riskItems = new HashSet<RiskItem>();
-		
-		for(Person p : people){
-			if(p.getEmail()!=null && !p.getEmail().trim().isEmpty()){
-				insuranceOwner = new Client(p.getFirstName(), p.getLastName(), p.getPassportNumber(), p.getJmbg(), p.getAddress(), p.getTelNum(), p.getEmail(), null, null);
-			}
-			else
-				clients.add(new Client(p.getFirstName(), p.getLastName(), p.getPassportNumber(), p.getJmbg(), p.getAddress(), p.getTelNum(), p.getEmail(), null, null));
-		}
-		TravelInsurance travelIns = new TravelInsurance(insuranceOwner.getClientEmail(), travelInsDTO.getNumberOfPeople(), 300);	// THIS PRICE
-		HttpEntity<TravelInsurance> requestEntity= new HttpEntity<TravelInsurance>(travelIns, this.headers);		
-		TravelInsurance travelInsNew = (TravelInsurance) rest.postForObject(this.urlBase+"saveTravelInsurance/", requestEntity, TravelInsurance.class);
-
-		if(homeInsDTO!=null){
-			HomeInsurance homeIns = new HomeInsurance(homeInsDTO.getFirstName(), homeInsDTO.getLastName(), String.valueOf(homeInsDTO.getJmbg()), homeInsDTO.getInsuranceLength());
-			HttpEntity<HomeInsurance> requestEntity2 = new HttpEntity<HomeInsurance>(homeIns, this.headers);
-			HomeInsurance homeInsNew = (HomeInsurance) rest.postForObject(this.urlBase+"saveHomeIns/", requestEntity2, HomeInsurance.class);
-			riskItems.add(getRiskById(homeInsDTO.getHomeAge()));
-			riskItems.add(getRiskById(homeInsDTO.getHomeSurface()));
-			riskItems.add(getRiskById(homeInsDTO.getHomeValue()));
-			riskItems.add(getRiskById(homeInsDTO.getInsuranceReason()));
-			policyDal.setHomeInsurance(homeInsNew);
-		}
-		if(carInsDTO.getTypeOfVehicle()!=null && carInsDTO.getYearOfProduction()!=0){
-			VehicleInsurance carIns  = new VehicleInsurance(carInsDTO.getTypeOfVehicle(), String.valueOf(carInsDTO.getYearOfProduction()), carInsDTO.getRegTable(), carInsDTO.getChassisNumber(), carInsDTO.getFirstName(), carInsDTO.getLastName(), carInsDTO.getJmbg());	
-			HttpEntity<VehicleInsurance> requestEntity3 = new HttpEntity<VehicleInsurance>(carIns, this.headers);
-			VehicleInsurance carInsNew = (VehicleInsurance) rest.postForObject(this.urlBase+"saveVehicleInsurance/", requestEntity3, VehicleInsurance.class);
-			riskItems.add(getRiskById(carInsDTO.getRepairPrice()));
-			riskItems.add(getRiskById(carInsDTO.getNumberOfHotelDays()));
-			riskItems.add(getRiskById(carInsDTO.getAlternativeVehicle()));
-			riskItems.add(getRiskById(carInsDTO.getNumberOfKm()));
-			policyDal.setVehicleInsurance(carInsNew);
-		}
-		Set<Client> clientsIds = new HashSet<Client>();
-		for(Client c : clients){
-			HttpEntity<Client> requestEntity4 = new HttpEntity<Client>(c, this.headers);
-			Client clientNew = (Client) rest.postForObject(this.urlBase+"saveClient/", requestEntity4, Client.class);
-			clientsIds.add(clientNew);
-		}
-		
-		HttpEntity<Client> requestEntity4 = new HttpEntity<Client>(insuranceOwner, this.headers);
-		Client insuranceOwnerNew = (Client) rest.postForObject(this.urlBase+"saveClient/", requestEntity4, Client.class);
-		clientsIds.add(insuranceOwnerNew);
-		
-		policyDal.setClients(clientsIds);
-		policyDal.setContractStart(travelInsDTO.getStartingDate());
-		policyDal.setContractEnd(travelInsDTO.getEndingDate());
-		policyDal.setInsuranceOwner(insuranceOwnerNew);
-		policyDal.setPriceSummed(589);		// THIS
-		policyDal.setTravelInsurance(travelInsNew);
-
-		riskItems.add(getRiskById(travelInsDTO.getAges()));
-		riskItems.add(getRiskById(travelInsDTO.getRegion()));
-		riskItems.add(getRiskById(travelInsDTO.getSport()));
-		riskItems.add(getRiskById(travelInsDTO.getAmmount()));
-
-		
-		policyDal.setRiskItems(riskItems);
-		HttpEntity<Policy> requestEntity5 = new HttpEntity<Policy>(policyDal, this.headers);
-		Policy response = (Policy)rest.postForObject(this.urlBase+"savePolicy/", requestEntity5, Policy.class);
-		System.out.println("Response is " + response.getPriceSummed());
-		return ResponseEntity.ok(new String("OK"));
-		
-	}
-	
-	private void setRequestEntity(Object object){
-		this.params = new HashMap<String, Object>();
-		params.put("policy", object);
-		this.requestEntity= new HttpEntity<Map<String, Object>>(params, this.headers);
-	}
-	
 	private List<RiskItemDTO> getRiskByName(String name){
 		this.params.put("name", name);
 		 this.requestEntity = new HttpEntity<Map<String, Object>>(this.params, this.headers);
@@ -178,10 +96,5 @@ public class CarInsuranceController {
 		 return retVal;
 	}
 	
-	private RiskItem getRiskById(String id){
-		this.params.put("id", id);
-		this.requestEntity = new HttpEntity<Map<String, Object>>(this.params, this.headers);
-		RiskItem item = (RiskItem)rest.postForObject(this.urlBase+"getRiskItem/", this.requestEntity, RiskItem.class);
-		return item;
-	}
+	
 }

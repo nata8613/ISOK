@@ -459,9 +459,9 @@ public class IsokController {
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value = "/ImpactRisk/", method = RequestMethod.POST)
 	@ResponseBody
-	public List<PriceImpacts> getImpactByRisk(@RequestBody RiskItem risk) {
-		RiskItem item = riskItemRepo.findOne(risk.getId());
-		List<PriceImpacts> cat = priceImpRepo.findByItem(item);
+	public PriceImpacts getImpactByRisk(@RequestBody HashMap<String, String> map) {
+		RiskItem item = riskItemRepo.findOne(Long.valueOf(map.get("riskId")).longValue());
+		PriceImpacts cat = priceImpRepo.findByItem(item);
 		return cat;
 	}
 	/*

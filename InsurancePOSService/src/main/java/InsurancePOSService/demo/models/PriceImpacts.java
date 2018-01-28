@@ -1,6 +1,5 @@
 package InsurancePOSService.demo.models;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,24 +8,18 @@ public class PriceImpacts {
 	private long id;
 	
 	private double value;
-	
-	private Date validFrom;
-	
-	private Date validTo;
+
+	private RiskItem item;
 	
 	private Set<PriceList> PriceLists = new HashSet<PriceList>();
 
-	public PriceImpacts(long id, double value, Date validFrom, Date validTo, Set<PriceList> PriceLists) {
+	public PriceImpacts(long id, double value, InsurancePOSService.demo.models.RiskItem item,
+			Set<PriceList> priceLists) {
 		super();
 		this.id = id;
 		this.value = value;
-		this.validFrom = validFrom;
-		this.validTo = validTo;
-		this.PriceLists = PriceLists;
-	}
-
-	public PriceImpacts() {
-		super();
+		this.item = item;
+		PriceLists = priceLists;
 	}
 
 	public long getId() {
@@ -45,29 +38,27 @@ public class PriceImpacts {
 		this.value = value;
 	}
 
-	public Date getValidFrom() {
-		return validFrom;
+	public RiskItem getItem() {
+		return item;
 	}
 
-	public void setValidFrom(Date validFrom) {
-		this.validFrom = validFrom;
-	}
-
-	public Date getValidTo() {
-		return validTo;
-	}
-
-	public void setValidTo(Date validTo) {
-		this.validTo = validTo;
+	public void setItem(RiskItem item) {
+		this.item = item;
 	}
 
 	public Set<PriceList> getPriceLists() {
 		return PriceLists;
 	}
 
-	public void setPriceLists(Set<PriceList> PriceLists) {
-		this.PriceLists = PriceLists;
+	public void setPriceLists(Set<PriceList> priceLists) {
+		PriceLists = priceLists;
 	}
+
+	public PriceImpacts() {
+		super();
+	}
+
+	
 	
 	
 }

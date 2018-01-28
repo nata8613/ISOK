@@ -11,11 +11,17 @@ public class InsuranceCategory {
 
 	private Set<Risk> risks = new HashSet<Risk>();
 
-	public InsuranceCategory(long id, String categoryName, Set<Risk> risks) {
+	private double startingPrice;
+		
+	private double clientFee;
+	
+	public InsuranceCategory(long id, String categoryName, Set<Risk> risks, double startingPrice, double clientFee) {
 		super();
 		this.id = id;
 		this.categoryName = categoryName;
 		this.risks = risks;
+		this.startingPrice = startingPrice;
+		this.clientFee = clientFee;
 	}
 
 	public InsuranceCategory() {
@@ -44,6 +50,22 @@ public class InsuranceCategory {
 
 	public void setRisks(Set<Risk> risks) {
 		this.risks = risks;
+	}
+
+	public double getStartingPrice() {
+		return startingPrice;
+	}
+
+	public void setStartingPrice(double startingPrice) {
+		this.startingPrice = startingPrice;
+	}
+
+	public double getClientFee() {
+		return clientFee;
+	}
+
+	public void setClientFee(double clientFee) {
+		this.clientFee = clientFee;
 	}
 	
 	

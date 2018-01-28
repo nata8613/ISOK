@@ -49,6 +49,18 @@ public class PriceImpacts {
 		super();
 	}
 
+	
+	
+	public PriceImpacts(long id, double value, RiskItem item, Set<Pricelist> pricelists) {
+		super();
+		this.id = id;
+		this.value = value;
+		this.item = item;
+		this.pricelists = pricelists;
+	}
+
+
+
 	public PriceImpacts(double value, RiskItem item, Set<Pricelist> pricelists) {
 		super();
 		this.value = value;

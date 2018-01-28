@@ -5,6 +5,8 @@ import java.util.Set;
 
 public class Risk {
 
+	private long id; 
+	
 	private String riskName;
 
 	private Set<RiskItem> riskItems = new HashSet<RiskItem>();
@@ -26,8 +28,17 @@ public class Risk {
 	}
 
 
-	public Risk(String riskName, Set<InsurancePOSService.demo.models.RiskItem> riskItems) {
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Risk(long id, String riskName, Set<InsurancePOSService.demo.models.RiskItem> riskItems) {
 		super();
+		this.id = id;
 		this.riskName = riskName;
 		this.riskItems = riskItems;
 	}
