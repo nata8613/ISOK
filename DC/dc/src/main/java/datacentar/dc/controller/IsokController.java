@@ -208,6 +208,9 @@ public class IsokController {
 	@RequestMapping(value = "/saveHomeIns/", method = RequestMethod.POST)
 	@ResponseBody
 	public HomeInsurance saveHomeInsurance(@RequestBody HomeInsurance insurance) {
+		System.out.println("Here" + insurance.getJmbg());
+		System.out.println(insurance.getOwnerName());
+		System.out.println(insurance.getOwnerSurname());
 		HomeInsurance cat1 = homeInsRepo.findOne(insurance.getId());
 		if (cat1 != null)
 			return null;
@@ -569,10 +572,11 @@ public class IsokController {
 	}
 	
 	@Transactional("isokTransactionManager")
-	@RequestMapping(value="/getRiskItem/", method = RequestMethod.GET)
+	@RequestMapping(value="/getRiskItem/", method = RequestMethod.POST)
 	@ResponseBody
-	public RiskItem getRiskItem(@RequestBody String id){
-		Long id2 = Long.parseLong(id);
+	public RiskItem getRiskItem(@RequestBody HashMap<String, String> map){
+		System.out.println(map.get("id"));
+		Long id2 = Long.parseLong(map.get("id"));
 		RiskItem item = riskItemRepo.findOne(id2);
 		return item;
 	}

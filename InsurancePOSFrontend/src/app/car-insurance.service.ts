@@ -47,6 +47,7 @@ export class CarInsuranceService {
   }
 
   sendPolicy(policy: Policy): Observable<String> {
+    console.log(policy.homeInsurance.jmbg);
     return this.http.post(this.baseUrl + '/carInsurance/savePolicy/', policy, {headers: this.headers})
     .map((response:Response) => {return response})
     .catch((error:any) => Observable.throw(error || 'Server error'));

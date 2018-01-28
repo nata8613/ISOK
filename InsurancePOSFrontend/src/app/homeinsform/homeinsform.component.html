@@ -2,57 +2,6 @@
   <form class="well form-horizontal" #homeForm="ngForm" method="post">
     <fieldset>
       <legend>&nbsp; Protect your home today!</legend>
-      
-      <div class="form-group">
-        <label for='firstName' class="col-md-4 control-label">First Name</label>  
-        <div class="col-md-4 inputGroupContainer">
-        <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-        <input  name="firstName" #firstName="ngModel" id="firstName"  [(ngModel)]="homeInsurance.firstName" placeholder="First Name" class="form-control"  type="text" required>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="firstName.invalid && ( homeForm.submitted)"
-        class="alert alert-danger">
-        <div *ngIf="firstName.errors.required">
-          First name is required.
-        </div>
-      </div>
-      
-      <div class="form-group">
-          <label for="lastName" class="col-md-4 control-label">Last Name</label>  
-          <div class="col-md-4 inputGroupContainer">
-          <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-user"></i></span>
-          <input  name="lastName" #lastName="ngModel" id="lastName" placeholder="Last Name"  [(ngModel)]="homeInsurance.lastName" class="form-control"  type="text" required>
-            </div>
-          </div>
-       </div>
-       <div *ngIf="lastName.invalid && (homeForm.submitted)"
-          class="alert alert-danger">
-          <div *ngIf="lastName.errors.required">
-            Last name is required.
-          </div>
-        </div>
-
-      <div class="form-group">
-          <label for="jmbg" class="col-md-4 control-label">Personal identification number</label>  
-            <div class="col-md-4 inputGroupContainer">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-address-card"></i></span>
-          <input name="jmbg" id="jmbg" #jmbg="ngModel"  [(ngModel)]="homeInsurance.jmbg" placeholder="JMBG" class="form-control"  type="text" required maxlength="13" minlength="13">
-            </div>
-          </div>
-        </div> 
-      <div *ngIf="jmbg.invalid && (homeForm.submitted)"
-        class="alert alert-danger">
-        <div *ngIf="jmbg.errors.required">
-          Personal identification number is required.
-        </div>
-        <div *ngIf="jmbg.errors.minlength || jmbg.errors.maxlength" >
-            Personal identification number must be 13 digits long.
-        </div>
-      </div>  
 
       <div class="form-group">
         <label for="address" class="col-md-4 control-label" >Address</label> 
@@ -64,18 +13,18 @@
         </div>
       </div>
       <div *ngIf="address.invalid && (homeForm.submitted)"
-        class="alert alert-danger">
+        class="validationDiv alert alert-danger">
         <div *ngIf="address.errors.required">
           Address is required.
         </div>
       </div>
       
       <div class="form-group"> 
-          <label for="homeSurfaces" class="col-md-4 control-label">Home Surface</label>
+          <label for="homeSurface" class="col-md-4 control-label">Home Surface</label>
             <div class="col-md-4 selectContainer">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-info"></i></span>
-              <select id="homeSurfaces" name="homeSurfaces" #homeSurfaces2="ngModel" [(ngModel)]="homeInsurance.homeSurfaces" class="form-control selectpicker" required >
+              <select id="homeSurface" name="homeSurface" #homeSurfaces2="ngModel" [(ngModel)]="homeInsurance.homeSurface" class="form-control selectpicker" required >
               <option value="" >--Select--</option>
               <option *ngFor="let surface of homeSurfaces" [value]="surface.id" >{{surface.name}}</option>
             </select>
@@ -83,18 +32,18 @@
         </div>
       </div>
       <div *ngIf="homeSurfaces2.invalid && (homeForm.submitted)"
-        class="alert alert-danger">
+        class="validationDiv alert alert-danger">
         <div *ngIf="homeSurfaces2.errors.required">
           Home surface is required.
         </div>
       </div>
 
       <div class="form-group"> 
-          <label for="homeAges" class="col-md-4 control-label">Home Age</label>
+          <label for="homeAge" class="col-md-4 control-label">Home Age</label>
             <div class="col-md-4 selectContainer">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-info"></i></span>
-              <select id="homeAges" name="homeAges" #homeAges2="ngModel" [(ngModel)]="homeInsurance.homeAges" class="form-control selectpicker" required>
+              <select id="homeAge" name="homeAge" #homeAges2="ngModel" [(ngModel)]="homeInsurance.homeAge" class="form-control selectpicker" required>
               <option value="" >--Select--</option>
               <option *ngFor="let age of homeAges" [value]="age.id" >{{age.name}}</option>
             </select>
@@ -102,49 +51,49 @@
         </div>
       </div>
       <div *ngIf="homeAges2.invalid && (homeForm.submitted)"
-        class="alert alert-danger">
+        class="validationDiv alert alert-danger">
         <div *ngIf="homeAges2.errors.required">
           Home age is required.
         </div>
       </div>
 
       <div class="form-group"> 
-          <label for="homeValues" class="col-md-4 control-label">Home Value</label>
+          <label for="homeValue" class="col-md-4 control-label">Home Value (e)</label>
             <div class="col-md-4 selectContainer">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-info"></i></span>
-              <select id="homeValues" name="homeValues" #homeValues2="ngModel" [(ngModel)]="homeInsurance.homeValues" class="form-control selectpicker" required >
+              <select id="homeValue" name="homeValue" #homeValues2="ngModel" [(ngModel)]="homeInsurance.homeValue" class="form-control selectpicker" required >
               <option value="" >--Select--</option>
               <option *ngFor="let val of homeValues" [value]="val.id" >{{val.name}}</option>
             </select>
           </div>
         </div>
       </div>
-      <div *ngIf="homeValues2.invalid && (homeForm.submitted)" class="alert alert-danger">
+      <div *ngIf="homeValues2.invalid && (homeForm.submitted)" class="validationDiv alert alert-danger">
         <div *ngIf="homeValues2.errors.required">
           Home value is required.
         </div>
       </div>
       <div class="form-group"> 
-          <label for="insuranceReasons" class="col-md-4 control-label">Insurance Reason</label>
+          <label for="insuranceReason" class="col-md-4 control-label">Insurance Reason</label>
             <div class="col-md-4 selectContainer">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-info"></i></span>
-              <select id="insuranceReasons" #insuranceReasons2="ngModel" name="insuranceReasons" [(ngModel)]="homeInsurance.insuranceReasons" class="form-control selectpicker" required >
+              <select id="insuranceReason" #insuranceReasons2="ngModel" name="insuranceReason" [(ngModel)]="homeInsurance.insuranceReason" class="form-control selectpicker" required >
               <option value="" >--Select--</option>
               <option *ngFor="let val of insuranceReasons" [value]="val.id" >{{val.name}}</option>
             </select>
           </div>
         </div>
       </div>
-      <div *ngIf="insuranceReasons2.invalid && (homeForm.submitted)" class="alert alert-danger">
+      <div *ngIf="insuranceReasons2.invalid && (homeForm.submitted)" class="validationDiv alert alert-danger">
         <div *ngIf="insuranceReasons2.errors.required">
           Insurance reason is required.
         </div>
       </div>
 
       <div class="form-group">
-        <label for="insuranceLength" class="col-md-4 control-label">Insurance length</label>  
+        <label for="insuranceLength" class="col-md-4 control-label">Insurance length in days</label>  
         <div class="col-md-4 inputGroupContainer">
           <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-info"></i></span>
@@ -152,7 +101,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="insuranceLength.invalid && (homeForm.submitted)" class="alert alert-danger">
+      <div *ngIf="insuranceLength.invalid && (homeForm.submitted)" class="validationDiv alert alert-danger">
           <div *ngIf="insuranceLength.errors.required">
             Insurance length is required.
           </div>
@@ -160,6 +109,59 @@
               Insurance length must be larger than 0.
           </div>
         </div>
+        <div>
+          Home owner: 
+        </div>
+        <div class="form-group">
+            <label for='firstName' class="col-md-4 control-label">First Name</label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            <input  name="firstName" #firstName="ngModel" id="firstName"  [(ngModel)]="homeInsurance.firstName" placeholder="First Name" class="form-control"  type="text" required>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="firstName.invalid && ( homeForm.submitted)"
+            class="validationDiv alert alert-danger">
+            <div *ngIf="firstName.errors.required">
+              First name is required.
+            </div>
+          </div>
+          
+          <div class="form-group">
+              <label for="lastName" class="col-md-4 control-label">Last Name</label>  
+              <div class="col-md-4 inputGroupContainer">
+              <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user"></i></span>
+              <input  name="lastName" #lastName="ngModel" id="lastName" placeholder="Last Name"  [(ngModel)]="homeInsurance.lastName" class="form-control"  type="text" required>
+                </div>
+              </div>
+           </div>
+           <div *ngIf="lastName.invalid && (homeForm.submitted)"
+              class="validationDiv alert alert-danger">
+              <div *ngIf="lastName.errors.required">
+                Last name is required.
+              </div>
+            </div>
+    
+          <div class="form-group">
+              <label for="jmbg" class="col-md-4 control-label">Personal identification number</label>  
+                <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-address-card"></i></span>
+              <input name="jmbg" id="jmbg" #jmbg="ngModel" jmbgLength="13"  [(ngModel)]="homeInsurance.jmbg" placeholder="JMBG" class="form-control"  type="number" required >
+                </div>
+              </div>
+            </div> 
+          <div *ngIf="jmbg.invalid && (homeForm.submitted)"
+            class="validationDiv alert alert-danger">
+            <div *ngIf="jmbg.errors.required">
+              Personal identification number is required.
+            </div>
+            <div *ngIf="jmbg.errors.jbmgLength" >
+                Personal identification number must be 13 digits long.
+            </div>
+          </div>  
     </fieldset>
     <button type="button" (click)="goBack()" class="btn btn-default" >Back</button>
     <button type="submit" (click)="onSubmit(homeForm)" class="btn btn-default" style="margin-left:5%;">Submit</button> 

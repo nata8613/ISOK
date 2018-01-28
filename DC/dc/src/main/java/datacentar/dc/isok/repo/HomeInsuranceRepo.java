@@ -9,7 +9,6 @@ import datacentar.dc.isok.model.HomeInsurance;
 
 @Repository
 public interface HomeInsuranceRepo extends CrudRepository<HomeInsurance, Long>{
-	List<HomeInsurance> findByHomeOwner(String homeOWner);
 	List<HomeInsurance> findByOwnerNameContainingOrOwnerSurnameContaining(String ownerName, String ownerSurname);
 
 }

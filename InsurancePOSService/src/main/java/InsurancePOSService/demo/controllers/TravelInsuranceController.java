@@ -50,7 +50,7 @@ public class TravelInsuranceController {
 	@RequestMapping("/getAges")
 	@ResponseBody
 	public List<RiskItemDTO> getAge() {
-		return this.getRiskByName("Age");
+		return this.getRiskByName("Personal age");
 	}
 	
 	@RequestMapping("/getSports")

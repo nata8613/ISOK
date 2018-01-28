@@ -44,7 +44,7 @@
                 </div>
               </div> 
               <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched || clientForm.submitted)"
-                  class="alert alert-danger">
+                  class="validationDiv2 alert alert-danger">
                   <div *ngIf="firstName.errors.required">
                     First name is required.
                   </div>
@@ -60,7 +60,7 @@
                   </div>
                 </div>
                 <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched || clientForm.submitted)"
-                  class="alert alert-danger">
+                  class="validationDiv2 alert alert-danger">
                   <div *ngIf="lastName.errors.required">
                     Last name is required.
                   </div>
@@ -71,16 +71,16 @@
                     <div class="col-md-4 inputGroupContainer">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                        <input id="jmbg" #jmbg="ngModel" [(ngModel)]="currentClient.jmbg" name="jmbg" placeholder="enter jmbg" class="form-control"  type="text"  minlength="13" maxlength="13">
+                        <input id="jmbg" #jmbg="ngModel" [(ngModel)]="currentClient.jmbg" jmbgLength="13" name="jmbg" placeholder="enter jmbg" class="form-control"  type="number"   required>
                       </div>
                     </div>
                   </div>
                   <div *ngIf="jmbg.invalid && (jmbg.dirty || jmbg.touched || clientForm.submitted)"
-                    class="alert alert-danger">
+                    class="validationDiv2 alert alert-danger">
                     <div *ngIf="jmbg.errors.required">
                       Personal identification number is required.
                     </div>
-                    <div *ngIf="jmbg.errors.minlength || jmbg.errors.maxlength" >
+                    <div *ngIf="jmbg.errors.jmbgLength" >
                       Personal identification number must be 13 digits long.
                     </div>
                   </div>
@@ -91,16 +91,16 @@
                         <div class="input-group">
                           <span class="input-group-addon"><i class="fa fa-user"></i></span>
                           <input id="passportNumber" #passportNumber="ngModel" [(ngModel)]="currentClient.passportNumber" name="passportNumber" placeholder="enter passport number" class="form-control"  
-                           minlength="9" maxlength="9" type="text" required>
+                          jmbgLength="9" type="number" required>
                         </div>
                       </div>
                     </div>
                     <div *ngIf="passportNumber.invalid && (passportNumber.dirty || passportNumber.touched || clientForm.submitted)"
-                      class="alert alert-danger">
+                      class="validationDiv2 alert alert-danger">
                       <div *ngIf="passportNumber.errors.required">
                         Passport number is required.
                       </div>
-                      <div *ngIf="passportNumber.errors.minlength || passportNumber.errors.maxlength">
+                      <div *ngIf="passportNumber.errors.jmbgLength">
                           Passport number must be 9 digits long.
                       </div>
                     </div>
@@ -115,7 +115,7 @@
                         </div>
                       </div>
                       <div *ngIf="address.invalid && (address.dirty || address.touched || clientForm.submitted)"
-                        class="alert alert-danger">
+                        class="validationDiv2 alert alert-danger">
                         <div *ngIf="address.errors.required">
                           Address is required.
                         </div>
@@ -130,7 +130,7 @@
                           </div>
                       </div>
                       <div *ngIf="telNum.invalid && (telNum.dirty || telNum.touched || clientForm.submitted)"
-                        class="alert alert-danger">
+                        class="validationDiv2 alert alert-danger">
                         <div *ngIf="telNum.errors.required">
                           Telephone number is required.
                         </div>
@@ -144,7 +144,7 @@
                             </div>
                           </div>
                           <div *ngIf="email.invalid && (email.dirty || email.touched || clientForm.submitted)"
-                          class="alert alert-danger">
+                          class="validationDiv2 alert alert-danger">
                           <div *ngIf="email.errors.required">
                             Email is required.
                           </div>

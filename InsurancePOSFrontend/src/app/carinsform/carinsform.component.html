@@ -1,10 +1,10 @@
 <div class="container" *ngIf="section7">
-    <form class="well form-horizontal" method="post" #carForm="ngForm" (ngSubmit)="onSubmit(carForm)">
+    <form class="well form-horizontal" method="post" #carForm="ngForm" >
       <fieldset>
         <legend>&nbsp; Help on the road</legend>
         
         <div class="form-group">
-          <label for='insuranceLength' class="col-md-4 control-label">Insurance Length</label>  
+          <label for='insuranceLength' class="col-md-4 control-label">Insurance Length in days</label>  
           <div class="col-md-4 inputGroupContainer">
           <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-info"></i></span>
@@ -12,7 +12,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="insuranceLength.invalid && (carForm.submitted)" class="alert alert-danger">
+        <div *ngIf="insuranceLength.invalid && (carForm.submitted)" class="validationDiv alert alert-danger">
             <div *ngIf="insuranceLength.errors.required">
               Insurance length is required.
             </div>
@@ -22,7 +22,7 @@
         </div>
         
         <div class="form-group"> 
-            <label for="numberOfKm" class="col-md-4 control-label">Towing Range</label>
+            <label for="numberOfKm" class="col-md-4 control-label">Towing Range (km)</label>
               <div class="col-md-4 selectContainer">
               <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-info"></i></span>
@@ -82,7 +82,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="typeOfVehicle.invalid && (carForm.submitted)" class="alert alert-danger">
+          <div *ngIf="typeOfVehicle.invalid && (carForm.submitted)" class="validationDiv alert alert-danger">
               <div *ngIf="typeOfVehicle.errors.required">
                 Type of vehicle is required.
               </div>
@@ -98,7 +98,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="yearOfProduction.invalid && (carForm.submitted)" class="alert alert-danger">
+          <div *ngIf="yearOfProduction.invalid && (carForm.submitted)" class="validationDiv alert alert-danger">
               <div *ngIf="yearOfProduction.errors.required">
                 Year of car production is required.
               </div>
@@ -116,7 +116,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="regTable.invalid && (carForm.submitted)" class="alert alert-danger">
+          <div *ngIf="regTable.invalid && (carForm.submitted)" class="validationDiv alert alert-danger">
               <div *ngIf="regTable.errors.required">
                 Car registrations is required.
               </div>
@@ -134,7 +134,7 @@
               </div>
             </div>
         </div>
-        <div *ngIf="chassisNumber.invalid && (carForm.submitted)" class="alert alert-danger">
+        <div *ngIf="chassisNumber.invalid && (carForm.submitted)" class="validationDiv alert alert-danger">
             <div *ngIf="chassisNumber.errors.required">
               Car chassis number is required.
             </div>
@@ -151,7 +151,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="firstName.invalid && (carForm.submitted)" class="alert alert-danger">
+          <div *ngIf="firstName.invalid && (carForm.submitted)" class="validationDiv alert alert-danger">
               <div *ngIf="firstName.errors.required">
                 First name is required.
               </div>
@@ -166,7 +166,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="lastName.invalid && (carForm.submitted)" class="alert alert-danger">
+          <div *ngIf="lastName.invalid && (carForm.submitted)" class="validationDiv alert alert-danger">
               <div *ngIf="lastName.errors.required">
                 Last name is required.
               </div>
@@ -177,23 +177,23 @@
             <div class="col-md-4 inputGroupContainer">
             <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-info"></i></span>
-            <input  name="jmbg" id="jmbg" #jmbg="ngModel"  [(ngModel)]="carInsurance.jmbg" placeholder="JMBG" class="form-control"  type="number" required minlength="13" maxlength="13">
+            <input  name="jmbg" id="jmbg" #jmbg="ngModel" jmbgLength="13" [(ngModel)]="carInsurance.jmbg" placeholder="PIN" class="form-control"  type="number" required>
               </div>
             </div>
           </div>
-          <div *ngIf="jmbg.invalid && (carForm.submitted)" class="alert alert-danger">
+          <div *ngIf="jmbg.invalid && (carForm.submitted)" class="validationDiv alert alert-danger">
               <div *ngIf="jmbg.errors.required">
                 Personal identification number is required.
               </div>
-              <div *ngIf="jmbg.errors.minlength || jmbg.errors.maxlength">
+              <div *ngIf="jmbg.errors.jmbgLength">
                   Personal identification number must have 13 digits.
                 </div>
           </div>
 
       </fieldset>
       <button type="button" (click)="goBack()" class="btn btn-default">Back</button>&nbsp;&nbsp;
-      <button type="submit" class="btn btn-default">Get Price</button>&nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="submit" (click)="onFinish()" class="btn btn-default">Go to Paying</button>
+      <button type="submit" (click)="onSubmit(carForm)" class="btn btn-default">Get Price</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="button" (click)="onFinish()" class="btn btn-default">Go to Paying</button>
     </form>
     <div><br/>
       

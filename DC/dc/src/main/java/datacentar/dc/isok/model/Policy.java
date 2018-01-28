@@ -29,18 +29,16 @@ public class Policy {
 	private long id;
 
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	private TravelInsurance travelInsurance;
 
-	@Null
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	private HomeInsurance homeInsurance;
 
-	@Null
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	private VehicleInsurance vehicleInsurance;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "policy_riskItem", joinColumns = {
 			@JoinColumn(name = "riskItem_id", nullable = false) },
 			inverseJoinColumns = { @JoinColumn(name = "policy_id",
@@ -60,7 +58,7 @@ public class Policy {
 	@JoinColumn(name="insuranceOwner")
 	private Client insuranceOwner;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "policy_client", joinColumns = {
 			@JoinColumn(name = "client_id", nullable = false) },
 			inverseJoinColumns = { @JoinColumn(name = "policy_id",

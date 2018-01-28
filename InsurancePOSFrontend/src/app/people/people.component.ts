@@ -43,6 +43,11 @@ export class PeopleComponent implements OnInit {
         this.section4 = true;
         this.priceEvent.emit(this.price1);
         this.policy = Object.assign({}, this.policy, {people: this.people});
+      }, error => {
+        console.log('FAIL to create Insurance!' + error);
+      },
+      () => {
+        console.log('POST Insurance - now completed.');
       });
   }
   addClient(){

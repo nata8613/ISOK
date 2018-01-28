@@ -13,14 +13,14 @@ public class CarInsuranceDTO {
 	private String chassisNumber;
 	private String firstName;
 	private String lastName;
-	private int jmbg;
+	private String jmbg;
 	
 	public CarInsuranceDTO() {
 		super();
 	}
 	public CarInsuranceDTO(int insuranceLength, String numberOfKm, String repairPrice,
 			String numberOfHotelDays, String alternativeVehicle, String typeOfVehicle, int yearOfProduction,
-			String regTable, String chassisNumber, String firstName, String lastName, int jmbg) {
+			String regTable, String chassisNumber, String firstName, String lastName, String jmbg) {
 		super();
 		this.insuranceLength = insuranceLength;
 		this.numberOfKm = numberOfKm;
@@ -101,10 +101,10 @@ public class CarInsuranceDTO {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public int getJmbg() {
+	public String getJmbg() {
 		return jmbg;
 	}
-	public void setJmbg(int jmbg) {
+	public void setJmbg(String jmbg) {
 		this.jmbg = jmbg;
 	}
 	

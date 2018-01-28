@@ -34,3 +34,6 @@
   .btn-danger {
     opacity: 0.9;
   }
+  .validationDiv2{
+    max-width: 50%;
+  }

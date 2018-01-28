@@ -12,11 +12,11 @@ public class Policy {
 
 	private VehicleInsurance vehicleInsurance;
 
-	private Set<Long> riskItems = new HashSet<Long>();
+	private Set<RiskItem> riskItems = new HashSet<RiskItem>();
 
-	private long insuranceOwner;
+	private Client insuranceOwner;
 	
-	private Set<Long> clients = new HashSet<Long>();
+	private Set<Client> clients = new HashSet<Client>();
 	
 	private double priceSummed;
 
@@ -24,8 +24,8 @@ public class Policy {
 
 	private Date contractEnd;
 
-	public Policy(TravelInsurance travelInsurance, HomeInsurance homeInsurance, VehicleInsurance vehicleInsurance, Set<Long> riskItems,
-			long insuranceOwner, Set<Long> clients, double priceSummed, Date contractStart, Date contractEnd) {
+	public Policy(TravelInsurance travelInsurance, HomeInsurance homeInsurance, VehicleInsurance vehicleInsurance, Set<RiskItem> riskItems,
+			Client insuranceOwner, Set<Client> clients, double priceSummed, Date contractStart, Date contractEnd) {
 		super();
 		this.travelInsurance = travelInsurance;
 		this.homeInsurance = homeInsurance;
@@ -67,27 +67,27 @@ public class Policy {
 		this.vehicleInsurance = vehicleInsurance;
 	}
 
-	public Set<Long> getRiskItems() {
+	public Set<RiskItem> getRiskItems() {
 		return riskItems;
 	}
 
-	public void setRiskItems(Set<Long> riskItems) {
+	public void setRiskItems(Set<RiskItem> riskItems) {
 		this.riskItems = riskItems;
 	}
 
-	public long getInsuranceOwner() {
+	public Client getInsuranceOwner() {
 		return insuranceOwner;
 	}
 
-	public void setInsuranceOwner(long insuranceOwner) {
+	public void setInsuranceOwner(Client insuranceOwner) {
 		this.insuranceOwner = insuranceOwner;
 	}
 
-	public Set<Long> getClients() {
+	public Set<Client> getClients() {
 		return clients;
 	}
 
-	public void setClients(Set<Long> clients) {
+	public void setClients(Set<Client> clients) {
 		this.clients = clients;
 	}
 

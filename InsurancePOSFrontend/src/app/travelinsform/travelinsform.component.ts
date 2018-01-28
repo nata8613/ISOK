@@ -46,10 +46,22 @@ export class TravelinsformComponent implements OnInit {
   }
 
   getData():void{
-    this.insuranceService.getTravelRegions().subscribe(data => this.regions = data, 
+    this.insuranceService.getTravelRegions().subscribe(data => this.regions = data,
+      err => {
+        console.log(err);
+      }, 
     () => this.insuranceService.getAges().subscribe(data => this.all_ages = data,
+      err => {
+        console.log(err);
+      },
     () =>this.insuranceService.getSports().subscribe(data => this.sports = data,
-    () => this.insuranceService.getInsuranceValues().subscribe(data => this.insuranceValues = data))));
+      err => {
+        console.log(err);
+      },
+    () => this.insuranceService.getInsuranceValues().subscribe(data => this.insuranceValues = data,
+      err => {
+        console.log(err);
+      }))));
   }
 
 
@@ -63,6 +75,11 @@ export class TravelinsformComponent implements OnInit {
         this.section1 = false;
         this.section2 = true;
         this.policy = Object.assign({}, this.policy, {travelInsurance: this.travelInsurance});
+      }, error => {
+        console.log('FAIL to create Insurance!' + error);
+      },
+      () => {
+        console.log('POST Insurance - now completed.');
       });
   }
   showEvent(){

@@ -43,9 +43,21 @@ export class HomeinsformComponent implements OnInit {
 
   getData():void{
     this.insuranceService.getHomeSurfaces().subscribe(data => this.homeSurfaces = data,
+      err => {
+        console.log(err);
+      },
     ()=> this.insuranceService.getHomeAges().subscribe(data => this.homeAges = data, 
-    () => this.insuranceService.getHomeValues().subscribe(data => this.homeValues = data, 
-    () => this.insuranceService.getInsuranceReasons().subscribe(data => this.insuranceReasons = data))));
+      err => {
+        console.log(err );
+      }, 
+    () => this.insuranceService.getHomeValues().subscribe(data => this.homeValues = data,
+      err => {
+        console.log(err);
+      }, 
+    () => this.insuranceService.getInsuranceReasons().subscribe(data => this.insuranceReasons = data,
+      err => {
+        console.log(err);
+      }))));
   }
 
   onSubmit(form:NgForm) {
@@ -59,6 +71,11 @@ export class HomeinsformComponent implements OnInit {
         this.section6 = true;
         this.priceEvent.emit(this.price1);
         this.policy = Object.assign({}, this.policy, {homeInsurance: this.homeInsurance});
+      }, error => {
+        console.log('FAIL to create Insurance!' + error);
+      },
+      () => {
+        console.log('POST Insurance - now completed.');
       });
   }
   continue() {

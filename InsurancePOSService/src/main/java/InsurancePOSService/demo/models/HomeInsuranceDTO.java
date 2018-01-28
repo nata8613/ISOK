@@ -5,7 +5,7 @@ public class HomeInsuranceDTO {
 	private String firstName;
 	private String lastName;
 	private String address;
-	private int jmbg;
+	private String jmbg;
 	private String homeSurface;
 	private String homeAge;
 	private String homeValue;
@@ -15,7 +15,7 @@ public class HomeInsuranceDTO {
 	public HomeInsuranceDTO() {
 		super();
 	}
-	public HomeInsuranceDTO(String firstName, String lastName, String address, int jmbg, String homeSurface,
+	public HomeInsuranceDTO(String firstName, String lastName, String address, String jmbg, String homeSurface,
 			String homeAge, String homeValue, String insuranceReason, int insuranceLength) {
 		super();
 		this.firstName = firstName;
@@ -46,12 +46,13 @@ public class HomeInsuranceDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public int getJmbg() {
+	public String getJmbg() {
 		return jmbg;
 	}
-	public void setJmbg(int jmbg) {
+	public void setJmbg(String jmbg) {
 		this.jmbg = jmbg;
 	}
+
 	public String getHomeSurface() {
 		return homeSurface;
 	}

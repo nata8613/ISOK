@@ -22,6 +22,7 @@ import { CarinsformComponent } from './carinsform/carinsform.component';
 import { CustomMinDirective } from './validators/minValidator.directive';
 import {CustomDateStartDirective} from './validators/dateStartValidator.directive';
 import {CustomDateEndDirective} from './validators/dateEndValidator.directive';
+import {JMBGDirective} from './validators/jmbgValidator.directive';
 
 const appRoutes: Routes = [
   {
@@ -53,7 +54,8 @@ const appRoutes: Routes = [
     CarinsformComponent,
     CustomMinDirective,
     CustomDateStartDirective,
-    CustomDateEndDirective
+    CustomDateEndDirective,
+    JMBGDirective
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
