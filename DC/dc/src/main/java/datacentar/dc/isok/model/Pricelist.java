@@ -33,8 +33,8 @@ public class Pricelist {
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "priceImpact_pricelist", joinColumns = {
-			@JoinColumn(name = "priceImpact_id", nullable = false) },
-			inverseJoinColumns = { @JoinColumn(name = "pricelist_id",
+			@JoinColumn(name = "pricelist_id", nullable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "priceImpact_id",
 					nullable = true) })
 	private Set<PriceImpacts> impacts = new HashSet<PriceImpacts>();
 

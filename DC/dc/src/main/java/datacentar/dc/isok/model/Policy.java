@@ -40,8 +40,8 @@ public class Policy {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "policy_riskItem", joinColumns = {
-			@JoinColumn(name = "riskItem_id", nullable = false) },
-			inverseJoinColumns = { @JoinColumn(name = "policy_id",
+			@JoinColumn(name = "policy_id", nullable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "riskItem_id",
 					nullable = true) })
 	private Set<RiskItem> items = new HashSet<RiskItem>();
 	
@@ -60,8 +60,8 @@ public class Policy {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "policy_client", joinColumns = {
-			@JoinColumn(name = "client_id", nullable = false) },
-			inverseJoinColumns = { @JoinColumn(name = "policy_id",
+			@JoinColumn(name = "policy_id", nullable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "client_id",
 					nullable = true) })
 	private Set<Client> clients = new HashSet<Client>();
 	

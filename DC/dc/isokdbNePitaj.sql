@@ -220,12 +220,12 @@ DROP TABLE IF EXISTS `policy_client`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `policy_client` (
-  `client_id` bigint(20) NOT NULL,
   `policy_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`client_id`,`policy_id`),
-  KEY `FKmp1jcsr2xfdkq2oof6eo8853e` (`policy_id`),
-  CONSTRAINT `FKe64nmij6yx5qypsivlr2k561d` FOREIGN KEY (`client_id`) REFERENCES `policy` (`id`),
-  CONSTRAINT `FKmp1jcsr2xfdkq2oof6eo8853e` FOREIGN KEY (`policy_id`) REFERENCES `client` (`id`)
+  `client_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`policy_id`,`client_id`),
+  KEY `FK8lj6upcvtum3t8r8dxpr3os2t` (`client_id`),
+  CONSTRAINT `FK850nk04ku7xm08q2rnhd91waq` FOREIGN KEY (`policy_id`) REFERENCES `policy` (`id`),
+  CONSTRAINT `FK8lj6upcvtum3t8r8dxpr3os2t` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -246,12 +246,12 @@ DROP TABLE IF EXISTS `policy_risk_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `policy_risk_item` (
-  `risk_item_id` bigint(20) NOT NULL,
   `policy_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`risk_item_id`,`policy_id`),
-  KEY `FKm070chsuwpk5wkikjqt64uy86` (`policy_id`),
-  CONSTRAINT `FKbaw8m690qikbs43to12e5ps8j` FOREIGN KEY (`risk_item_id`) REFERENCES `policy` (`id`),
-  CONSTRAINT `FKm070chsuwpk5wkikjqt64uy86` FOREIGN KEY (`policy_id`) REFERENCES `risk_item` (`id`)
+  `risk_item_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`policy_id`,`risk_item_id`),
+  KEY `FK4grfg79rnel7ijtnma43yrrd1` (`risk_item_id`),
+  CONSTRAINT `FK4grfg79rnel7ijtnma43yrrd1` FOREIGN KEY (`risk_item_id`) REFERENCES `risk_item` (`id`),
+  CONSTRAINT `FKskb6i2ramfn5la9jpjrsirme` FOREIGN KEY (`policy_id`) REFERENCES `policy` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -272,12 +272,12 @@ DROP TABLE IF EXISTS `price_impact_pricelist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `price_impact_pricelist` (
-  `price_impact_id` bigint(20) NOT NULL,
   `pricelist_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`price_impact_id`,`pricelist_id`),
-  KEY `FKtaihmstrmgwmccdh47etoy1ho` (`pricelist_id`),
-  CONSTRAINT `FKt9f00c56ewai3n5iln5wfi4b2` FOREIGN KEY (`price_impact_id`) REFERENCES `price_list` (`id`),
-  CONSTRAINT `FKtaihmstrmgwmccdh47etoy1ho` FOREIGN KEY (`pricelist_id`) REFERENCES `price_impacts` (`id`)
+  `price_impact_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`pricelist_id`,`price_impact_id`),
+  KEY `FKp454odg0diebsacal4xvdw42y` (`price_impact_id`),
+  CONSTRAINT `FKoxodgujunxoamnpwla2x09wsn` FOREIGN KEY (`pricelist_id`) REFERENCES `price_list` (`id`),
+  CONSTRAINT `FKp454odg0diebsacal4xvdw42y` FOREIGN KEY (`price_impact_id`) REFERENCES `price_impacts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -579,4 +579,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-26  0:18:35
+-- Dump completed on 2018-01-28 11:51:00
