@@ -1,0 +1,127 @@
+Posto PriceManagement App treba da menja pravila na osnovu koji ce se izracunavati popust/povecanje cene 
+moja ideja je da imamo u bazi jednu tabelu Rules u kojoj imamo ta pravila koja su u obliku stringa. 
+Znaci ja definisem pravilo preko PMApp i onda ga upisem u bazu i svaki put kad menjam pravilo menjam to iz isokdb.
+Vi cete imati rules.drl fajl u okviru projekta u kom se nalaze pravila. To je u sustini obican txt fajl. 
+Mislila sam da svaki put pre nego sto izracunate krajnju cenu pozovete controller koji ce iz isokdb preuzeti trenutnu verziju tih pravila (ovo sami napravite)
+i da zatim otvorite rules.drl fajl i samo zamenite sadrzaj i sacuvate ga i onda pozivate metodu za izracunavanje popusta/povecanja.  
+NAPOMENA: zaboravila sam da u okviru rules.drl fajla ide import modela koji ce se menjati jer oboje pristupate iz razlicitih aplikacija
+tako da u tom kontroleru pre nego sto prepisete rules.drl fajl 
+samo trazite to gde pise import i tu liniju zamenite sa mestom gde su u vasem projektu nalazi taj model.  
+
+U nastavku se nalazi podesavanje u okviru spring aplikacije za taj Drools rule engine. 
+
+
+1. Facts-potrebne su nam neke cinjenica na osnovu koji cemo kreirati pravila. To su podaci u nasoj aplikaciji koji sluze kao input za Rules
+2. Rules-obican txt fajl sa drl ekstenzijom
+3. Imamo sesiju u koju ubacujemo Facts i onda okidamo Rules i vraca nam sta smo mu zadali u Rules
+
+******************************* u pom.xml dodati sledece:***********************
+
+		<dependency>
+		    <groupId>org.kie</groupId>
+		    <artifactId>kie-ci</artifactId>
+		    <version>7.1.0.Beta1</version> 
+		</dependency>
+		
+************************** ostale postavke  ***********************************
+----u resources na nivou aplication.properties-a dodati folder META-INF i rules
+
+----u META-INF folder dodati kmodule.xml fajl sa sledecim sadrzajem:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
+   <kbase name="rules" packages="rules">
+        <ksession name="rulesSession"/>
+    </kbase>
+</kmodule>
+
+----objasnjenje xml-a:
+
+Knowledge Session – it holds all the resources required for firing rules; all Facts are inserted into session, and then matching rules are fired
+Knowledge Base – represents the knowledge in the Drools ecosystem, it has the information about the resources where Rules are found, and also it creates the Knowledge Session
+Module – A module holds multiple Knowledge Bases which can hold different sessions
+
+----u rules fajl dodati rules.drl fajl sa sledecim sadrzajem:
+
+package rules
+
+import com.PM.PMService.models.Policy
+
+rule "10% popusta"
+	when 
+		productObject: Policy(homeInsurance==null)
+	then
+		productObject.setPriceSummed(0);
+	end
+
+
+
+
+***********************model***********************
+
+Model na osnovu kog sam ja mislila da se izracunava popust je Policy u sustini da kada klijent sve odabere onda vi kreirate objekat Policy koji se prosledjuje DiscountController-u
+Onda se na tom modelu primenjuju pravila i on vam vraca Policy objekat sa izmenjenom cenom ako je bilo popusta ili povecanja cene.
+Mislim da je to nekako najlakse. Tipa stavimo pravilo da ako je odabrao i Travel i Vehicle i Home insurance dobija 10% popusta ili ako ide vise od 10 ljudi da onda dobija popust itd. 
+
+*********************************** KIEService ***************************************
+---- DiscountController prosledjuje objekat Policy ovom servisu koji onda primenjuje pravila i vraca izmenjen model ako je doslo do nekog popusta ili povecanja.
+
+@Service
+public class KIEService {
+
+	private final KieContainer kieContainer;
+
+	@Autowired
+	public KIEService(KieContainer kieContainer) {
+		this.kieContainer = kieContainer;
+	}
+
+	public Policy getProductDiscount(Policy polisa) {
+		//get the stateful session
+		KieSession kieSession = kieContainer.newKieSession("rulesSession");
+		kieSession.insert(polisa);
+		kieSession.fireAllRules();
+		kieSession.dispose();
+		return polisa;
+	}
+}
+
+************************************ DiscountController ******************************
+
+@RestController
+public class DiscountController {
+
+	private final KIEService KIEService;
+	
+	@Autowired
+	public DiscountController(KIEService KIEService) {
+		this.KIEService = KIEService;
+	}
+
+	
+	@RequestMapping(value = "/getDiscount", method = RequestMethod.GET, produces = "application/json")
+	public Policy getQuestions(@RequestBody Policy polisa) {
+	
+		KIEService.getProductDiscount(polisa);
+		return polisa;
+	}
+}
+
+
+******************************dodati Bean u @SpringBootApplication **************************
+
+@SpringBootApplication
+public class PmServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(PmServiceApplication.class, args);
+	}
+	
+	@Bean
+	public KieContainer kieContainer() {
+		return KieServices.Factory.get().getKieClasspathContainer();
+	}
+}
+
+
+Napomena: za Home i Vehicle Insurance setujete ih na null ako ih nema cisto zbog pravila za svaki slucaj

@@ -1,0 +1,68 @@
+**********Skinite tomcat***************
+
+
+**********Izmene u pom.xml fajlu:************
+
+- sa packaging jar prebaciti na war 
+<packaging>jar</packaging> ----> <packaging>war</packaging>
+
+-dodati dependency za tomcat 
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-tomcat</artifactId>
+    <scope>provided</scope>
+</dependency>
+
+*****************Izmene u @SpringBootApplication klasi prebaciti da extenduje SpringBootServletInitializer:*************
+ 
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringBootWebApplication {
+																	
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(SpringBootWebApplication.class, args);
+    }
+
+}---ovo prebaciti u sledeci kod:**************
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+
+@SpringBootApplication
+public class SpringBootWebApplication extends SpringBootServletInitializer {
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(SpringBootWebApplication.class);
+    }
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(SpringBootWebApplication.class, args);
+    }
+
+}
+
+*****************Nakon ovoga desni klik na projekat-> Maven -> Update Project
+
+*****************Export WAR u webapps skinutog tomcat-a**********************
+Za windows udjete u bin tomcata i dvoklik na startup.bat
+
+Za linux pozicionirate se u bin tomcata i kucate naredbu ./startup.sh
+Ako kaze da nemate permisije kucate sl naredbe redom 
+chmod -R 777 startup.sh
+chmod -R 777 catalina.sh
+./startup.sh
+
+Kada gasite ako nemate permisije 
+chmod -R 777 shutdown.sh
+chmod -R 777 catalina.sh
+./shutdown.sh
+
+
+Napomena kada pokrenete tomcat ne idete vise na localhost:port nego na localhost:port/nazivSpringProjekta
+
+
