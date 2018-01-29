@@ -34,7 +34,7 @@ public class VehicleInsurance {
 	@Column(nullable = false)
 	private String ownerSurname;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String jmbg;
 
 	public VehicleInsurance() {
