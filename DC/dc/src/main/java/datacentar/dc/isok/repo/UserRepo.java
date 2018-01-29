@@ -8,4 +8,5 @@ import datacentar.dc.isok.model.User;
 @Repository
 public interface UserRepo extends CrudRepository<User, Long>{
 
+	User findByUsername(String username);
 }
