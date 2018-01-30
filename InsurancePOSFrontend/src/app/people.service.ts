@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Headers,Response, Http } from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 
 import 'rxjs/add/operator/map';
@@ -11,12 +11,12 @@ import {Person} from './person.interface';
 @Injectable()
 export class PeopleService {
   private baseUrl = 'http://localhost:8090';
-  private headers = new HttpHeaders({'Content-Type': 'application/json'});
+  private headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor( private httpClient: HttpClient) { }
+  constructor( private http: Http) { }
 
   sendPeopleData(people: Person[]) : Observable<Person[]> {
-    return this.httpClient.post(this.baseUrl + '/persons/peopleInfo/', people, {headers: this.headers})
+    return this.http.post(this.baseUrl + '/persons/peopleInfo/', people, {headers: this.headers})
     .map((response:Response) => {return response})
     .catch((error:any) => Observable.throw(error || 'Server error'));
   }

@@ -86,10 +86,14 @@ public class PolicyController {
 			VehicleInsurance carIns  = new VehicleInsurance(carInsDTO.getTypeOfVehicle(), String.valueOf(carInsDTO.getYearOfProduction()), carInsDTO.getRegTable(), carInsDTO.getChassisNumber(), carInsDTO.getFirstName(), carInsDTO.getLastName(), carInsDTO.getJmbg());	
 			HttpEntity<VehicleInsurance> requestEntity3 = new HttpEntity<VehicleInsurance>(carIns, this.headers);
 			VehicleInsurance carInsNew = (VehicleInsurance) rest.postForObject(this.urlBase+"saveVehicleInsurance/", requestEntity3, VehicleInsurance.class);
-			riskItems.add(getRiskItemById(carInsDTO.getRepairPrice()));
-			riskItems.add(getRiskItemById(carInsDTO.getNumberOfHotelDays()));
-			riskItems.add(getRiskItemById(carInsDTO.getAlternativeVehicle()));
-			riskItems.add(getRiskItemById(carInsDTO.getNumberOfKm()));
+			if(carInsDTO.getRepairPrice()!="")
+				riskItems.add(getRiskItemById(carInsDTO.getRepairPrice()));
+			if(carInsDTO.getNumberOfHotelDays()!="")
+				riskItems.add(getRiskItemById(carInsDTO.getNumberOfHotelDays()));
+			if(carInsDTO.getAlternativeVehicle()!="")
+				riskItems.add(getRiskItemById(carInsDTO.getAlternativeVehicle()));
+			if(carInsDTO.getNumberOfKm()!="")	
+				riskItems.add(getRiskItemById(carInsDTO.getNumberOfKm()));
 			policyDal.setVehicleInsurance(carInsNew);
 		}
 		Set<Client> clientsIds = new HashSet<Client>();
@@ -107,7 +111,8 @@ public class PolicyController {
 		policyDal.setContractStart(travelInsDTO.getStartingDate());
 		policyDal.setContractEnd(travelInsDTO.getEndingDate());
 		policyDal.setInsuranceOwner(insuranceOwnerNew);
-		policyDal.setPriceSummed(589);		// THIS
+		double priceSummed = policy.getPriceCar() + policy.getPriceHome() + policy.getPriceTravel();
+		policyDal.setPriceSummed(priceSummed);
 		policyDal.setTravelInsurance(travelInsNew);
 
 		riskItems.add(getRiskItemById(travelInsDTO.getAges()));

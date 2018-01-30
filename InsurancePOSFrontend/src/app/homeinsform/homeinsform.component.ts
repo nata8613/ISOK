@@ -66,11 +66,11 @@ export class HomeinsformComponent implements OnInit {
     this.insuranceService.createInsurance(this.homeInsurance).subscribe(
       value => {
         console.log('[POST] create Insurance successfully', value);
-        this.price1 = value + this.price1;
         this.section5 = false; 
         this.section6 = true;
+        this.policy = Object.assign({}, this.policy, {homeInsurance: this.homeInsurance, priceHome:value});
+        this.price1 = this.policy.priceCar + this.policy.priceHome + this.policy.priceTravel;
         this.priceEvent.emit(this.price1);
-        this.policy = Object.assign({}, this.policy, {homeInsurance: this.homeInsurance});
       }, error => {
         console.log('FAIL to create Insurance!' + error);
       },

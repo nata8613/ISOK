@@ -72,7 +72,7 @@ public class TravelInsuranceController {
 	@RequestMapping(value="/createTravelInsurance", method=RequestMethod.POST)
 	public ResponseEntity<Double> insuranceValue(@RequestBody TravelInsuranceDTO insurance) {
 		
-		// 	TO DO : Na osnovu dobijenih podataka izracunati cenu samo za putno osiguranje i vratiti
+		//  Na osnovu dobijenih podataka racuna cenu samo za putno osiguranje
 		this.params.put("name", "TravelInsurance");
 		 this.requestEntity = new HttpEntity<Map<String, String>>(this.params, this.headers);
  		InsuranceCategory category = (InsuranceCategory)rest.postForObject(this.urlBase+"categoryName/TravelInsurance", this.requestEntity,InsuranceCategory.class);
@@ -99,7 +99,6 @@ public class TravelInsuranceController {
 		 return retVal;
 	}
 	private double getPriceImpactByRiskItemId(String riskId){
-		System.out.println("I GOT " + riskId);
 		Map<String, String> params2 = new HashMap<String, String>();
 		params2.put("riskId", riskId);
 		HttpEntity<Map<String, String>> requestEntity2 = new HttpEntity<Map<String, String>>(params2, this.headers);

@@ -8,14 +8,21 @@ public class PolicyDTO {
 	private List<Person> people;
 	private HomeInsuranceDTO homeInsurance;
 	private CarInsuranceDTO carInsurance;
+	private double priceCar;
+	private double priceHome;
+	private double priceTravel;
+	
 	
 	public PolicyDTO(TravelInsuranceDTO travelInsurance, List<Person> people, HomeInsuranceDTO homeInsurance,
-			CarInsuranceDTO carInsurance) {
+			CarInsuranceDTO carInsurance, double priceCar, double priceHome, double priceTravel) {
 		super();
 		this.travelInsurance = travelInsurance;
 		this.people = people;
 		this.homeInsurance = homeInsurance;
 		this.carInsurance = carInsurance;
+		this.priceCar = priceCar;
+		this.priceHome = priceHome;
+		this.priceTravel = priceTravel;
 	}
 	public PolicyDTO() {
 		super();
@@ -43,6 +50,24 @@ public class PolicyDTO {
 	}
 	public void setCarInsurance(CarInsuranceDTO carInsurance) {
 		this.carInsurance = carInsurance;
+	}
+	public double getPriceCar() {
+		return priceCar;
+	}
+	public void setPriceCar(double priceCar) {
+		this.priceCar = priceCar;
+	}
+	public double getPriceHome() {
+		return priceHome;
+	}
+	public void setPriceHome(double priceHome) {
+		this.priceHome = priceHome;
+	}
+	public double getPriceTravel() {
+		return priceTravel;
+	}
+	public void setPriceTravel(double priceTravel) {
+		this.priceTravel = priceTravel;
 	}
 	
 	
