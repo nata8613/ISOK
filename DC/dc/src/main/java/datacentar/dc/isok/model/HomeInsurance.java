@@ -22,7 +22,7 @@ public class HomeInsurance {
 	@Column(nullable = false)
 	private String ownerSurname;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String jmbg;
 
 
