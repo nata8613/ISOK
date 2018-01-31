@@ -14,10 +14,11 @@ export class HeaderComponent implements OnInit {
   }
 
 	redirectToMain() {
-  	this.router.navigate(['/']);
+  	// this.router.navigate(['/']);
   	}
 
   	redirectToPage(pageName:string) {
-  	this.router.navigate(['/'+pageName]);
+  	// this.router.navigate(['/']);
+   
   	}
 }

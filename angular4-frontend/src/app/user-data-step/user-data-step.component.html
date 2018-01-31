@@ -1,0 +1,63 @@
+<form #userDataForm="ngForm" class="editForm" novalidate>
+    <div class="tab-pane fade in active">
+        <h4 class="head text-center">{{title}}</h4>
+        <br/>
+        <div class='row'>
+           <div class='col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10'>
+
+                <div class="table-responsive">
+                   <table id="mytable" class="table table-bordred table-striped">
+
+                     <thead>
+                         <th>First Name</th>
+                         <th>Last Name</th>
+                         <th>Passport number</th>
+                         <th>JMBG</th>
+                         <th>Address</th>
+                         <th>Mobile</th>
+                         <th>Email</th>
+                     </thead>
+                     <tbody>
+
+                        <tr *ngFor="let a of userDataModel; let in = index">
+                            <input type="hidden" name="id" value={{a}}>
+
+                            <td><input class="form-control input-md"  type="text" placeholder="First name"
+                              name="firstName-{{in}}" [(ngModel)]="userDataModel[in].firstName"  > </td> 
+
+                            <td><input class="form-control"  type="text" placeholder="Last name"
+                            name="lastName-{{in}}" [(ngModel)]="userDataModel[in].lastName"  > </td> 
+
+                            <td><input class="form-control"  type="text" placeholder="Passport number" 
+                            name="passportNumber-{{in}}" [(ngModel)]="userDataModel[in].passportNumber" > </td>
+
+                            <td><input class="form-control"  type="text" placeholder="JMBG" 
+                            name="jmbg-{{in}}" [(ngModel)]="userDataModel[in].jmbg"> </td> 
+
+                            <td><input class="form-control"  type="text" placeholder="Address" 
+                            name="address-{{in}}" [(ngModel)]="userDataModel[in].address" > </td> 
+
+                            <td><input class="form-control"  type="text" placeholder="Mobile" 
+                            name="mobile-{{in}}" [(ngModel)]="userDataModel[in].mobile"   > </td> 
+
+                            <td><input class="form-control"  type="text" placeholder="Email" 
+                            name="email-{{in}}" [(ngModel)]="userDataModel[in].email" > </td> 
+
+                        </tr>
+
+                    </tbody></table>
+
+                </div>
+
+                <br>
+                <div class="form-group text-center">
+                    <button class="btn btn-outline-rounded btn-default" > <span style="margin-right:10px;" class="glyphicon glyphicon-arrow-left"></span> Previous</button>
+                    <button class="btn btn-outline-rounded btn-info"  > Next <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<pre>{{ userData | json }}</pre>
+

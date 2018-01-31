@@ -1,28 +1,28 @@
 package netgloo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "travelInsurance")
 public class TravelInsurance {
+
+	private long id; 
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	
-	@NotNull
 	private String contactMail;
-		
-	@NotNull
+		 
 	private int numOfPersons;
-	
-	@NotNull
+	 
 	private double priceSum;
+
+	public TravelInsurance(long id, String contactMail, int numOfPersons, double priceSum) {
+		super();
+		this.id = id;
+		this.contactMail = contactMail;
+		this.numOfPersons = numOfPersons;
+		this.priceSum = priceSum;
+	}
+	public TravelInsurance(String contactMail, int numOfPersons, double priceSum) {
+		super();
+		this.contactMail = contactMail;
+		this.numOfPersons = numOfPersons;
+		this.priceSum = priceSum;
+	}
 
 	public TravelInsurance() {
 		super();
@@ -55,6 +55,10 @@ public class TravelInsurance {
 	public long getId() {
 		return id;
 	}
-	
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	
 }

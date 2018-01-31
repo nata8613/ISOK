@@ -1,4 +1,33 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<router-outlet></router-outlet>
+ <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+ <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" />
+<app-header></app-header>
+<section style="background:#efefe9;">
+  <div class="container">
+      <div class="board">
+          <!-- Navigation Area (Circular Tabs) -->
+          <app-navbar></app-navbar>
+          <!-- End Navigation Area (Circular Tabs) -->
 
+          <!-- Content Area -->
+          <div class="tab-content">
+              <!-- Nested view  -->
+              <router-outlet></router-outlet>
+          </div>
+          <!-- End Content Area -->
+      </div>
+
+      <!-- For Debugging: show our valid formData -->
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      
+      <pre>{{ mainData | json }}</pre>
+      <pre>{{ vehicleData | json }}</pre>
+      <pre>{{ homeData | json }}</pre>
+  </div>
+</section>
 
