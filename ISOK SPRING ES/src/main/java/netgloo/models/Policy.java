@@ -1,51 +1,111 @@
 package netgloo.models;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-
-@Entity
-@Table(name = "policy")
 public class Policy {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	
+	private TravelInsurance travelInsurance;
 
-	@NotNull
-	private long travelInsuranceID;
+	private HomeInsurance homeInsurance;
 
-	@Null
-	private long homeInsuranceID;
+	private VehicleInsurance vehicleInsurance;
 
-	@Null
-	private long vehicleInsuranceID;
+	private Set<RiskItem> riskItems = new HashSet<RiskItem>();
 
-	@NotNull
+	private Client insuranceOwner;
+	
+	private Set<Client> clients = new HashSet<Client>();
+	
 	private double priceSummed;
 
-	@NotNull
 	private Date contractStart;
 
-	@NotNull
 	private Date contractEnd;
+
+	public Policy(long id,TravelInsurance travelInsurance, HomeInsurance homeInsurance, VehicleInsurance vehicleInsurance, Set<RiskItem> riskItems,
+			Client insuranceOwner, Set<Client> clients, double priceSummed, Date contractStart, Date contractEnd) {
+		super();
+		this.id = id;
+		this.travelInsurance = travelInsurance;
+		this.homeInsurance = homeInsurance;
+		this.vehicleInsurance = vehicleInsurance;
+		this.riskItems = riskItems;
+		this.insuranceOwner = insuranceOwner;
+		this.clients = clients;
+		this.priceSummed = priceSummed;
+		this.contractStart = contractStart;
+		this.contractEnd = contractEnd;
+	}
+	
+	public Policy(TravelInsurance travelInsurance, HomeInsurance homeInsurance, VehicleInsurance vehicleInsurance, Set<RiskItem> riskItems,
+			Client insuranceOwner, Set<Client> clients, double priceSummed, Date contractStart, Date contractEnd) {
+		super();
+		this.travelInsurance = travelInsurance;
+		this.homeInsurance = homeInsurance;
+		this.vehicleInsurance = vehicleInsurance;
+		this.riskItems = riskItems;
+		this.insuranceOwner = insuranceOwner;
+		this.clients = clients;
+		this.priceSummed = priceSummed;
+		this.contractStart = contractStart;
+		this.contractEnd = contractEnd;
+	}
 
 	public Policy() {
 		super();
 	}
 
-	public long getHomeInsuranceID() {
-		return homeInsuranceID;
+
+	public TravelInsurance getTravelInsurance() {
+		return travelInsurance;
 	}
 
-	public void setHomeInsuranceID(long homeInsuranceID) {
-		this.homeInsuranceID = homeInsuranceID;
+	public void setTravelInsurance(TravelInsurance travelInsurance) {
+		this.travelInsurance = travelInsurance;
+	}
+
+	public HomeInsurance getHomeInsurance() {
+		return homeInsurance;
+	}
+
+	public void setHomeInsurance(HomeInsurance homeInsurance) {
+		this.homeInsurance = homeInsurance;
+	}
+
+	public VehicleInsurance getVehicleInsurance() {
+		return vehicleInsurance;
+	}
+
+	public void setVehicleInsurance(VehicleInsurance vehicleInsurance) {
+		this.vehicleInsurance = vehicleInsurance;
+	}
+
+	public Set<RiskItem> getRiskItems() {
+		return riskItems;
+	}
+
+	public void setRiskItems(Set<RiskItem> riskItems) {
+		this.riskItems = riskItems;
+	}
+
+	public Client getInsuranceOwner() {
+		return insuranceOwner;
+	}
+
+	public void setInsuranceOwner(Client insuranceOwner) {
+		this.insuranceOwner = insuranceOwner;
+	}
+
+	public Set<Client> getClients() {
+		return clients;
+	}
+
+	public void setClients(Set<Client> clients) {
+		this.clients = clients;
 	}
 
 	public double getPriceSummed() {
@@ -54,26 +114,6 @@ public class Policy {
 
 	public void setPriceSummed(double priceSummed) {
 		this.priceSummed = priceSummed;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public long getTravelInsuranceID() {
-		return travelInsuranceID;
-	}
-
-	public void setTravelInsuranceID(long travelInsuranceID) {
-		this.travelInsuranceID = travelInsuranceID;
-	}
-
-	public long getVehicleInsuranceID() {
-		return vehicleInsuranceID;
-	}
-
-	public void setVehicleInsuranceID(long vehicleInsuranceID) {
-		this.vehicleInsuranceID = vehicleInsuranceID;
 	}
 
 	public Date getContractStart() {
@@ -92,4 +132,14 @@ public class Policy {
 		this.contractEnd = contractEnd;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	
+	
 }
