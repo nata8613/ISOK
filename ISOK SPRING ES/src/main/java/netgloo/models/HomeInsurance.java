@@ -1,28 +1,63 @@
 package netgloo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "homeInsurance")
 public class HomeInsurance {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private long id; 
 	
-	@NotNull
-	private long homeOwnerID;
+	private String ownerName;
+	
+	private String ownerSurname;
+	
+	private String jmbg;
 
-	@NotNull
 	private int insuranceLength;
+
+	
+	public HomeInsurance(String ownerName, String ownerSurname, String jmbg, int insuranceLength) {
+		super();
+		this.ownerName = ownerName;
+		this.ownerSurname = ownerSurname;
+		this.jmbg = jmbg;
+		this.insuranceLength = insuranceLength;
+	}
+
+	public HomeInsurance(long id, String ownerName, String ownerSurname, String jmbg, int insuranceLength) {
+		super();
+		this.id = id;
+		this.ownerName = ownerName;
+		this.ownerSurname = ownerSurname;
+		this.jmbg = jmbg;
+		this.insuranceLength = insuranceLength;
+	}
 
 	public HomeInsurance() {
 		super();
+	}
+
+	
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
+
+	public String getOwnerSurname() {
+		return ownerSurname;
+	}
+
+	public void setOwnerSurname(String ownerSurname) {
+		this.ownerSurname = ownerSurname;
+	}
+
+	public String getJmbg() {
+		return jmbg;
+	}
+
+	public void setJmbg(String jmbg) {
+		this.jmbg = jmbg;
 	}
 
 	public int getInsuranceLength() {
@@ -37,14 +72,8 @@ public class HomeInsurance {
 		return id;
 	}
 
-	public long getHomeOwnerID() {
-		return homeOwnerID;
+	public void setId(long id) {
+		this.id = id;
 	}
-
-	public void setHomeOwnerID(long homeOwnerID) {
-		this.homeOwnerID = homeOwnerID;
-	}
-	
-	
 	
 }

@@ -60,9 +60,9 @@ export class CarinsformComponent implements OnInit {
     this.carService.createInsurance(this.carInsurance).subscribe(
       value => {
         console.log('[POST] create Car Insurance successfully', value);
-        this.price1 = value + this.price1;
+        this.policy = Object.assign({}, this.policy, {carInsurance: this.carInsurance, priceCar: value});
+        this.price1 = this.policy.priceCar + this.policy.priceHome + this.policy.priceTravel;
         this.priceEvent.emit(this.price1);
-        this.policy = Object.assign({}, this.policy, {carInsurance: this.carInsurance});
       }, error => {
         console.log('FAIL to create Insurance!' + error);
       },

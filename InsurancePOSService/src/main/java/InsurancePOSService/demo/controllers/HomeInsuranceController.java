@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import InsurancePOSService.demo.models.HomeInsuranceDTO;
+import InsurancePOSService.demo.models.InsuranceCategory;
+import InsurancePOSService.demo.models.PriceImpacts;
 import InsurancePOSService.demo.models.Risk;
 import InsurancePOSService.demo.models.RiskItem;
 import InsurancePOSService.demo.models.RiskItemDTO;
@@ -60,7 +62,6 @@ public class HomeInsuranceController {
 		return this.getRiskByName("Home value");
 	}
 	
-	// TO DO: GET DATA FROM DATABASE 
 	@RequestMapping("/getInsuranceReasons")
 	@ResponseBody
 	public List<RiskItemDTO> getInsuranceReasons() {
@@ -70,9 +71,17 @@ public class HomeInsuranceController {
 	@RequestMapping(value="/createHomeInsurance", method=RequestMethod.POST)
 	public ResponseEntity<Double> insuranceValue(@RequestBody HomeInsuranceDTO insurance) {
 		
-		// 	TO DO : Na osnovu dobijenih podataka izracunati cenu samo za osiguranje stana i vratiti
- 		
-		return ResponseEntity.ok(new Double(500));
+		//Na osnovu dobijenih podataka racuna cenu samo za osiguranje stana
+		this.params.put("name", "HomeInsurance");
+		 this.requestEntity = new HttpEntity<Map<String, String>>(this.params, this.headers);
+		InsuranceCategory category = (InsuranceCategory)rest.postForObject(this.urlBase+"categoryName/HomeInsurance", this.requestEntity,InsuranceCategory.class);
+		double startingFee = category.getStartingPrice();
+		double ageFee = this.getPriceImpactByRiskItemId(insurance.getHomeAge());
+		double surfaceFee =this.getPriceImpactByRiskItemId(insurance.getHomeSurface());
+		double valueFee = this.getPriceImpactByRiskItemId(insurance.getHomeValue());
+		double reasonFee = this.getPriceImpactByRiskItemId(insurance.getInsuranceReason());
+		double sum = startingFee * (1 + ageFee + surfaceFee + valueFee + reasonFee);
+		return ResponseEntity.ok(sum);
 	}
 	
 	private List<RiskItemDTO> getRiskByName(String name){
@@ -85,5 +94,12 @@ public class HomeInsuranceController {
 			 retVal.add(new RiskItemDTO(item.getId(), item.getItemName()));
 		 }
 		 return retVal;
+	}
+	private double getPriceImpactByRiskItemId(String riskId){
+		Map<String, String> params2 = new HashMap<String, String>();
+		params2.put("riskId", riskId);
+		HttpEntity<Map<String, String>> requestEntity2 = new HttpEntity<Map<String, String>>(params2, this.headers);
+		PriceImpacts impact = (PriceImpacts)rest.postForObject(this.urlBase+"ImpactRisk/", requestEntity2, PriceImpacts.class);
+		return impact.getValue();
 	}
 }

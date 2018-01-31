@@ -31,7 +31,7 @@ export class TravelinsformComponent implements OnInit {
      homeInsurance: {firstName:'', lastName:'', address:'', jmbg:0, homeSurface:'', homeAge:'', homeValue:'', insuranceReason:'', insuranceLength:0},
       carInsurance: {insuranceLength:0, numberOfKm:'', repairPrice:'', numberOfHotelDays:'', 
       alternativeVehicle:'', typeOfVehicle:'', yearOfProduction:0, regTable:'', chassisNumber:'', 
-      firstName:'', lastName:'', jmbg:0}};
+      firstName:'', lastName:'', jmbg:0}, priceTravel:0, priceHome:0, priceCar:0};
   constructor(private insuranceService : TravelInsuranceService) { 
     this.getData();
   }
@@ -71,10 +71,10 @@ export class TravelinsformComponent implements OnInit {
     this.insuranceService.createInsurance(this.travelInsurance).subscribe(
       value => {
         console.log('[POST] create Insurance successfully', value);
-        this.price1 = value;
         this.section1 = false;
         this.section2 = true;
-        this.policy = Object.assign({}, this.policy, {travelInsurance: this.travelInsurance});
+        this.policy = Object.assign({}, this.policy, {travelInsurance: this.travelInsurance, priceTravel:value});
+        this.price1 = this.policy.priceCar + this.policy.priceHome + this.policy.priceTravel;
       }, error => {
         console.log('FAIL to create Insurance!' + error);
       },

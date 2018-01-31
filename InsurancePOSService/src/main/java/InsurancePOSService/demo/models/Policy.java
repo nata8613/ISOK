@@ -6,6 +6,8 @@ import java.util.Set;
 
 public class Policy {
 
+	private long id;
+	
 	private TravelInsurance travelInsurance;
 
 	private HomeInsurance homeInsurance;
@@ -24,6 +26,21 @@ public class Policy {
 
 	private Date contractEnd;
 
+	public Policy(long id,TravelInsurance travelInsurance, HomeInsurance homeInsurance, VehicleInsurance vehicleInsurance, Set<RiskItem> riskItems,
+			Client insuranceOwner, Set<Client> clients, double priceSummed, Date contractStart, Date contractEnd) {
+		super();
+		this.id = id;
+		this.travelInsurance = travelInsurance;
+		this.homeInsurance = homeInsurance;
+		this.vehicleInsurance = vehicleInsurance;
+		this.riskItems = riskItems;
+		this.insuranceOwner = insuranceOwner;
+		this.clients = clients;
+		this.priceSummed = priceSummed;
+		this.contractStart = contractStart;
+		this.contractEnd = contractEnd;
+	}
+	
 	public Policy(TravelInsurance travelInsurance, HomeInsurance homeInsurance, VehicleInsurance vehicleInsurance, Set<RiskItem> riskItems,
 			Client insuranceOwner, Set<Client> clients, double priceSummed, Date contractStart, Date contractEnd) {
 		super();
@@ -113,6 +130,14 @@ public class Policy {
 
 	public void setContractEnd(Date contractEnd) {
 		this.contractEnd = contractEnd;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	

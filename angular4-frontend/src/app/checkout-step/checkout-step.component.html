@@ -1,0 +1,105 @@
+<div class="tab-pane fade in active">
+    <h4 class="head text-center">{{title}}</h4>
+   <br>
+
+    <div class='row'>
+        <div class='col-xs-offset-1 col-xs-10 col-sm-offset-3 col-sm-8 col-md-offset-4 col-md-8'>
+
+            <div class="row">
+                <div class='col-xs-3 col-sm-10'>
+                    <div class="form-group">
+                        <label class="control-label" for="name"> Date start </label> 
+                    </div>
+                </div>
+                <div class='col-xs-9 col-sm-10'>
+                   {{mainmodel.dateStart}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class='col-xs-3 col-sm-10'>
+                    <div class="form-group">
+                        <label class="control-label" for="name"> Date end </label> 
+                    </div>
+                </div>
+                <div class='col-xs-9 col-sm-10'>
+                   {{mainmodel.dateEnd}}
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class='col-xs-3 col-sm-10'>
+                    <div class="form-group">
+                        <label class="control-label" for="name"> Number of persons 0-18 years </label> 
+                    </div>
+                </div>
+                <div class='col-xs-9 col-sm-10'>
+                   {{mainmodel.numOfPersonsLess}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class='col-xs-3 col-sm-10'>
+                    <div class="form-group">
+                        <label class="control-label" for="name"> Number of persons 18+ years </label> 
+                    </div>
+                </div>
+                <div class='col-xs-9 col-sm-10'>
+                   {{mainmodel.numOfPersonsMore}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class='col-xs-3 col-sm-10'>
+                    <div class="form-group">
+                        <label class="control-label" for="name"> Email </label> 
+                    </div>
+                </div>
+                <div class='col-xs-9 col-sm-10'>
+                   {{mainmodel.email}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class='col-xs-3 col-sm-10'>
+                    <div class="form-group">
+                        <label class="control-label" for="name"> Travel insurance price </label> 
+                    </div>
+                </div>
+                <div class='col-xs-9 col-sm-10'>
+                   {{mainmodel.totalPrice}}
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class='col-xs-3 col-sm-10'>
+                    <div class="form-group">
+                        <label class="control-label" for="name"> Vehicle insurance price </label> 
+                    </div>
+                </div>
+                <div class='col-xs-9 col-sm-10'>
+                   {{vehicleModel.totalPrice}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class='col-xs-3 col-sm-10'>
+                    <div class="form-group">
+                        <label class="control-label" for="name"> Home insurance price </label> 
+                    </div>
+                </div>
+                <div class='col-xs-9 col-sm-10'>
+                   {{homeModel.totalPrice}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <div class="text-center">
+       <!--  <button class="btn btn-success btn-outline-rounded" > Submit <span style="margin-left:10px;" class="glyphicon glyphicon-arrow-right"></span></button> -->
+       <div id="paypal-button" ></div>
+    </div>
+    <br>
+</div>

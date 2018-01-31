@@ -33,7 +33,7 @@ public class User implements Serializable{
 	@Column(nullable = false)
 	private String password;
 	
-	@Null
+
 	@OneToMany(cascade={ALL}, fetch=FetchType.LAZY, mappedBy="user")
 	@JsonIgnore
 	private Set<MerchantLicense> lincenses = new HashSet<MerchantLicense>();

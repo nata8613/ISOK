@@ -575,7 +575,6 @@ public class IsokController {
 	@RequestMapping(value="/getRiskItem/", method = RequestMethod.POST)
 	@ResponseBody
 	public RiskItem getRiskItem(@RequestBody HashMap<String, String> map){
-		System.out.println(map.get("id"));
 		Long id2 = Long.parseLong(map.get("id"));
 		RiskItem item = riskItemRepo.findOne(id2);
 		return item;

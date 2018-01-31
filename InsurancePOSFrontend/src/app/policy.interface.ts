@@ -7,5 +7,8 @@ export interface Policy {
     travelInsurance: TravelInsurance,
     people: Person[],
     homeInsurance: HomeInsurance,
-    carInsurance: CarInsurance
+    carInsurance: CarInsurance,
+    priceTravel: number,
+    priceHome: number,
+    priceCar: number
 }

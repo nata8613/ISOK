@@ -11,6 +11,6 @@ export class JMBGDirective implements Validator {
   
   validate(c: FormControl): {[key: string]: any} {
       let v = c.value.toString();
-      return ( v.length != this.jmbgLength)? {"jmbgLength": true} : null;
+      return ( v.length != this.jmbgLength && v.match(/^-{0,1}\d+$/))? {"jmbgLength": true} : null;
   }
 } 
