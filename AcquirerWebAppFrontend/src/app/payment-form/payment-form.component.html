@@ -1,0 +1,105 @@
+<div class="container">
+  
+  <form class="well form-horizontal" #paymentForm="ngForm" method="post" (ngSubmit)="onSubmit(paymentForm)">
+  
+    <fieldset>
+    <legend>&nbsp;Buy insurance!</legend>
+    
+    <div class="form-group"> 
+      <label for="pan" class="col-md-4 control-label">PAN:</label>
+      <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-info"></i></span>
+          <input id="pan" #pan="ngModel" [(ngModel)]="formData.pan" name="pan" placeholder="enter PAN" class="form-control" panLength="16"  type="number" required>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="pan.invalid && ( pan.dirty || paymentForm.submitted)"
+      class="validationDiv alert alert-danger">
+      <div *ngIf="pan.errors.required">
+        PAN is required.
+      </div>
+      <div *ngIf="pan.errors.panLength" >
+          PAN must be 16 digits long.
+      </div>
+      <div *ngIf="pan.errors.panNumber" >
+          PAN must be a number.
+      </div>
+    </div>  
+
+    <div class="form-group"> 
+      <label for="secuityCode" class="col-md-4 control-label">Security Code:</label>
+      <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-info"></i></span>
+          <input id="secuityCode" #secuityCode="ngModel" [(ngModel)]="formData.secuityCode" name="secuityCode" panLength="3" placeholder="enter security code" class="form-control"  type="number" required >
+        </div>
+      </div>
+    </div>
+    <div *ngIf="secuityCode.invalid && (secuityCode.dirty || paymentForm.submitted)"
+      class="validationDiv alert alert-danger">
+      <div *ngIf="secuityCode.errors.required">
+        Security code is required.
+      </div>
+      <div *ngIf="secuityCode.errors.panLength" >
+        Security code must be 3 digits long.
+      </div>
+    </div>  
+
+    <div class="form-group"> 
+      <label for="cardHolderName" class="col-md-4 control-label">Card Holder Name:</label>
+      <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-info"></i></span>
+          <input id="cardHolderName" #cardHolder="ngModel" [(ngModel)]="formData.cardHolderName" name="cardHolderName" placeholder="enter card holder's name" class="form-control"  type="text" required>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="cardHolder.invalid && paymentForm.submitted"
+      class="validationDiv alert alert-danger">
+      <div *ngIf="cardHolder.errors.required">
+        Card holder is required.
+      </div>
+    </div>  
+
+    <div class="form-group">
+      <label for="validDate" class="col-md-4 control-label">Card Expiration Date:</label>  
+    <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-info"></i></span>
+        <input class="form-control" type="date"  customDateStart="" #startingDate="ngModel"  [(ngModel)]="formData.validDate" name="validDate" id="datetimepicker" placeholder="select date" required>
+      </div>
+        </div>
+    </div>  
+    <div *ngIf="startingDate.invalid && (startingDate.dirty || startingDate.touched || paymentForm.submitted)"
+        class=" validationDiv alert alert-danger">
+      <div *ngIf="startingDate.errors.required">
+        Expiration date is required.
+      </div>
+      <div *ngIf="startingDate.errors.customDateStart">
+          Expiration date must be after today.
+        </div>
+    </div>
+
+    <div class="form-group"> 
+      <label for="amount" class="col-md-4 control-label">Amount:</label>
+      <div class="col-md-4 inputGroupContainer">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-info"></i></span>
+          <input id="amount" #amount="ngModel" [(ngModel)]="formData.amount" name="amount" placeholder="enter amount" class="form-control" customMin="1" type="number" >
+        </div>
+      </div>
+    </div> 
+    <div *ngIf="amount.invalid && (amount.dirty || amount.touched || paymentForm.submitted)"
+        class="validationDiv alert alert-danger">
+      <div *ngIf="amount.errors.required">
+          Amount is required.
+        </div>
+      <div *ngIf="amount.errors.customMin">
+        Amount must be larger than 0.
+      </div>
+    </div>  
+    <button type="submit" class="btn btn-default">Continue</button>
+
+    </fieldset>
+  </form>

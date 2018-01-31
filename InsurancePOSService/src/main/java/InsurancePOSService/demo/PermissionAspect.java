@@ -1,4 +1,4 @@
-package InsurancePOSService.demo;
+/*package InsurancePOSService.demo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +29,7 @@ public class PermissionAspect {
 	/*@Autowired
 	private AccessToken token;
 	*/
-	@Around("execution(* InsurancePOSService.demo.controllers.*.*(..)) && "
+/*	@Around("execution(* InsurancePOSService.demo.controllers.*.*(..)) && "
 			+ "@annotation(InsurancePOSService.demo.annotations.PermissionType)")
 	public Object validator(ProceedingJoinPoint jp){
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -72,6 +72,7 @@ public class PermissionAspect {
 		} else {
 			return null;
 		}*/
-	}  
+/*	}  
 
 }
+*/

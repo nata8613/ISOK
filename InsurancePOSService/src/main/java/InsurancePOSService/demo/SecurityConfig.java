@@ -1,4 +1,4 @@
-package InsurancePOSService.demo;
+/*package InsurancePOSService.demo;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
@@ -64,7 +64,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
         return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
     }*/
 	
-	@Autowired
+/*	@Autowired
 	   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	      KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
 	      keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
@@ -96,4 +96,4 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 		   repository.setHeaderName("X-XSRF-TOKEN");
 		   return repository;
 		 }
-}
+}*/

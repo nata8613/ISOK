@@ -1,4 +1,4 @@
-package InsurancePOSService.demo;
+/*package InsurancePOSService.demo;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -30,3 +30,4 @@ public class CsrfHeaderFilter extends OncePerRequestFilter {
 	    filterChain.doFilter(request, response);
 	  }
 	}
+*/

@@ -10,12 +10,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import InsurancePOSService.demo.models.DataAcqToPCC;
 import InsurancePOSService.demo.models.InsuranceCategory;
 import InsurancePOSService.demo.models.PriceImpacts;
 import InsurancePOSService.demo.models.Risk;
@@ -87,6 +89,19 @@ public class TravelInsuranceController {
 		return ResponseEntity.ok(sum);
 	}
 	
+/*	@RequestMapping(value="/postPayment/{paymentId}", method=RequestMethod.POST)
+	public ResponseEntity<DataAcqToPCC> postPayment(@PathVariable("paymentId") long paymentId, @RequestBody DataAcqToPCC data) {
+		System.out.println("PAYID "+ paymentId);
+		System.out.println("Data " + data.getAcquirerOrderId());
+		System.out.println("1 " + data.getAmount());
+		System.out.println("2 " + data.getCardHolderName());
+		System.out.println("3 " + data.getPAN());
+		System.out.println("4 " + data.getSecuityCode());
+		System.out.println("5 " + data.getAcquirerTimestamp());
+		System.out.println("6 " + data.getValidDate());
+		return ResponseEntity.ok(data);
+	}
+	*/
 	private List<RiskItemDTO> getRiskByName(String name){
 		this.params.put("name", name);
 		 this.requestEntity = new HttpEntity<Map<String, String>>(this.params, this.headers);

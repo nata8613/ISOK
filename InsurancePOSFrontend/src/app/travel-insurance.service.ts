@@ -17,7 +17,7 @@ export class TravelInsuranceService {
 
   getTravelRegions(): Observable<RiskItem[]> {
     return this.http.get(this.baseUrl + '/travelInsurance/getRegions/')
-    .map((response:Response) => { return response.json()})
+    .map((response:Response) => {console.log(response.json()); return response.json()})
       .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 
