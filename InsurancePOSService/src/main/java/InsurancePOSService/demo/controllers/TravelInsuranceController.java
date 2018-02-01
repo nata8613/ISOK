@@ -8,16 +8,16 @@ import java.util.Map;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import InsurancePOSService.demo.models.DataAcqToPCC;
+import InsurancePOSService.demo.annotations.PermissionType;
 import InsurancePOSService.demo.models.InsuranceCategory;
 import InsurancePOSService.demo.models.PriceImpacts;
 import InsurancePOSService.demo.models.Risk;
@@ -47,6 +47,8 @@ public class TravelInsuranceController {
 	
 	@RequestMapping("/getRegions")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
+	@PermissionType("TravelInsurance:create")
 	public List<RiskItemDTO> getRegions() {
 		return this.getRiskByName("Destination");
 	}
