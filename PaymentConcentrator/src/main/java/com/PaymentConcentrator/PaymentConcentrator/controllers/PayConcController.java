@@ -14,13 +14,14 @@ import com.PaymentConcentrator.PaymentConcentrator.models.Payment;
 @Controller
 public class PayConcController {
 
-	final String ip = "localhost"; 
+	final String ipAcquirer = "192.168.1.16"; 
+	final String ipHandler = "192.168.1.16";
 	
 	@RequestMapping("/getPaymentURLID")
 	@ResponseBody
 	public Payment getPaymentURLandPaymentID(@RequestBody DataPHtoPC data){
 		
-		final String url = "http://"+ip+":8883"+"/getPaymentURLID";
+		final String url = "http://"+ipAcquirer+":8883"+"/getPaymentURLID";
 		RestTemplate template = new RestTemplate();
 		
 		Payment payment = template.postForObject(url, data, Payment.class);
@@ -37,7 +38,7 @@ public class PayConcController {
 		
 		
 		System.out.println("-------GOD DATA FROM ACQUIRER-----"+data.getPaymentId());
-		final String url = "http://"+ip+":8881"+"/sendData";
+		final String url = "http://"+ipHandler+":8881"+"/sendData";
 		RestTemplate template = new RestTemplate();
 		
 		return  template.postForObject(url, data, Boolean.class);

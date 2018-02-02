@@ -25,7 +25,7 @@ public class IssuerController {
 	@Autowired
 	private TransactionRepo tr;
 	
-	final String ip = "localhost";
+	final String ip = "192.168.1.16";
 	
 	@RequestMapping("/sendData")
 	@ResponseBody

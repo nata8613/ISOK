@@ -21,7 +21,7 @@ public class PCCController {
 
 	private List <Bank> banke = new ArrayList<Bank>();
 	
-	final String ip = "localhost";
+	final String ipIssuer = "192.168.1.16";
 	
 	@RequestMapping("/sendData")
 	@ResponseBody
@@ -33,7 +33,7 @@ public class PCCController {
 		String port = findIssuerByPan(data.getPAN());
 		System.out.println("PORT JE "+port);
 		
-		if(port!=null){final String url = "http://"+ip+":"+port+"/sendData";
+		if(port!=null){final String url = "http://"+ipIssuer+":"+port+"/sendData";
 		RestTemplate template = new RestTemplate();
 		System.out.println("-------Passing data from PCC to Issuer-----------");
 		DataIssToAcq payment = template.postForObject(url, data, DataIssToAcq.class);

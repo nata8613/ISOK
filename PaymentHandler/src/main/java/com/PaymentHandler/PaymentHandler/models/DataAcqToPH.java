@@ -1,6 +1,6 @@
 package com.PaymentHandler.PaymentHandler.models;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class DataAcqToPH {
 	private long merchantOrderId;
