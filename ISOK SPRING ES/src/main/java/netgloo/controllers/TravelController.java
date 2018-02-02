@@ -1,5 +1,8 @@
 package netgloo.controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -91,9 +94,20 @@ public class TravelController {
 		//END SAVING TRAVELINSURANCE
 		
 		//ZA KUCU
-		Date date1 = new Date(mainModel.getDateStart());
-		Date date2 = new Date(mainModel.getDateEnd());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		Date date1 = null;
+		Date date2 = null;
+		try {
+			date1 = dateFormat.parse(mainModel.getDateStart());
+			date2 = dateFormat.parse(mainModel.getDateEnd());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		Date date1 = new Date(mainModel.getDateStart());
+//		Date date2 = new Date(mainModel.getDateEnd());
 		int diff = daysBetween(date1,date2);
+		
 		
 		if(homeModel!=null){
 			HomeInsurance homeIns = new HomeInsurance(homeModel.getOwnerName(),homeModel.getOwnerName(), homeModel.getOwnerJmbg(), diff);
@@ -107,7 +121,7 @@ public class TravelController {
 		}
 		
 		//ZA AUTA
-		if(vehicleModel.getBrandAndType()!=null && Integer.parseInt(vehicleModel.getProductionYear())!=0){
+		if(vehicleModel != null){
 			VehicleInsurance carIns  = new VehicleInsurance(vehicleModel.getBrandAndType(),vehicleModel.getProductionYear(), vehicleModel.getRegistration(), vehicleModel.getChassis(), vehicleModel.getOwnerName(), vehicleModel.getOwnerSurname(), vehicleModel.getOwnerJmbg());	
 			HttpEntity<VehicleInsurance> requestEntity3 = new HttpEntity<VehicleInsurance>(carIns, this.headers);
 			VehicleInsurance carInsNew = (VehicleInsurance) rest.postForObject(this.urlBase+"saveVehicleInsurance/", requestEntity3, VehicleInsurance.class);
@@ -147,7 +161,7 @@ public class TravelController {
 		riskItems.add(getRiskItemById(mainModel.getState()));
 		if(mainModel.getSport()!="")
 			riskItems.add(getRiskItemById(mainModel.getSport()));
-		riskItems.add(getRiskItemById(mainModel.getTotalPrice()));
+	
 		
 		policyDal.setRiskItems(riskItems);
 		HttpEntity<Policy> requestEntity5 = new HttpEntity<Policy>(policyDal, this.headers);

@@ -1,17 +1,26 @@
 package netgloo.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
+
 import netgloo.models.HomeInsuranceOption;
 import netgloo.models.HomeInsuranceView;
 import netgloo.models.InsuranceCategory;
 import netgloo.models.PriceImpacts;
+import netgloo.models.Risk;
 import netgloo.models.RiskItem;
 
 
@@ -19,7 +28,72 @@ import netgloo.models.RiskItem;
 @RequestMapping("/homeInsurance")
 @CrossOrigin("*")
 public class HomeInsuranceController {
+	
+	private String urlBase;
+	private RestTemplate rest;
+	private HttpHeaders headers;
+	private Map<String, Object> params;
+	private HttpEntity<Map<String, Object>> requestEntity;
+	
+	
+	public HomeInsuranceController(){
+		urlBase = "http://localhost:8080/dc/isok/";
+		rest = new RestTemplate();
+		headers = new HttpHeaders();
+	    headers.add("Content-Type", "application/json");
+	    headers.add("Accept", "*/*");
+		params = new HashMap<String, Object>();
+	}
+	
+	@RequestMapping("/getHomeInsuranceData")
+	@ResponseBody
+	public List<HomeInsuranceView> getTravelInsuranceData() {
 
+		List<HomeInsuranceView> listForView = new ArrayList<HomeInsuranceView>();
+
+		System.out.println("Poslao upit");
+		
+		InsuranceCategory ic = rest.postForObject(this.urlBase+"categoryName/HomeInsurance", null, InsuranceCategory.class);																					// svih
+		List<Risk> newRisks = new ArrayList();
+		newRisks.addAll(ic.getRisks());
+		Collections.sort(newRisks, new Comparator<Risk>(){
+		     public int compare(Risk o1, Risk o2){
+		         if(o1.getId() == o2.getId())
+		             return 0;
+		         return o1.getId() < o2.getId() ? -1 : 1;
+		     }
+		});
+		List<RiskItem> riskItemList = new ArrayList<RiskItem>();// riskitem
+		HomeInsuranceView homeInsV = null;
+		for(Risk r : newRisks){
+			List<HomeInsuranceOption> temp = new ArrayList<HomeInsuranceOption>();
+			riskItemList.addAll(r.getRiskItems());
+			homeInsV = new HomeInsuranceView();
+			homeInsV.setLabelName(r.getRiskName());
+			
+			for (RiskItem ri : r.getRiskItems()) {
+
+				HomeInsuranceOption hio = null;
+					hio = new HomeInsuranceOption();
+					hio.setId(String.valueOf(ri.getId()));
+					hio.setName(ri.getItemName());
+					// JOS CIJENU IZVUCI u hio
+					PriceImpacts priceIp = ri.getImpacts().iterator().next();
+					hio.setPrice(priceIp.getValue());
+				if (hio != null)
+					temp.add(hio);
+			}
+			homeInsV.getOptionList().addAll(temp);
+			listForView.add(homeInsV);
+		}																						// sa
+																								// homecategory
+
+		
+		System.out.println(listForView);
+
+		return listForView;
+
+	}
 //	
 //	@RequestMapping("/getHomeInsuranceData")
 //	@ResponseBody

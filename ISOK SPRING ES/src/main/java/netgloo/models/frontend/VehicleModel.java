@@ -10,11 +10,19 @@ public class VehicleModel {
 	private String registration;
 	private String chassis;
 	private String totalPrice;
+	
+	
+	private String repairPrice;
+	private String hotelDays;
+	private String altVehicle;
+	private String transportKm;
+	
 	public VehicleModel() {
 		super();
 	}
 	public VehicleModel(String ownerName, String ownerSurname, String ownerJmbg, String brandAndType,
-			String productionYear, String registration, String chassis, String totalPrice) {
+			String productionYear, String registration, String chassis, String totalPrice , 
+			String repairPrice, String hoteldays, String altVehicle, String transportKm) {
 		super();
 		this.ownerName = ownerName;
 		this.ownerSurname = ownerSurname;
@@ -24,6 +32,11 @@ public class VehicleModel {
 		this.registration = registration;
 		this.chassis = chassis;
 		this.totalPrice = totalPrice;
+		
+		this.repairPrice = repairPrice;
+		this.hotelDays = hoteldays;
+		this.altVehicle = altVehicle;
+		this.transportKm = transportKm;
 	}
 	public String getOwnerName() {
 		return ownerName;
@@ -72,6 +85,30 @@ public class VehicleModel {
 	}
 	public void setTotalPrice(String totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+	public String getRepairPrice() {
+		return repairPrice;
+	}
+	public void setRepairPrice(String repairPrice) {
+		this.repairPrice = repairPrice;
+	}
+	public String getHotelDays() {
+		return hotelDays;
+	}
+	public void setHotelDays(String hotelDays) {
+		this.hotelDays = hotelDays;
+	}
+	public String getAltVehicle() {
+		return altVehicle;
+	}
+	public void setAltVehicle(String altVehicle) {
+		this.altVehicle = altVehicle;
+	}
+	public String getTransportKm() {
+		return transportKm;
+	}
+	public void setTransportKm(String transportKm) {
+		this.transportKm = transportKm;
 	}
 	
 	
