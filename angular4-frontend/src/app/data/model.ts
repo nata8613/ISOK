@@ -7,6 +7,7 @@ export class MainModel {
     priceRange: string = '';
     sport: string = '';
     email: string = '';
+    personalAge: string = '';
     totalPrice: string = '';
 }
 

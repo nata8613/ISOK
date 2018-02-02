@@ -16,13 +16,14 @@ export class MainStepComponent implements OnInit {
   title = 'Please tell us about yourself.';
   form: any;
   mainmodel : MainModel;
-  totalPrice : number = 0;
+  totalPrice : number = 100;
   homeInsuranceViews: HomeInsuranceView[];
   selectedOption:HomeInsuranceOption;
 
   item1 : HomeInsuranceView ;
   item2 : HomeInsuranceView ;
   item3 : HomeInsuranceView ;
+  item4 : HomeInsuranceView ;
 
   permission : boolean = true;
 
@@ -40,7 +41,7 @@ export class MainStepComponent implements OnInit {
     this.homeInsuranceService.getMainStepView().subscribe(data => this.homeInsuranceViews = data,
       err => {
         console.log(err);
-      }, () => {this.item1 = this.homeInsuranceViews[0], this.item2 = this.homeInsuranceViews[1], this.item3 = this.homeInsuranceViews[2]});
+      }, () => {this.item1 = this.homeInsuranceViews[0], this.item2 = this.homeInsuranceViews[1], this.item3 = this.homeInsuranceViews[2], this.item4 = this.homeInsuranceViews[3]});
     }
 
     onChange(newVal, selectedVal) {
@@ -85,7 +86,7 @@ export class MainStepComponent implements OnInit {
                   }
                 }
 
-                this.totalPrice = this.totalPrice +  (Number(konkretnaVrijednost.price)*Number(this.mainmodel.numOfPersonsLess) +
+                this.totalPrice = this.totalPrice * (Number(konkretnaVrijednost.price)*Number(this.mainmodel.numOfPersonsLess) +
                 Number(konkretnaVrijednost.price)*Number(this.mainmodel.numOfPersonsMore))*this.daysDiff ;
                 this.mainmodel.totalPrice = this.totalPrice.toString();
 

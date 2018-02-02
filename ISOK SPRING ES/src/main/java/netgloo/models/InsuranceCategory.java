@@ -1,30 +1,39 @@
 package netgloo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
-@Table(name = "insuranceCategory")
 public class InsuranceCategory {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
 
-	@NotNull
+	private long id;
+	
 	private String categoryName;
+
+	private Set<Risk> risks = new HashSet<Risk>();
+
+	private double startingPrice;
+		
+	private double clientFee;
+	
+	public InsuranceCategory(long id, String categoryName, Set<Risk> risks, double startingPrice, double clientFee) {
+		super();
+		this.id = id;
+		this.categoryName = categoryName;
+		this.risks = risks;
+		this.startingPrice = startingPrice;
+		this.clientFee = clientFee;
+	}
 
 	public InsuranceCategory() {
 		super();
 	}
 
-	public InsuranceCategory(String categoryName) {
-		super();
-		this.categoryName = categoryName;
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getCategoryName() {
@@ -35,8 +44,29 @@ public class InsuranceCategory {
 		this.categoryName = categoryName;
 	}
 
-	public long getId() {
-		return id;
+	public Set<Risk> getRisks() {
+		return risks;
 	}
+
+	public void setRisks(Set<Risk> risks) {
+		this.risks = risks;
+	}
+
+	public double getStartingPrice() {
+		return startingPrice;
+	}
+
+	public void setStartingPrice(double startingPrice) {
+		this.startingPrice = startingPrice;
+	}
+
+	public double getClientFee() {
+		return clientFee;
+	}
+
+	public void setClientFee(double clientFee) {
+		this.clientFee = clientFee;
+	}
+	
 	
 }

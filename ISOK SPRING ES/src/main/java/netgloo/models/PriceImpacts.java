@@ -1,36 +1,33 @@
 package netgloo.models;
 
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "priceImpacts")
 public class PriceImpacts {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	private long id;
 	
-	@NotNull
 	private double value;
-	
-	@NotNull
-	private Date validFrom;
-	
-	@NotNull
-	private Date validTo;
-	
-	@NotNull
-	private long riskItemId;
 
-	public PriceImpacts() {
+	private RiskItem item;
+	
+	private Set<PriceList> PriceLists = new HashSet<PriceList>();
+
+	public PriceImpacts(long id, double value, RiskItem item,
+			Set<PriceList> priceLists) {
 		super();
+		this.id = id;
+		this.value = value;
+		this.item = item;
+		PriceLists = priceLists;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public double getValue() {
@@ -41,33 +38,27 @@ public class PriceImpacts {
 		this.value = value;
 	}
 
-	public Date getValidFrom() {
-		return validFrom;
+	public RiskItem getItem() {
+		return item;
 	}
 
-	public void setValidFrom(Date validFrom) {
-		this.validFrom = validFrom;
+	public void setItem(RiskItem item) {
+		this.item = item;
 	}
 
-	public Date getValidTo() {
-		return validTo;
+	public Set<PriceList> getPriceLists() {
+		return PriceLists;
 	}
 
-	public void setValidTo(Date validTo) {
-		this.validTo = validTo;
+	public void setPriceLists(Set<PriceList> priceLists) {
+		PriceLists = priceLists;
 	}
 
-	public long getRiskItemId() {
-		return riskItemId;
+	public PriceImpacts() {
+		super();
 	}
 
-	public void setRiskItemId(long riskItemId) {
-		this.riskItemId = riskItemId;
-	}
-
-	public long getId() {
-		return id;
-	}
+	
 	
 	
 }

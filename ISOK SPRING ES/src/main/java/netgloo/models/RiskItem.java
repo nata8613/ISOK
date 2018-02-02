@@ -1,25 +1,23 @@
 package netgloo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
-@Table(name = "riskItem")
 public class RiskItem {
+
+	private String id;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	
-	@NotNull
 	private String itemName;
-	
-	@NotNull
-	private long riskID;
+ 
+	private Set<PriceImpacts> impacts = new HashSet<PriceImpacts>(); 
+
+	public RiskItem(String id, String itemName,
+			Set<PriceImpacts> impacts) {
+		super();
+		this.id = id;
+		this.itemName = itemName;
+		this.impacts = impacts;
+	}
 
 	public RiskItem() {
 		super();
@@ -33,17 +31,20 @@ public class RiskItem {
 		this.itemName = itemName;
 	}
 
-	public long getRiskID() {
-		return riskID;
+	public Set<PriceImpacts> getImpacts() {
+		return impacts;
 	}
 
-	public void setRiskID(long riskID) {
-		this.riskID = riskID;
+	public void setImpacts(Set<PriceImpacts> impacts) {
+		this.impacts = impacts;
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
-	
+
+	public void setId(String id) {
+		this.id = id;
+	}
 	
 }

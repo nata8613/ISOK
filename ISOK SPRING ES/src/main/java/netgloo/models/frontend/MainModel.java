@@ -10,9 +10,10 @@ public class MainModel {
 	public String priceRange; 
 	public String sport; 
 	public String email; 
+	public String personalAge;
 	public String totalPrice;
 	public MainModel(String dateStart, String dateEnd, String numOfPersonsLess, String numOfPersonsMore, String state,
-			String priceRange, String sport, String email, String totalPrice) {
+			String priceRange, String sport, String email, String personalAge, String totalPrice) {
 		super();
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
@@ -22,10 +23,19 @@ public class MainModel {
 		this.priceRange = priceRange;
 		this.sport = sport;
 		this.email = email;
+		this.personalAge = personalAge;
 		this.totalPrice = totalPrice;
 	}
 	public MainModel() {
 		super();
+	}
+	
+	
+	public String getPersonalAge() {
+		return personalAge;
+	}
+	public void setPersonalAge(String personalAge) {
+		this.personalAge = personalAge;
 	}
 	public String getDateStart() {
 		return dateStart;
