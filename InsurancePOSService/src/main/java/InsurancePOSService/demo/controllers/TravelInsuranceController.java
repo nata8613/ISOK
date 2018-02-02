@@ -1,23 +1,27 @@
 package InsurancePOSService.demo.controllers;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import InsurancePOSService.demo.models.DataAcqToPCC;
 import InsurancePOSService.demo.models.InsuranceCategory;
 import InsurancePOSService.demo.models.PriceImpacts;
 import InsurancePOSService.demo.models.Risk;
@@ -37,7 +41,7 @@ public class TravelInsuranceController {
 	private HttpEntity<Map<String, String>> requestEntity;
 	
 	public TravelInsuranceController(){
-		urlBase = "http://localhost:8080/dc/isok/";
+		urlBase = "http://localhost:8081/dc/isok/";
 		rest = new RestTemplate();
 		headers = new HttpHeaders();
 	    headers.add("Content-Type", "application/json");
@@ -85,8 +89,24 @@ public class TravelInsuranceController {
 		if(insurance.getSport()!="")
 			sportFee = this.getPriceImpactByRiskItemId(insurance.getSport());
 		double ammountFee = this.getPriceImpactByRiskItemId(insurance.getAmmount());
-		double sum = startingFee * (1 + ageFee + regionFee + sportFee + ammountFee);
+		double sum = startingFee * (1 + ageFee + regionFee + sportFee + ammountFee);//"http://localhost:4300/Payment/5"
+		/*HttpHeaders header = new HttpHeaders();
+	      header.add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	      URI loc = new URI("http://localhost:4300/Payment/5");
+	      header.setLocation(loc);
+	      List<String> list = new ArrayList<String>();
+	      list.add("Access-Control-Allow-Origins");
+	      header.setAccessControlAllowHeaders(list);
+	     // resp.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Origins");
+	      resp.setHeader("Access-Control-Allow-Origin", "*");
+	      resp.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+	      resp.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Access-Control-Allow-Origin, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+	    //  resp.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+	      resp.sendRedirect("http://localhost:4300/Payment/5");
+	      
+	      return resp;*/
 		return ResponseEntity.ok(sum);
+		
 	}
 	
 /*	@RequestMapping(value="/postPayment/{paymentId}", method=RequestMethod.POST)
@@ -101,7 +121,7 @@ public class TravelInsuranceController {
 		System.out.println("6 " + data.getValidDate());
 		return ResponseEntity.ok(data);
 	}
-	*/
+*/	
 	private List<RiskItemDTO> getRiskByName(String name){
 		this.params.put("name", name);
 		 this.requestEntity = new HttpEntity<Map<String, String>>(this.params, this.headers);

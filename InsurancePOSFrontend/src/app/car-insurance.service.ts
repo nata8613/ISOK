@@ -46,9 +46,9 @@ export class CarInsuranceService {
     .catch((error:any) => Observable.throw(error || 'Server error'));
   }
 
-  sendPolicy(policy: Policy): Observable<String> {
+  sendPolicy(policy: Policy): Observable<Response> {
     return this.http.post(this.baseUrl + '/policy/savePolicy/', policy, {headers: this.headers})
-    .map((response:Response) => {return response.json()})
+    .map((response:Response) => {console.log("Redirecting")})
     .catch((error:any) => Observable.throw(error || 'Server error'));
   }
 }

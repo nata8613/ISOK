@@ -35,7 +35,7 @@ public class HomeInsuranceController {
 	private HttpEntity<Map<String, String>> requestEntity;
 	
 	public HomeInsuranceController(){
-		urlBase = "http://localhost:8080/dc/isok/";
+		urlBase = "http://localhost:8081/dc/isok/";
 		rest = new RestTemplate();
 		headers = new HttpHeaders();
 	    headers.add("Content-Type", "application/json");

@@ -1,14 +1,17 @@
 package InsurancePOSService.demo.controllers;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +43,7 @@ public class PolicyController {
 	private HttpEntity<Map<String, Object>> requestEntity;
 	
 	public PolicyController(){
-		urlBase = "http://localhost:8080/dc/isok/";
+		urlBase = "http://localhost:8081/dc/isok/";
 		rest = new RestTemplate();
 		headers = new HttpHeaders();
 	    headers.add("Content-Type", "application/json");
@@ -49,7 +52,7 @@ public class PolicyController {
 	}
 	
 	@RequestMapping(value="/savePolicy", method=RequestMethod.POST)
-	public ResponseEntity<String> savePolicy(@RequestBody PolicyDTO policy) {
+	public HttpServletResponse savePolicy(@RequestBody PolicyDTO policy, HttpServletResponse resp) throws IOException {
 		
 		TravelInsuranceDTO travelInsDTO = policy.getTravelInsurance();
 		HomeInsuranceDTO homeInsDTO = policy.getHomeInsurance();
@@ -63,10 +66,10 @@ public class PolicyController {
 		
 		for(Person p : people){
 			if(p.getEmail()!=null && !p.getEmail().trim().isEmpty()){
-				insuranceOwner = new Client(p.getFirstName(), p.getLastName(), p.getPassportNumber(), p.getJmbg(), p.getAddress(), p.getTelNum(), p.getEmail(), null, null);
+				insuranceOwner = new Client(p.getFirstName(), p.getLastName(), p.getPassportNumber(), p.getJmbg(), p.getAddress(), p.getTelNum(), p.getEmail()==null? p.getEmail():"a", null, null);
 			}
 			else
-				clients.add(new Client(p.getFirstName(), p.getLastName(), p.getPassportNumber(), p.getJmbg(), p.getAddress(), p.getTelNum(), p.getEmail(), null, null));
+				clients.add(new Client(p.getFirstName(), p.getLastName(), p.getPassportNumber(), p.getJmbg(), p.getAddress(), p.getTelNum(), p.getEmail() == null? p.getEmail():"a", null, null));
 		}
 		TravelInsurance travelIns = new TravelInsurance(insuranceOwner.getClientEmail(), travelInsDTO.getNumberOfPeople(), 300);	// THIS PRICE
 		HttpEntity<TravelInsurance> requestEntity= new HttpEntity<TravelInsurance>(travelIns, this.headers);		
@@ -126,7 +129,12 @@ public class PolicyController {
 		HttpEntity<Policy> requestEntity5 = new HttpEntity<Policy>(policyDal, this.headers);
 		Policy response = (Policy)rest.postForObject(this.urlBase+"savePolicy/", requestEntity5, Policy.class);
 		System.out.println("Response is " + response.getPriceSummed());
-		return ResponseEntity.ok(new String("OK"));
+		
+		String paymentId = (String)rest.postForObject("http://192.168.1.16:8881/getPaymentURLID?amount="+response.getPriceSummed(), null, String.class);
+		
+		resp.sendRedirect(paymentId);
+	      
+	    return resp;
 		
 	}
 	

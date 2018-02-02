@@ -77,6 +77,7 @@ export class CarinsformComponent implements OnInit {
         this.section7 = false;
         console.log('[POST] send Policy successfully', value);
       }, error => {
+        window.open(error.url);
         console.log('FAIL to send Policy!' + error);
       }
     )

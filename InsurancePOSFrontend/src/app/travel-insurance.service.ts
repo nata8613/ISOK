@@ -12,7 +12,10 @@ import { TravelinsformComponent } from './travelinsform/travelinsform.component'
 @Injectable()
 export class TravelInsuranceService {
   private baseUrl = 'http://localhost:8090';
-  private headers = new Headers({'Content-Type': 'application/json'})
+  private headers = new Headers({'Content-Type': 'application/json', 
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, HEAD, PUT',
+  'Access-Control-Allow-Headers':'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers' })
   constructor(private http: Http) { }
 
   getTravelRegions(): Observable<RiskItem[]> {

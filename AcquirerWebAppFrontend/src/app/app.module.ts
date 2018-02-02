@@ -14,6 +14,10 @@ import {CustomMinDirective} from './validators/minValidator.directive';
 
 const appRoutes: Routes = [
   {
+    path: 'Payment/:paymentId',
+    component: PaymentFormComponent
+  },
+  {
     path: '',
     component: PaymentFormComponent,
     data: {title: 'Home'}

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataAcqToPcc } from '../dataAcqToPcc';
 import { NgForm } from '@angular/forms';
 import {PaymentService} from '../payment.service';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-payment-form',
@@ -10,20 +11,20 @@ import {PaymentService} from '../payment.service';
 })
 export class PaymentFormComponent implements OnInit {
   
+  paymentId: number=0;
   formData: DataAcqToPcc = {acquirerOrderId: '', acquirerTimestamp: new Date(), pan:'',
     secuityCode: 0, cardHolderName:'', validDate:null, amount:0} 
   
-  constructor(private paymentService : PaymentService) { }
-
+  constructor(private route: ActivatedRoute, private paymentService : PaymentService)  {
+    this.route.params.subscribe( params => this.paymentId = +params['paymentId']);
+  }
   ngOnInit() {
   }
 
   onSubmit(form:NgForm) {
     if(form.invalid)
       return;
-      console.log(this.formData.acquirerOrderId);
-      console.log(this.formData.pan);
-    this.paymentService.sendPayment(this.formData).subscribe(
+    this.paymentService.sendPayment(this.formData, this.paymentId).subscribe(
       value => {
         console.log('[POST] create Insurance successfully', value);
             }, error => {
