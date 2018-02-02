@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 
+import InsurancePOSService.demo.SifrarnikMetoda;
+import InsurancePOSService.demo.annotations.PermissionType;
 import InsurancePOSService.demo.models.CarInsuranceDTO;
 import InsurancePOSService.demo.models.Client;
 import InsurancePOSService.demo.models.HomeInsurance;
@@ -41,6 +46,7 @@ public class PolicyController {
 	private HttpHeaders headers;
 	private Map<String, Object> params;
 	private HttpEntity<Map<String, Object>> requestEntity;
+	final static Logger logger = LogManager.getLogger(PolicyController.class);
 	
 	public PolicyController(){
 		urlBase = "http://localhost:8081/dc/isok/";
@@ -52,8 +58,10 @@ public class PolicyController {
 	}
 	
 	@RequestMapping(value="/savePolicy", method=RequestMethod.POST)
+	@PreAuthorize("hasRole('prodavac')")
+	@PermissionType("Policy:create")
 	public HttpServletResponse savePolicy(@RequestBody PolicyDTO policy, HttpServletResponse resp) throws IOException {
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		TravelInsuranceDTO travelInsDTO = policy.getTravelInsurance();
 		HomeInsuranceDTO homeInsDTO = policy.getHomeInsurance();
 		CarInsuranceDTO carInsDTO = policy.getCarInsurance();

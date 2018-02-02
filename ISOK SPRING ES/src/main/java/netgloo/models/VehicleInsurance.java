@@ -1,6 +1,5 @@
 package netgloo.models;
 
-
 public class VehicleInsurance {
  
 	private long id;
@@ -121,4 +120,3 @@ public class VehicleInsurance {
 	
 	
 }
-

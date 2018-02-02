@@ -3,7 +3,7 @@ import { MainModel, PaymentModel, UserDataModel, VehicleModel, HomeModel } from 
 import { ExchangeModel } from '../data/exchangemodel';
 import { ModelDataService } from '../data/model.service';
 
-
+import { Router } from '@angular/router';
 
 import {HomeInsuranceService} from "../home-insurance.service";
 
@@ -32,7 +32,9 @@ export class CheckoutStepComponent implements OnInit {
   responseStatus : ExchangeModel;
   exchangeModel : ExchangeModel;
 
-  constructor(private modelDataService : ModelDataService, private homeInsuranceService : HomeInsuranceService) { 
+  constructor(private modelDataService : ModelDataService, 
+    private homeInsuranceService : HomeInsuranceService,
+    private router : Router) { 
 
 }
 

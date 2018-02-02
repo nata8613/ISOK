@@ -7,6 +7,7 @@ export class MainModel {
     priceRange: string = '';
     sport: string = '';
     email: string = '';
+    personalAge: string = '';
     totalPrice: string = '';
 }
 
@@ -29,6 +30,10 @@ export class VehicleModel {
 	registration: string = '';
 	chassis: string = '';
 	totalPrice: string = '';
+	repairPrice : string = '';
+	hotelDays : string = '';
+	altVehicle : string = '';
+	transportKm : string = '';
 }
 
 export class HomeModel {

@@ -23,6 +23,8 @@ import { CustomMinDirective } from './validators/minValidator.directive';
 import {CustomDateStartDirective} from './validators/dateStartValidator.directive';
 import {CustomDateEndDirective} from './validators/dateEndValidator.directive';
 import {JMBGDirective} from './validators/jmbgValidator.directive';
+import { KeycloakHttp, KEYCLOAK_HTTP_PROVIDER } from './shared/keycloak.http';
+import { KeycloakService } from './shared/keycloak.service';
 
 const appRoutes: Routes = [
   {
@@ -65,7 +67,7 @@ const appRoutes: Routes = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [HomeInsuranceService, TravelInsuranceService, PeopleService, CarInsuranceService],
+  providers: [HomeInsuranceService, TravelInsuranceService, PeopleService, CarInsuranceService,KEYCLOAK_HTTP_PROVIDER,KeycloakService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

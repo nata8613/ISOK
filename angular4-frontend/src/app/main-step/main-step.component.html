@@ -46,7 +46,7 @@
                             <div class="form-group">
                              <select class="form-control selectPicker" name="item1.labelName" 
                              (change)="onChange($event.target.value, item1.labelName)"
-                             [(ngModel)]="mainmodel.state">
+                             [(ngModel)]="mainmodel.personalAge">
                                <option value="" >--Select--</option>
                                 <option *ngFor="let iT of item1.optionList" [value]="iT.id">{{iT.name}}</option>
                             </select>
@@ -81,6 +81,21 @@
                              [(ngModel)]="mainmodel.sport">
                                <option value="" >--Select--</option>
                                 <option *ngFor="let iT of item3.optionList" [value]="iT.id">{{iT.name}}</option>
+                            </select>
+                        </div>
+                          
+                        </div>
+                    </div>
+
+                    <div class='col-xs-12 col-sm-4' >
+                        <div class="form-group {{item4.labelName}}">
+                            <label class="control-label" >{{item4.labelName}}</label>  
+                            <div class="form-group">
+                             <select class="form-control selectPicker" name="item4.labelName" 
+                             (change)="onChange($event.target.value, item4.labelName)" 
+                             [(ngModel)]="mainmodel.state" >
+                               <option value="" >--Select--</option>
+                                <option *ngFor="let iT of item4.optionList" [value]="iT.id">{{iT.name}}</option>
                             </select>
                         </div>
                           

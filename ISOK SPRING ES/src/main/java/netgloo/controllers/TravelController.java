@@ -1,6 +1,11 @@
 package netgloo.controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -19,26 +23,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import netgloo.dao.HomeAgeDAO;
-import netgloo.dao.HomeOwnerDAO;
-import netgloo.dao.HomeSurfaceDAO;
-import netgloo.dao.HomeValueDAO;
-import netgloo.dao.InsuranceTypeDAO;
-import netgloo.dao.price.InsuranceCategoryDao;
-import netgloo.dao.price.InsuranceCategoryRiskDao;
-import netgloo.dao.price.PriceImpactDao;
-import netgloo.dao.price.PriceImpactPricelistDao;
-import netgloo.dao.price.PricelistDao;
-import netgloo.dao.price.RiskDao;
-import netgloo.dao.price.RiskItemDao;
 import netgloo.models.Client;
 import netgloo.models.HomeInsurance;
 import netgloo.models.HomeInsuranceOption;
 import netgloo.models.HomeInsuranceView;
 import netgloo.models.InsuranceCategory;
-import netgloo.models.InsuranceCategory_Risk;
 import netgloo.models.Policy;
 import netgloo.models.PriceImpacts;
+import netgloo.models.Risk;
 import netgloo.models.RiskItem;
 import netgloo.models.TravelInsurance;
 import netgloo.models.VehicleInsurance;
@@ -102,9 +94,20 @@ public class TravelController {
 		//END SAVING TRAVELINSURANCE
 		
 		//ZA KUCU
-		Date date1 = new Date(mainModel.getDateStart());
-		Date date2 = new Date(mainModel.getDateEnd());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		Date date1 = null;
+		Date date2 = null;
+		try {
+			date1 = dateFormat.parse(mainModel.getDateStart());
+			date2 = dateFormat.parse(mainModel.getDateEnd());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		Date date1 = new Date(mainModel.getDateStart());
+//		Date date2 = new Date(mainModel.getDateEnd());
 		int diff = daysBetween(date1,date2);
+		
 		
 		if(homeModel!=null){
 			HomeInsurance homeIns = new HomeInsurance(homeModel.getOwnerName(),homeModel.getOwnerName(), homeModel.getOwnerJmbg(), diff);
@@ -118,7 +121,7 @@ public class TravelController {
 		}
 		
 		//ZA AUTA
-		if(vehicleModel.getBrandAndType()!=null && Integer.parseInt(vehicleModel.getProductionYear())!=0){
+		if(vehicleModel != null){
 			VehicleInsurance carIns  = new VehicleInsurance(vehicleModel.getBrandAndType(),vehicleModel.getProductionYear(), vehicleModel.getRegistration(), vehicleModel.getChassis(), vehicleModel.getOwnerName(), vehicleModel.getOwnerSurname(), vehicleModel.getOwnerJmbg());	
 			HttpEntity<VehicleInsurance> requestEntity3 = new HttpEntity<VehicleInsurance>(carIns, this.headers);
 			VehicleInsurance carInsNew = (VehicleInsurance) rest.postForObject(this.urlBase+"saveVehicleInsurance/", requestEntity3, VehicleInsurance.class);
@@ -158,7 +161,7 @@ public class TravelController {
 		riskItems.add(getRiskItemById(mainModel.getState()));
 		if(mainModel.getSport()!="")
 			riskItems.add(getRiskItemById(mainModel.getSport()));
-		riskItems.add(getRiskItemById(mainModel.getTotalPrice()));
+	
 		
 		policyDal.setRiskItems(riskItems);
 		HttpEntity<Policy> requestEntity5 = new HttpEntity<Policy>(policyDal, this.headers);
@@ -185,103 +188,48 @@ public class TravelController {
 
 		List<HomeInsuranceView> listForView = new ArrayList<HomeInsuranceView>();
 
-		InsuranceCategory insuranceCategory = insuranceCategoryDao.findByCategoryName("TravelInsurance");
-		List<InsuranceCategory_Risk> listInsCatRisk = insuranceCategoryRiskDao
-				.findByInsuranceCategoryID(insuranceCategory.getId());
-
-		List<Long> tempNumRisk = new ArrayList<Long>();
-
-		for (InsuranceCategory_Risk icr : listInsCatRisk) {
-			tempNumRisk.add(icr.getRiskID());
-		}
-		List<RiskItem> riskItemList = (List<RiskItem>) riskItemDao.findByRiskIDIn(tempNumRisk); // lista
-																								// svih
-																								// riskitem
-																								// sa
-																								// homecategory
-
-		List<Long> tempRiskItemList = new ArrayList<Long>();
-		for (RiskItem ri : riskItemList) {
-			tempRiskItemList.add(ri.getId());
-		}
-		List<PriceImpacts> listPriceImpacts = (List<PriceImpacts>) priceImpactDao.findByRiskItemIdIn(tempRiskItemList);
+		System.out.println("Poslao upit");
+		
+		InsuranceCategory ic = rest.postForObject(this.urlBase+"categoryName/TravelInsurance", null, InsuranceCategory.class);																					// svih
+		List<Risk> newRisks = new ArrayList();
+		newRisks.addAll(ic.getRisks());
+		Collections.sort(newRisks, new Comparator<Risk>(){
+		     public int compare(Risk o1, Risk o2){
+		         if(o1.getId() == o2.getId())
+		             return 0;
+		         return o1.getId() < o2.getId() ? -1 : 1;
+		     }
+		});
+		List<RiskItem> riskItemList = new ArrayList<RiskItem>();// riskitem
 		HomeInsuranceView homeInsV = null;
-		for (Long l : tempNumRisk) {
-			homeInsV = new HomeInsuranceView();
-			homeInsV.setLabelName(riskDao.findOne(l).getRiskName()); // postavljanje
-																		// labele
-
+		for(Risk r : newRisks){
 			List<HomeInsuranceOption> temp = new ArrayList<HomeInsuranceOption>();
-			for (RiskItem ri : riskItemList) {
+			riskItemList.addAll(r.getRiskItems());
+			homeInsV = new HomeInsuranceView();
+			homeInsV.setLabelName(r.getRiskName());
+			
+			for (RiskItem ri : r.getRiskItems()) {
 
 				HomeInsuranceOption hio = null;
-				if (ri.getRiskID() == l) {
 					hio = new HomeInsuranceOption();
 					hio.setId(String.valueOf(ri.getId()));
 					hio.setName(ri.getItemName());
 					// JOS CIJENU IZVUCI u hio
-					hio.setPrice(findByRiskItemID(listPriceImpacts, ri.getId()));
-				}
+					PriceImpacts priceIp = ri.getImpacts().iterator().next();
+					hio.setPrice(priceIp.getValue());
 				if (hio != null)
 					temp.add(hio);
 			}
 			homeInsV.getOptionList().addAll(temp);
 			listForView.add(homeInsV);
-		}
+		}																						// sa
+																								// homecategory
+
+		
 		System.out.println(listForView);
 
 		return listForView;
 
 	}
 
-	public double findByRiskItemID(List<PriceImpacts> listPriceImpacts, Long riskItemID) {
-		double num = 0;
-		for (PriceImpacts pi : listPriceImpacts) {
-			if (pi.getRiskItemId() == riskItemID) {
-				num = pi.getValue();
-				break;
-			}
-		}
-		return num;
-	}
-
-	/**
-	 ** PRIVATE FIELDS
-	 */
-
-	@Autowired
-	private InsuranceCategoryDao insuranceCategoryDao;
-
-	@Autowired
-	private InsuranceCategoryRiskDao insuranceCategoryRiskDao;
-
-	@Autowired
-	private PriceImpactDao priceImpactDao;
-
-	@Autowired
-	private PriceImpactPricelistDao priceImpactPricelistDao;
-
-	@Autowired
-	private PricelistDao pricelistDao;
-
-	@Autowired
-	private RiskDao riskDao;
-
-	@Autowired
-	private RiskItemDao riskItemDao;
-
-	@Autowired
-	private InsuranceTypeDAO insuranceTypeDao;
-
-	@Autowired
-	private HomeAgeDAO homeAgeDao;
-
-	@Autowired
-	private HomeOwnerDAO homeOwnerDao;
-
-	@Autowired
-	private HomeSurfaceDAO homeSurfaceDao;
-
-	@Autowired
-	private HomeValueDAO homeValueDao;
 }

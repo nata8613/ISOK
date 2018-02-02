@@ -23,8 +23,11 @@ export class AdditionalStepComponent implements OnInit {
 	permissionCar : boolean = true;
 	permissionHome : boolean = true;
 
-	totalPriceCar : number = 0;
-	totalPriceHome : number = 0;
+	totalPriceCar : number = 100;
+  totalPriceCarTemp : number = 100;
+
+	totalPriceHome : number = 100;
+  totalPriceHomeTemp : number = 100;
 
 	homeInsuranceViews: HomeInsuranceView[];
 	carInsuranceViews: HomeInsuranceView[];
@@ -33,6 +36,8 @@ export class AdditionalStepComponent implements OnInit {
 
  	item1 : HomeInsuranceView ;
 	item2 : HomeInsuranceView ;
+  item7 : HomeInsuranceView ;
+  item8 : HomeInsuranceView ;
 
 	item3 : HomeInsuranceView ;
 	item4 : HomeInsuranceView ;
@@ -40,6 +45,7 @@ export class AdditionalStepComponent implements OnInit {
 	item6 : HomeInsuranceView ;
  	previousSelectedCar : SelectedOptions[] = [];
  	previousSelectedHome : SelectedOptions[] = [];
+
 	constructor(private modelDataService : ModelDataService, 
 		private homeInsuranceService : HomeInsuranceService, 
 		private dataService : DataService) { }
@@ -51,6 +57,8 @@ export class AdditionalStepComponent implements OnInit {
 		 this.vehicleModel = this.modelDataService.getVehicleData();
 		 this.homeModel = this.modelDataService.getHomeData();
 
+     this.previousSelectedHome = this.dataService.getHomeData();
+     this.previousSelectedCar =  this.dataService.getCarData();
 		 console.log('Vehicle feature loaded!');
 	}
 
@@ -66,8 +74,8 @@ export class AdditionalStepComponent implements OnInit {
    	 	 if(this.previousSelectedCar.some(x => x.labelName === selectedVal)) {
 
    	 	 	 this.permissionCar = false;
-                this.totalPriceCar = 0;
-                this.vehicleModel.totalPrice = this.totalPriceCar.toString();
+                //this.totalPriceCarTemp = 100;
+                this.vehicleModel.totalPrice = this.totalPriceCarTemp.toString();
                 for(let entry of this.previousSelectedCar) {
 
                 if(entry.labelName == selectedVal) {
@@ -93,7 +101,7 @@ export class AdditionalStepComponent implements OnInit {
                   }
                 }
 
-                this.totalPriceCar = this.totalPriceCar + Number(konkretnaVrijednost.price);
+                this.totalPriceCar = this.totalPriceCarTemp + Number(this.totalPriceCarTemp) *Number(konkretnaVrijednost.price);
                 this.vehicleModel.totalPrice = this.totalPriceCar.toString();
 			}
    	 	 } else {
@@ -108,7 +116,7 @@ export class AdditionalStepComponent implements OnInit {
         for(let entry of this.carInsuranceViews) {
           for(let option of entry.optionList) {
             if(option.id == newVal) {
-              this.totalPriceCar = this.totalPriceCar + Number(option.price);
+              this.totalPriceCar =this.totalPriceCarTemp + Number(this.totalPriceCarTemp) * Number(option.price);
               this.vehicleModel.totalPrice = this.totalPriceCar.toString();
                break;
              }
@@ -133,7 +141,7 @@ export class AdditionalStepComponent implements OnInit {
     this.homeInsuranceService.getCarInsuranceView().subscribe(data =>  this.carInsuranceViews = data,
       err => {
         console.log(err);
-      }, () => {this.item1 = this.carInsuranceViews[0], this.item2 = this.carInsuranceViews[1]});
+      }, () => {this.item1 = this.carInsuranceViews[0], this.item2 = this.carInsuranceViews[1], this.item7 = this.carInsuranceViews[2], this.item8 = this.carInsuranceViews[3]});
     }
 
     callback():void {
@@ -148,8 +156,8 @@ export class AdditionalStepComponent implements OnInit {
    	 	 if(this.previousSelectedHome.some(x => x.labelName === selectedVal)) {
 
    	 	 	 this.permissionHome = false;
-                this.totalPriceHome = 0;
-                this.homeModel.totalPrice = this.totalPriceHome.toString();
+                //this.totalPriceHomeTemp = 100;
+                this.homeModel.totalPrice = this.totalPriceHomeTemp.toString();
                 for(let entry of this.previousSelectedHome) {
 
                 if(entry.labelName == selectedVal) {
@@ -175,7 +183,7 @@ export class AdditionalStepComponent implements OnInit {
                   }
                 }
 
-                this.totalPriceHome = this.totalPriceHome + Number(konkretnaVrijednost.price);
+                this.totalPriceHome = this.totalPriceHomeTemp + Number(this.totalPriceHomeTemp) * Number(konkretnaVrijednost.price);
                 this.homeModel.totalPrice = this.totalPriceHome.toString();
 			}
    	 	 } else {
@@ -190,7 +198,7 @@ export class AdditionalStepComponent implements OnInit {
         for(let entry of this.homeInsuranceViews) {
           for(let option of entry.optionList) {
             if(option.id == newVal) {
-              this.totalPriceHome = this.totalPriceHome + Number(option.price);
+              this.totalPriceHome =this.totalPriceHomeTemp + Number(this.totalPriceHomeTemp) * Number(option.price);
               this.homeModel.totalPrice = this.totalPriceHome.toString();
                break;
              }
@@ -200,7 +208,7 @@ export class AdditionalStepComponent implements OnInit {
       } //end if this.permission
 
     this.permissionHome = true;
-   
+    this.dataService.setHomeData(this.previousSelectedHome);
 	}
 
 }

@@ -1,6 +1,5 @@
 package netgloo.models;
 
-
 public class HomeInsurance {
 	
 	private long id; 

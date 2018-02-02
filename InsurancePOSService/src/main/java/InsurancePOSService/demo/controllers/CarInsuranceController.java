@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import InsurancePOSService.demo.SifrarnikMetoda;
+import InsurancePOSService.demo.annotations.PermissionType;
 import InsurancePOSService.demo.models.CarInsuranceDTO;
 import InsurancePOSService.demo.models.Client;
 import InsurancePOSService.demo.models.HomeInsurance;
@@ -44,6 +49,7 @@ public class CarInsuranceController {
 	private HttpHeaders headers;
 	private Map<String, String> params;
 	private HttpEntity<Map<String, String>> requestEntity;
+	final static Logger logger = LogManager.getLogger(CarInsuranceController.class);
 	
 	public CarInsuranceController(){
 		urlBase = "http://localhost:8081/dc/isok/";
@@ -56,31 +62,37 @@ public class CarInsuranceController {
 	
 	@RequestMapping("/getKilometers")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getKilometers() {
 		return this.getRiskByName("Transport km");
 	}
 	
 	@RequestMapping("/getPrices")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getPrices() {
 		return this.getRiskByName("Repair Price");
 	}
 	
 	@RequestMapping("/getHotelDays")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getHotelDays() {
 		return this.getRiskByName("Hotel Days");
 	}
 	
 	@RequestMapping("/getAltVehicle")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getAltVehicle() {
 		return this.getRiskByName("Alt vehicle");
 	}
 	
 	@RequestMapping(value="/createCarInsurance", method=RequestMethod.POST)
-	public ResponseEntity<Double> insuranceValue(@RequestBody CarInsuranceDTO insurance) {
-		
+	@PreAuthorize("hasRole('prodavac')")
+	@PermissionType("CarInsurance:create")
+	public ResponseEntity<Double> carInsuranceValue(@RequestBody CarInsuranceDTO insurance) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		//Na osnovu dobijenih podataka racuna cenu samo za osiguranje pomoc na putu
 		this.params.put("name", "VehicleInsurance");
 		 this.requestEntity = new HttpEntity<Map<String, String>>(this.params, this.headers);

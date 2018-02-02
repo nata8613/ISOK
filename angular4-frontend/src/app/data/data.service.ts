@@ -6,12 +6,26 @@ import {SelectedOptions} from "../selectedOptions";
 export class DataService {
     private carModel : SelectedOptions[] = [];
 
+    private homeModel : SelectedOptions[] = [];
+
+
     getCarData():  SelectedOptions[] {
         return this.carModel;
     }
 
     setCarData(carmodel : SelectedOptions[]) {
         this.carModel = carmodel;
+    }
+
+
+
+
+    getHomeData(): SelectedOptions[] {
+    	return this.homeModel;
+    }
+
+    setHomeData(homeModel : SelectedOptions[]) {
+    	this.homeModel = homeModel;
     }
 	
 }

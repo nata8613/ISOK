@@ -16,13 +16,16 @@ export class MainStepComponent implements OnInit {
   title = 'Please tell us about yourself.';
   form: any;
   mainmodel : MainModel;
-  totalPrice : number = 0;
+  totalPrice : number = 100;
+  totalPriceTemp : number = 100;
+
   homeInsuranceViews: HomeInsuranceView[];
   selectedOption:HomeInsuranceOption;
 
   item1 : HomeInsuranceView ;
   item2 : HomeInsuranceView ;
   item3 : HomeInsuranceView ;
+  item4 : HomeInsuranceView ;
 
   permission : boolean = true;
 
@@ -33,6 +36,7 @@ export class MainStepComponent implements OnInit {
   ngOnInit() {
     this.getMainStepView();
   	 this.mainmodel = this.modelDataService.getMainData();
+     
      console.log('Main feature loaded!');
   }
 
@@ -40,7 +44,7 @@ export class MainStepComponent implements OnInit {
     this.homeInsuranceService.getMainStepView().subscribe(data => this.homeInsuranceViews = data,
       err => {
         console.log(err);
-      }, () => {this.item1 = this.homeInsuranceViews[0], this.item2 = this.homeInsuranceViews[1], this.item3 = this.homeInsuranceViews[2]});
+      }, () => {this.item1 = this.homeInsuranceViews[0], this.item2 = this.homeInsuranceViews[1], this.item3 = this.homeInsuranceViews[2], this.item4 = this.homeInsuranceViews[3]});
     }
 
     onChange(newVal, selectedVal) {
@@ -58,8 +62,9 @@ export class MainStepComponent implements OnInit {
               if(this.previousSelected1.some(x => x.labelName === selectedVal)) {
                 //ako vec ima uradi nesto
                 this.permission = false;
-                this.totalPrice = 0;
-                this.mainmodel.totalPrice = this.totalPrice.toString();
+                //this.totalPriceTemp = 100;
+                // this.totalPrice = 100;
+                this.mainmodel.totalPrice = this.totalPriceTemp.toString();
                 for(let entry of this.previousSelected1) {
 
                 if(entry.labelName == selectedVal) {
@@ -85,8 +90,8 @@ export class MainStepComponent implements OnInit {
                   }
                 }
 
-                this.totalPrice = this.totalPrice +  (Number(konkretnaVrijednost.price)*Number(this.mainmodel.numOfPersonsLess) +
-                Number(konkretnaVrijednost.price)*Number(this.mainmodel.numOfPersonsMore))*this.daysDiff ;
+                this.totalPrice = Number(this.totalPriceTemp) + (Number(konkretnaVrijednost.price)*Number(this.mainmodel.numOfPersonsLess)*Number(this.totalPriceTemp)+
+                Number(konkretnaVrijednost.price)*Number(this.mainmodel.numOfPersonsMore)*Number(this.totalPriceTemp))*this.daysDiff ;
                 this.mainmodel.totalPrice = this.totalPrice.toString();
 
                 }
@@ -103,8 +108,8 @@ export class MainStepComponent implements OnInit {
         for(let entry of this.homeInsuranceViews) {
           for(let option of entry.optionList) {
             if(option.id == newVal) {
-              this.totalPrice = this.totalPrice + (Number(option.price)*Number(this.mainmodel.numOfPersonsLess) +
-               Number(option.price)*Number(this.mainmodel.numOfPersonsMore))*this.daysDiff;
+              this.totalPrice = Number(this.totalPriceTemp) + (Number(option.price)*Number(this.mainmodel.numOfPersonsLess)*Number(this.totalPriceTemp) +
+               Number(option.price)*Number(this.mainmodel.numOfPersonsMore)*Number(this.totalPriceTemp))*this.daysDiff;
               this.mainmodel.totalPrice = this.totalPrice.toString();
                break;
              }
