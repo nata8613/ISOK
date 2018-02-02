@@ -3,6 +3,7 @@ package InsurancePOSService.demo.controllers;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import InsurancePOSService.demo.models.Person;
 @CrossOrigin("*")
 public class PersonsController {
 	@RequestMapping(value="/peopleInfo", method=RequestMethod.POST)
+	@PreAuthorize("hasRole('zaposlen')")
 	public ResponseEntity<List<Person>> insuranceValue(@RequestBody List<Person> persons) {
 		/* to do: */
 		// izdvojiti onoga koji ima email (ugovarac osiguranja) i poslati mu email o uspesnoj ili neuspesnoj kupovini osiguranja

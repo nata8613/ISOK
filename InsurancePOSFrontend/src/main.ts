@@ -1,3 +1,4 @@
+import { KeycloakService } from './app/shared/keycloak.service';
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -8,5 +9,8 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+KeycloakService.init()
+  .then(() => platformBrowserDynamic().bootstrapModule(AppModule))
+  .catch(e => {
+    console.error(e);
+});

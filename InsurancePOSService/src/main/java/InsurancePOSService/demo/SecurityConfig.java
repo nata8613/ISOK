@@ -1,4 +1,4 @@
-/*package InsurancePOSService.demo;
+package InsurancePOSService.demo;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
@@ -15,7 +15,6 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
@@ -64,7 +63,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
         return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
     }*/
 	
-/*	@Autowired
+	@Autowired
 	   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	      KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
 	      keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
@@ -85,10 +84,10 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 	   {
 	      super.configure(http);
 	      http
-	            .authorizeRequests().antMatchers("/**").authenticated().anyRequest().permitAll().and()
-	            .httpBasic().and()
+	            .authorizeRequests().antMatchers("/**").authenticated().anyRequest().permitAll().and().csrf().disable();
+	            /*.httpBasic().and()
 	            .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
-	            .csrf().csrfTokenRepository(csrfTokenRepository());
+	            .csrf().csrfTokenRepository(csrfTokenRepository());*/
 	   }
 	   
 	   private CsrfTokenRepository csrfTokenRepository() {
@@ -96,4 +95,4 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 		   repository.setHeaderName("X-XSRF-TOKEN");
 		   return repository;
 		 }
-}*/
+}

@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import InsurancePOSService.demo.annotations.PermissionType;
 import InsurancePOSService.demo.models.CarInsuranceDTO;
 import InsurancePOSService.demo.models.Client;
 import InsurancePOSService.demo.models.HomeInsurance;
@@ -56,29 +58,35 @@ public class CarInsuranceController {
 	
 	@RequestMapping("/getKilometers")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getKilometers() {
 		return this.getRiskByName("Transport km");
 	}
 	
 	@RequestMapping("/getPrices")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getPrices() {
 		return this.getRiskByName("Repair Price");
 	}
 	
 	@RequestMapping("/getHotelDays")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getHotelDays() {
 		return this.getRiskByName("Hotel Days");
 	}
 	
 	@RequestMapping("/getAltVehicle")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getAltVehicle() {
 		return this.getRiskByName("Alt vehicle");
 	}
 	
 	@RequestMapping(value="/createCarInsurance", method=RequestMethod.POST)
+	@PreAuthorize("hasRole('prodavac')")
+	@PermissionType("CarInsurance:create")
 	public ResponseEntity<Double> insuranceValue(@RequestBody CarInsuranceDTO insurance) {
 		
 		//Na osnovu dobijenih podataka racuna cenu samo za osiguranje pomoc na putu

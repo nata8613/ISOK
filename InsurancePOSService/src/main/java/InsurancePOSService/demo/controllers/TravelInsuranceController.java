@@ -8,16 +8,16 @@ import java.util.Map;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import InsurancePOSService.demo.models.DataAcqToPCC;
+import InsurancePOSService.demo.annotations.PermissionType;
 import InsurancePOSService.demo.models.InsuranceCategory;
 import InsurancePOSService.demo.models.PriceImpacts;
 import InsurancePOSService.demo.models.Risk;
@@ -47,18 +47,21 @@ public class TravelInsuranceController {
 	
 	@RequestMapping("/getRegions")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getRegions() {
 		return this.getRiskByName("Destination");
 	}
 	
 	@RequestMapping("/getAges")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getAge() {
 		return this.getRiskByName("Personal age");
 	}
 	
 	@RequestMapping("/getSports")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getSport() {
 		return this.getRiskByName("Sport");
 	}
@@ -66,12 +69,15 @@ public class TravelInsuranceController {
 	// do kog iznosa je osiguran korisnik
 	@RequestMapping("/getInsuranceValues")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> insuranceValue() {
 		return this.getRiskByName("Insurance value");
 	}
 	
 	//@PostMapping("/createTravelInsurance")
 	@RequestMapping(value="/createTravelInsurance", method=RequestMethod.POST)
+	@PreAuthorize("hasRole('prodavac')")
+	@PermissionType("TravelInsurance:create")
 	public ResponseEntity<Double> insuranceValue(@RequestBody TravelInsuranceDTO insurance) {
 		
 		//  Na osnovu dobijenih podataka racuna cenu samo za putno osiguranje

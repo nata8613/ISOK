@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import InsurancePOSService.demo.annotations.PermissionType;
 import InsurancePOSService.demo.models.HomeInsuranceDTO;
 import InsurancePOSService.demo.models.InsuranceCategory;
 import InsurancePOSService.demo.models.PriceImpacts;
@@ -46,29 +48,35 @@ public class HomeInsuranceController {
 	
 	@RequestMapping("/getHomeSurfaces")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getHomeSurfaces() {
 		return this.getRiskByName("Home surface");
 	}
 	
 	@RequestMapping("/getHomeAges")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getHomeAges(){
 		return this.getRiskByName("Home Age");
 	}
 	
 	@RequestMapping("/getHomeValues")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getHomeValues() {
 		return this.getRiskByName("Home value");
 	}
 	
 	@RequestMapping("/getInsuranceReasons")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getInsuranceReasons() {
 		return this.getRiskByName("Insurance reason");
 	}
 	
 	@RequestMapping(value="/createHomeInsurance", method=RequestMethod.POST)
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
+	@PermissionType("HomeInsurance:create")
 	public ResponseEntity<Double> insuranceValue(@RequestBody HomeInsuranceDTO insurance) {
 		
 		//Na osnovu dobijenih podataka racuna cenu samo za osiguranje stana

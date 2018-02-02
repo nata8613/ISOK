@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import datacentar.dc.isok.model.MerchantLicense;
 
 @Repository
-public interface MerchantLicenseRepo extends CrudRepository<MerchantLicense, Long>{
+public interface MerchantLicenseOldRepo extends CrudRepository<MerchantLicense, Long>{
 
 }
