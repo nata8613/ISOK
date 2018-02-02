@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.PM.PMService.TheUrls;
+import com.PM.PMService.annotations.PermissionType;
 import com.PM.PMService.models.InsuranceCategory;
 import com.PM.PMService.models.Risk;
 import com.PM.PMService.models.RiskItem;
@@ -34,6 +36,8 @@ public class InventarContoller {
 	
 	@RequestMapping("/addCategory")
 	@ResponseBody
+	@PreAuthorize("hasRole('finansijski analiticar')")
+	@PermissionType("Category:create")
 	public InsuranceCategory saveCategory(@RequestBody InsuranceCategory kategorija){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/saveCategory";
@@ -47,6 +51,7 @@ public class InventarContoller {
 	
 	@RequestMapping("/getCategories")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
 	public InsuranceCategory[] getCategories(){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/getCategories";
@@ -61,6 +66,8 @@ public class InventarContoller {
 	}
 	@RequestMapping("/updateCategory/{id}")
 	@ResponseBody
+	@PreAuthorize("hasRole('finansijski analiticar')")
+	@PermissionType("Category:update")
 	public InsuranceCategory updateCategory(@PathVariable("id") long id, @RequestBody InsuranceCategory kategorija){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/updateCategory/{"+id+"}";
@@ -75,6 +82,8 @@ public class InventarContoller {
 	
 	@RequestMapping("/deleteCategory/{id}")
 	@ResponseBody
+	@PreAuthorize("hasRole('finansijski analiticar')")
+	@PermissionType("Category:delete")
 	public boolean deleteCategory(@PathVariable("id") long id){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/deleteCategory/"+id;
@@ -107,6 +116,8 @@ public class InventarContoller {
 	
 	@RequestMapping("/saveRiskItem")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
+	@PermissionType("RiskItem:create")
 	public RiskItem saveRiskItem(@RequestBody HashMap<String, Object> risk){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/saveRiskItem";
@@ -123,6 +134,7 @@ public class InventarContoller {
 	
 	@RequestMapping("/getRiskItems")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
 	public RiskItem[] getRiskItems(){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/getRiskItems";
@@ -138,6 +150,7 @@ public class InventarContoller {
 	
 	@RequestMapping("/getRiskItem")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
 	public RiskItem getRiskItem(@PathVariable("id") long id){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/getRiskItem";
@@ -155,6 +168,8 @@ public class InventarContoller {
 	
 	@RequestMapping("/updateRiskItem/{id}")
 	@ResponseBody
+	@PreAuthorize("hasRole('finansijski analiticar')")
+	@PermissionType("RiskItem:update")
 	public RiskItem updateRiskItem(@PathVariable("id") long id, @RequestBody RiskItem RiskItem){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/updateRiskItem/{"+id+"}";
@@ -174,6 +189,8 @@ public class InventarContoller {
 	
 	@RequestMapping("/deleteRiskItem/{id}")
 	@ResponseBody
+	@PreAuthorize("hasRole('finansijski analiticar')")
+	@PermissionType("RiskItem:delete")
 	public boolean deleteRiskItem(@PathVariable("id") long id){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/deleteRiskItem/"+id;
@@ -192,6 +209,7 @@ public class InventarContoller {
 	/********************************** RIZICI ************************************/
 	@RequestMapping("/getRisks")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
 	public Risk[] getRisks(){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/getRisks";
@@ -209,6 +227,8 @@ public class InventarContoller {
 	 * */
 	@RequestMapping("/addRisk")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
+	@PermissionType("Risk:create")
 	public Risk addRisK(@RequestBody HashMap<String,Object> risk){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/saveRisk";
@@ -224,6 +244,8 @@ public class InventarContoller {
 	
 	@RequestMapping("/updateRisk/{id}")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
+	@PermissionType("Risk:update")
 	public Risk updateRisk(@PathVariable("id") long id, @RequestBody Risk Risk){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/updateRisk/{"+id+"}";
@@ -242,6 +264,8 @@ public class InventarContoller {
 	
 	@RequestMapping("/deleteRisk/{id}")
 	@ResponseBody
+	@PreAuthorize("hasRole('finansijski analiticar')")
+	@PermissionType("Risk:delete")
 	public boolean deleteRisk(@PathVariable("id") long id){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/deleteRisk/"+id;
@@ -260,6 +284,8 @@ public class InventarContoller {
 	
 	@RequestMapping("/getRules")
 	@ResponseBody
+	@PreAuthorize("hasRole('finansijski analiticar')")
+
 	public Rules[] getRules(){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/getRules";
@@ -275,6 +301,8 @@ public class InventarContoller {
 	
 	@RequestMapping("/updateRules/{id}")
 	@ResponseBody
+	@PreAuthorize("hasRole('finansijski analiticar')")
+	@PermissionType("Rules:update")
 	public Rules updateRules(@PathVariable("id") long id, @RequestBody Rules Rule){
 		
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/updateRules/{"+id+"}";

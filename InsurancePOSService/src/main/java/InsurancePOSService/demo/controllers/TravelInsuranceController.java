@@ -48,19 +48,20 @@ public class TravelInsuranceController {
 	@RequestMapping("/getRegions")
 	@ResponseBody
 	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
-	@PermissionType("TravelInsurance:create")
 	public List<RiskItemDTO> getRegions() {
 		return this.getRiskByName("Destination");
 	}
 	
 	@RequestMapping("/getAges")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getAge() {
 		return this.getRiskByName("Personal age");
 	}
 	
 	@RequestMapping("/getSports")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getSport() {
 		return this.getRiskByName("Sport");
 	}
@@ -68,12 +69,15 @@ public class TravelInsuranceController {
 	// do kog iznosa je osiguran korisnik
 	@RequestMapping("/getInsuranceValues")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> insuranceValue() {
 		return this.getRiskByName("Insurance value");
 	}
 	
 	//@PostMapping("/createTravelInsurance")
 	@RequestMapping(value="/createTravelInsurance", method=RequestMethod.POST)
+	@PreAuthorize("hasRole('prodavac')")
+	@PermissionType("TravelInsurance:create")
 	public ResponseEntity<Double> insuranceValue(@RequestBody TravelInsuranceDTO insurance) {
 		
 		//  Na osnovu dobijenih podataka racuna cenu samo za putno osiguranje

@@ -48,31 +48,35 @@ public class HomeInsuranceController {
 	
 	@RequestMapping("/getHomeSurfaces")
 	@ResponseBody
-	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavas'])")
-	@PermissionType("HomeInsurance:create")
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getHomeSurfaces() {
 		return this.getRiskByName("Home surface");
 	}
 	
 	@RequestMapping("/getHomeAges")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getHomeAges(){
 		return this.getRiskByName("Home Age");
 	}
 	
 	@RequestMapping("/getHomeValues")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getHomeValues() {
 		return this.getRiskByName("Home value");
 	}
 	
 	@RequestMapping("/getInsuranceReasons")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	public List<RiskItemDTO> getInsuranceReasons() {
 		return this.getRiskByName("Insurance reason");
 	}
 	
 	@RequestMapping(value="/createHomeInsurance", method=RequestMethod.POST)
+	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
+	@PermissionType("HomeInsurance:create")
 	public ResponseEntity<Double> insuranceValue(@RequestBody HomeInsuranceDTO insurance) {
 		
 		//Na osnovu dobijenih podataka racuna cenu samo za osiguranje stana

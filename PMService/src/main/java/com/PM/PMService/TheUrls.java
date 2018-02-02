@@ -10,6 +10,8 @@ public final class TheUrls {
 	
 	public static String dcPcc = "/dc/pcc";
 	
+	public static String dcUser = "/dc/user";
+	
 	private TheUrls(){
 		super();
 	}

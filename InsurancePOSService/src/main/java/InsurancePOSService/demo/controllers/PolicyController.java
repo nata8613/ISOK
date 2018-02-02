@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 
+import InsurancePOSService.demo.annotations.PermissionType;
 import InsurancePOSService.demo.models.CarInsuranceDTO;
 import InsurancePOSService.demo.models.Client;
 import InsurancePOSService.demo.models.HomeInsurance;
@@ -49,6 +51,8 @@ public class PolicyController {
 	}
 	
 	@RequestMapping(value="/savePolicy", method=RequestMethod.POST)
+	@PreAuthorize("hasRole('prodavac')")
+	@PermissionType("Policy:create")
 	public ResponseEntity<String> savePolicy(@RequestBody PolicyDTO policy) {
 		
 		TravelInsuranceDTO travelInsDTO = policy.getTravelInsurance();
