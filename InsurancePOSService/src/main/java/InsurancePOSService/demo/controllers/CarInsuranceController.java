@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import InsurancePOSService.demo.SifrarnikMetoda;
 import InsurancePOSService.demo.annotations.PermissionType;
 import InsurancePOSService.demo.models.CarInsuranceDTO;
 import InsurancePOSService.demo.models.Client;
@@ -46,6 +49,7 @@ public class CarInsuranceController {
 	private HttpHeaders headers;
 	private Map<String, String> params;
 	private HttpEntity<Map<String, String>> requestEntity;
+	final static Logger logger = LogManager.getLogger(CarInsuranceController.class);
 	
 	public CarInsuranceController(){
 		urlBase = "http://localhost:8080/dc/isok/";
@@ -87,8 +91,8 @@ public class CarInsuranceController {
 	@RequestMapping(value="/createCarInsurance", method=RequestMethod.POST)
 	@PreAuthorize("hasRole('prodavac')")
 	@PermissionType("CarInsurance:create")
-	public ResponseEntity<Double> insuranceValue(@RequestBody CarInsuranceDTO insurance) {
-		
+	public ResponseEntity<Double> carInsuranceValue(@RequestBody CarInsuranceDTO insurance) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		//Na osnovu dobijenih podataka racuna cenu samo za osiguranje pomoc na putu
 		this.params.put("name", "VehicleInsurance");
 		 this.requestEntity = new HttpEntity<Map<String, String>>(this.params, this.headers);

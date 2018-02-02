@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import InsurancePOSService.demo.SifrarnikMetoda;
 import InsurancePOSService.demo.annotations.PermissionType;
 import InsurancePOSService.demo.models.HomeInsuranceDTO;
 import InsurancePOSService.demo.models.InsuranceCategory;
@@ -35,6 +38,7 @@ public class HomeInsuranceController {
 	private HttpHeaders headers;
 	private Map<String, String> params;
 	private HttpEntity<Map<String, String>> requestEntity;
+	final static Logger logger = LogManager.getLogger(HomeInsuranceController.class);
 	
 	public HomeInsuranceController(){
 		urlBase = "http://localhost:8080/dc/isok/";
@@ -77,8 +81,8 @@ public class HomeInsuranceController {
 	@RequestMapping(value="/createHomeInsurance", method=RequestMethod.POST)
 	@PreAuthorize("hasAnyRole(['zaposlen', 'prodavac'])")
 	@PermissionType("HomeInsurance:create")
-	public ResponseEntity<Double> insuranceValue(@RequestBody HomeInsuranceDTO insurance) {
-		
+	public ResponseEntity<Double> homeInsuranceValue(@RequestBody HomeInsuranceDTO insurance) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		//Na osnovu dobijenih podataka racuna cenu samo za osiguranje stana
 		this.params.put("name", "HomeInsurance");
 		 this.requestEntity = new HttpEntity<Map<String, String>>(this.params, this.headers);

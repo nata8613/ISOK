@@ -78,7 +78,7 @@ public class TravelInsuranceController {
 	@RequestMapping(value="/createTravelInsurance", method=RequestMethod.POST)
 	@PreAuthorize("hasRole('prodavac')")
 	@PermissionType("TravelInsurance:create")
-	public ResponseEntity<Double> insuranceValue(@RequestBody TravelInsuranceDTO insurance) {
+	public ResponseEntity<Double> travelInsuranceValue(@RequestBody TravelInsuranceDTO insurance) {
 		
 		//  Na osnovu dobijenih podataka racuna cenu samo za putno osiguranje
 		this.params.put("name", "TravelInsurance");

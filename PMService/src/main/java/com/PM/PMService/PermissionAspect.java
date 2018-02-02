@@ -3,6 +3,8 @@ package com.PM.PMService;
 import java.lang.reflect.Method;
 
 import org.aspectj.lang.reflect.MethodSignature;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,12 +18,14 @@ import com.PM.PMService.models.Permission;
 import com.PM.PMService.models.Role;
 import com.PM.PMService.models.User;
 
+
 @Aspect
 //Mora @Component anotacija inace nece ucitati askept klasu
 @Component
 @Configurable
 public class PermissionAspect {
 	
+	final static Logger logger = LogManager.getLogger(PermissionAspect.class);
 
 	@Around("execution(* com.PM.PMService.controllers.*.*(..)) && "
 			+ "@annotation(com.PM.PMService.annotations.PermissionType)")
@@ -47,18 +51,22 @@ public class PermissionAspect {
 		    }
 		    Object retVal = null;
 		    if(weGood){
-				try {
-					retVal = jp.proceed();
-				} catch (Throwable e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+						try {
+							logger.warn("User  " + u.getId()+ " is trying to access method " + SifrarnikMetoda.methods.get(jp.getSignature().getName()));
+							retVal = jp.proceed();
+						} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							logger.error("Error executing " + SifrarnikMetoda.methods.get(jp.getSignature().getName()));
+							e.printStackTrace();
+						}
+				    } else {
+				    	logger.error("Inadequate permissions for method " + SifrarnikMetoda.methods.get(jp.getSignature().getName()));
+				    }
+				    return retVal;
+				} else {
+					logger.error("Failed to access method " + SifrarnikMetoda.methods.get(jp.getSignature().getName()));
+					return null;
 				}
-		    } else {
-		    }
-		    return retVal;
-		} else {
-			return null;
-		}
 	}  
 
 }
