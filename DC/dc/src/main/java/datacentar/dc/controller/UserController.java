@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import datacentar.dc.isok.model.MerchantLicense;
 import datacentar.dc.isok.model.Role;
 import datacentar.dc.isok.model.User;
-import datacentar.dc.isok.repo.MerchantLicenseRepo;
+import datacentar.dc.isok.repo.MerchantLicenseOldRepo;
 import datacentar.dc.isok.repo.PermissionRepo;
 import datacentar.dc.isok.repo.RoleRepo;
 import datacentar.dc.isok.repo.UserRepo;
@@ -38,8 +38,8 @@ public class UserController {
 	@Autowired
 	private PermissionRepo permissionRepo;
 	
-	@Autowired
-	private MerchantLicenseRepo merchRepo;
+	//@Autowired
+	//private MerchantLicenseOldRepo merchRepo;
 	
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getUsers", method = RequestMethod.GET)
@@ -55,16 +55,16 @@ public class UserController {
 	public User saveUser(@RequestBody HashMap<String, Object> user) {
 		ObjectMapper mapper = new ObjectMapper();
 		User us = mapper.convertValue(user.get("user"), User.class);
-		List<String> merchantIds = mapper.convertValue(user.get("merchantId"),  new TypeReference<List<String>>() {});
+	//	List<String> merchantIds = mapper.convertValue(user.get("merchantId"),  new TypeReference<List<String>>() {});
 		User client1 = userRepo.findOne(us.getId());
 		if (client1 != null)
 			return null;
-		if(merchantIds != null){
+		/*if(merchantIds != null){
 			for(String id : merchantIds){
 				MerchantLicense merch = merchRepo.findOne(Long.parseLong(id));
 				us.getLincenses().add(merch);
 			}
-		}
+		}*/
 		client1 = userRepo.save(us);
 		return client1;
 	}
@@ -75,7 +75,7 @@ public class UserController {
 	public User updateClient(@PathVariable("id") long id, @RequestBody HashMap<String, Object> user) {
 		ObjectMapper mapper = new ObjectMapper();
 		User us = mapper.convertValue(user.get("user"), User.class);
-		List<String> merchantIds = mapper.convertValue(user.get("merchantId"),  new TypeReference<List<String>>() {});
+		//List<String> merchantIds = mapper.convertValue(user.get("merchantId"),  new TypeReference<List<String>>() {});
 		User client1 = userRepo.findOne(us.getId());		
 		if(client1 == null)
 			return null;
@@ -84,13 +84,13 @@ public class UserController {
 		User existing = userRepo.findByUsername(us.getUsername());
 		if(existing == null)
 			client1.setUsername(us.getUsername());
-		if(merchantIds != null){
+	/*	if(merchantIds != null){
 			client1.getLincenses().clear();
 			for(String mrId : merchantIds){
 				MerchantLicense merch = merchRepo.findOne(Long.parseLong(mrId));
 				client1.getLincenses().add(merch);
 			}
-		}
+		}*/
 		client1 = userRepo.save(client1);
 		return client1;
 	}

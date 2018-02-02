@@ -1,79 +1,111 @@
 package datacentar.dc.pcc.model;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "transactionsPCC")
+//@Table(name = "transactionsPCC")
 public class Transactions {
 
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long transactionID;
+	private long transactionId;
 
-	@NotNull
-	private long paymentID; // DA LI SMO SIGURNI DA NAM OVO TREBA, I DALJE NISAM
-							// POTPUNO SIGURAN IAKO GA IMA U SPECIFIKACIJI U
-							// DODATKU 2 ALI JE SAMO NAVEDENO DA SE PROSLEDJUJE
+	
+	@Column(nullable = false)
+	private long merchantOrderId;
+	
+	@Column(nullable = false)
+	private Date merchantOrderTimestamp;
+	
+	@Column(nullable= true)
+	private long acquirerOrderId;
 
-	@NotNull
+	@Column(nullable= true)
+	private Date acquirerOrderTimestamp;
+
+	
+	@Column(nullable= false)
+	private long paymentId; 
+
+	
+	@Column(nullable = false)
+	private long amount;
+	
+	@Column(nullable = false)
 	private String status;
 
-	@ManyToOne()
-	@JoinColumn(name="acquirer")
-	private Bank acquirer;
-	
-	@ManyToOne()
-	@JoinColumn(name="issuer")
-	private Bank issuer;
-	
-	@ManyToOne()
-	@JoinColumn(name="merchant")
-	@JsonIgnore
-	private Merchant merchant;
-	
-	@ManyToOne()
-	@JoinColumn(name="orderNum")
-	private Orders orderNum;
-	
 	public Transactions() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Transactions(long paymentID, String status, Bank acquirer, Bank issuer, Merchant merchant,
-			Orders order_num) {
+	
+	public Transactions(long merchantOrderId, Date merchantOrderTimestamp, long acquirerOrderId,
+			Date acquirerOrderTimestamp, long paymentId, long amount, String status) {
 		super();
-		this.paymentID = paymentID;
+		this.merchantOrderId = merchantOrderId;
+		this.merchantOrderTimestamp = merchantOrderTimestamp;
+		this.acquirerOrderId = acquirerOrderId;
+		this.acquirerOrderTimestamp = acquirerOrderTimestamp;
+		this.paymentId = paymentId;
+		this.amount = amount;
 		this.status = status;
-		this.acquirer = acquirer;
-		this.issuer = issuer;
-		this.merchant = merchant;
-		this.orderNum = order_num;
 	}
 
 
-
-	public long getTransactionID() {
-		return transactionID;
+	public long getMerchantOrderId() {
+		return merchantOrderId;
 	}
 
-	public long getPaymentID() {
-		return paymentID;
+	public void setMerchantOrderId(long merchantOrderId) {
+		this.merchantOrderId = merchantOrderId;
 	}
 
-	public void setPaymentID(long paymentID) {
-		this.paymentID = paymentID;
+	public Date getMerchantOrderTimestamp() {
+		return merchantOrderTimestamp;
+	}
+
+	public void setMerchantOrderTimestamp(Date merchantOrderTimestamp) {
+		this.merchantOrderTimestamp = merchantOrderTimestamp;
+	}
+
+	public long getAcquirerOrderId() {
+		return acquirerOrderId;
+	}
+
+	public void setAcquirerOrderId(long acquirerOrderId) {
+		this.acquirerOrderId = acquirerOrderId;
+	}
+
+	public Date getAcquirerOrderTimestamp() {
+		return acquirerOrderTimestamp;
+	}
+
+	public void setAcquirerOrderTimestamp(Date acquirerOrderTimestamp) {
+		this.acquirerOrderTimestamp = acquirerOrderTimestamp;
+	}
+
+	public long getPaymentId() {
+		return paymentId;
+	}
+
+	public void setPaymentId(long paymentId) {
+		this.paymentId = paymentId;
+	}
+
+	public long getAmount() {
+		return amount;
+	}
+
+	public void setAmount(long amount) {
+		this.amount = amount;
 	}
 
 	public String getStatus() {
@@ -84,43 +116,8 @@ public class Transactions {
 		this.status = status;
 	}
 
-	public Bank getAcquirer() {
-		return acquirer;
-	}
-
-
-	public void setAcquirer(Bank acquirer) {
-		this.acquirer = acquirer;
-	}
-
-
-	public Bank getIssuer() {
-		return issuer;
-	}
-
-
-	public void setIssuer(Bank issuer) {
-		this.issuer = issuer;
-	}
-
-
-	public Merchant getMerchant() {
-		return merchant;
-	}
-
-
-	public void setMerchant(Merchant merchant) {
-		this.merchant = merchant;
-	}
-
-
-	public Orders getOrder() {
-		return orderNum;
-	}
-
-
-	public void setOrder(Orders order) {
-		this.orderNum = order;
+	public long getTransactionId() {
+		return transactionId;
 	}
 
 }
