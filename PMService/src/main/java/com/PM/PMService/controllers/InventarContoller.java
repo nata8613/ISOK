@@ -2,6 +2,8 @@ package com.PM.PMService.controllers;
 
 import java.util.HashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.PM.PMService.SifrarnikMetoda;
 import com.PM.PMService.TheUrls;
 import com.PM.PMService.annotations.PermissionType;
 import com.PM.PMService.models.InsuranceCategory;
 import com.PM.PMService.models.Risk;
 import com.PM.PMService.models.RiskItem;
 import com.PM.PMService.models.Rules;
+
 
 @Controller
 public class InventarContoller {
@@ -32,6 +36,8 @@ public class InventarContoller {
 		clients = (List<Client>) clientRepo.findAll();
 		return clients;
 	}*/
+	
+	final static Logger logger = LogManager.getLogger(InventarContoller.class);
 	/****************************** KATEGORIJA OSIGURANJA *************************/
 	
 	@RequestMapping("/addCategory")
@@ -39,7 +45,7 @@ public class InventarContoller {
 	@PreAuthorize("hasRole('finansijski analiticar')")
 	@PermissionType("Category:create")
 	public InsuranceCategory saveCategory(@RequestBody InsuranceCategory kategorija){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/saveCategory";
 		RestTemplate template = new RestTemplate();
 		InsuranceCategory category = template.postForObject(url, kategorija, InsuranceCategory.class);
@@ -53,7 +59,7 @@ public class InventarContoller {
 	@ResponseBody
 	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
 	public InsuranceCategory[] getCategories(){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/getCategories";
 		RestTemplate template = new RestTemplate();
 		
@@ -69,7 +75,7 @@ public class InventarContoller {
 	@PreAuthorize("hasRole('finansijski analiticar')")
 	@PermissionType("Category:update")
 	public InsuranceCategory updateCategory(@PathVariable("id") long id, @RequestBody InsuranceCategory kategorija){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/updateCategory/{"+id+"}";
 		RestTemplate template = new RestTemplate();
 		
@@ -85,7 +91,7 @@ public class InventarContoller {
 	@PreAuthorize("hasRole('finansijski analiticar')")
 	@PermissionType("Category:delete")
 	public boolean deleteCategory(@PathVariable("id") long id){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/deleteCategory/"+id;
 		RestTemplate template = new RestTemplate();
 		
@@ -119,7 +125,7 @@ public class InventarContoller {
 	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
 	@PermissionType("RiskItem:create")
 	public RiskItem saveRiskItem(@RequestBody HashMap<String, Object> risk){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/saveRiskItem";
 		RestTemplate template = new RestTemplate();
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -171,7 +177,7 @@ public class InventarContoller {
 	@PreAuthorize("hasRole('finansijski analiticar')")
 	@PermissionType("RiskItem:update")
 	public RiskItem updateRiskItem(@PathVariable("id") long id, @RequestBody RiskItem RiskItem){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/updateRiskItem/{"+id+"}";
 		RestTemplate template = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -192,7 +198,7 @@ public class InventarContoller {
 	@PreAuthorize("hasRole('finansijski analiticar')")
 	@PermissionType("RiskItem:delete")
 	public boolean deleteRiskItem(@PathVariable("id") long id){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/deleteRiskItem/"+id;
 		RestTemplate template = new RestTemplate();
 		
@@ -230,7 +236,7 @@ public class InventarContoller {
 	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
 	@PermissionType("Risk:create")
 	public Risk addRisK(@RequestBody HashMap<String,Object> risk){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/saveRisk";
 		RestTemplate template = new RestTemplate();
 		
@@ -247,7 +253,7 @@ public class InventarContoller {
 	@PreAuthorize("hasAnyRole(['finansijski analiticar', 'prodavac'])")
 	@PermissionType("Risk:update")
 	public Risk updateRisk(@PathVariable("id") long id, @RequestBody Risk Risk){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/updateRisk/{"+id+"}";
 		RestTemplate template = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -267,7 +273,7 @@ public class InventarContoller {
 	@PreAuthorize("hasRole('finansijski analiticar')")
 	@PermissionType("Risk:delete")
 	public boolean deleteRisk(@PathVariable("id") long id){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/deleteRisk/"+id;
 		RestTemplate template = new RestTemplate();
 		
@@ -304,7 +310,7 @@ public class InventarContoller {
 	@PreAuthorize("hasRole('finansijski analiticar')")
 	@PermissionType("Rules:update")
 	public Rules updateRules(@PathVariable("id") long id, @RequestBody Rules Rule){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		final String url = "http://"+TheUrls.ip+":"+TheUrls.port+"/dc/isok/updateRules/{"+id+"}";
 		RestTemplate template = new RestTemplate();
 	

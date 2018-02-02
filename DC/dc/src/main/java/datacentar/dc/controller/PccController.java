@@ -3,6 +3,8 @@ package datacentar.dc.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import datacentar.dc.SifrarnikMetoda;
 import datacentar.dc.pcc.model.MerchantLicense;
 import datacentar.dc.pcc.model.Transactions;
 import datacentar.dc.pcc.repo.MerchantLicenseRepo;
@@ -21,6 +24,7 @@ import datacentar.dc.pcc.repo.TransactionsRepo;
 @RequestMapping("/dc/pcc")
 public class PccController {
 
+	final static Logger logger = LogManager.getLogger(PccController.class);
 	
 	/////////////////LICENSE METODE///////////////////
 	
@@ -28,6 +32,7 @@ public class PccController {
 	@RequestMapping(value = "/getMerchantLicense", method = RequestMethod.GET)
 	@ResponseBody
 	public MerchantLicense getLicense() {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<MerchantLicense> merchants = (List<MerchantLicense>) merchLicRepo.findAll();
 		return merchants.get(0);
 	}
@@ -36,7 +41,7 @@ public class PccController {
 	@RequestMapping(value = "/saveMerchantLicense/", method = RequestMethod.POST)
 	@ResponseBody
 	public MerchantLicense saveMerchantLicense(@RequestBody MerchantLicense merchant) {
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		MerchantLicense merch1 = merchLicRepo.findOne(merchant.getId());
 		if(merch1 != null)
 			return null;
@@ -48,7 +53,7 @@ public class PccController {
 	@RequestMapping(value = "/updateMerchantLicense/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public MerchantLicense updateMerchantLicense(@PathVariable("id") long id, @RequestBody MerchantLicense license) {
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		MerchantLicense merch1 = merchLicRepo.findOne(id);
 		if(merch1 == null)
 			return null;
@@ -62,7 +67,7 @@ public class PccController {
 	@RequestMapping(value = "/deleteMerchant/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteMerchantLicense(@PathVariable("id") long id) {
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		MerchantLicense merchant = merchLicRepo.findOne(id);
 		if(merchant == null)
 			return false;
@@ -83,6 +88,7 @@ public class PccController {
 	@RequestMapping(value = "/getTransactions", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Transactions> getAllTransactions() {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<Transactions> transactions = new ArrayList<Transactions>();
 		transactions = (List<Transactions>) transactionsRepo.findAll();
 		return transactions;
@@ -92,7 +98,7 @@ public class PccController {
 	@RequestMapping(value = "/saveTransaction/", method = RequestMethod.POST)
 	@ResponseBody
 	public Transactions saveTransaction(@RequestBody Transactions transaction) {
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Transactions trans = transactionsRepo.findOne(transaction.getTransactionId());
 		if(trans != null)
 			return null;
@@ -103,8 +109,8 @@ public class PccController {
 	@Transactional("pccTransactionManager")
 	@RequestMapping(value = "/updateTransaction/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public Transactions updateMerchant(@PathVariable("id") long id, @RequestBody Transactions transaction) {
-		
+	public Transactions updateTransaction(@PathVariable("id") long id, @RequestBody Transactions transaction) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Transactions transaction1 = transactionsRepo.findOne(transaction.getTransactionId());
 		if(transaction1 == null)
 			return null;
@@ -123,7 +129,7 @@ public class PccController {
 	@RequestMapping(value = "/deleteTransaction/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteTransaction(@PathVariable("id") long id) {
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Transactions transaction = transactionsRepo.findOne(id);
 		if(transaction == null)
 			return false;
@@ -141,6 +147,7 @@ public class PccController {
 	@RequestMapping(value = "/getTransactionMerchantOrder/", method = RequestMethod.POST)
 	@ResponseBody
 	public Transactions getTransactionByMerchantOrder(@RequestBody long orderId) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Transactions transaction = transactionsRepo.findByMerchantOrderId(orderId);
 		return transaction;
 	}
@@ -149,6 +156,7 @@ public class PccController {
 	@RequestMapping(value = "/getTransactionAcquirerOrder/", method = RequestMethod.POST)
 	@ResponseBody
 	public Transactions getTransactionByAcquirerOrder(@RequestBody long orderId) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Transactions transaction = transactionsRepo.findByAcquirerOrderId(orderId);
 		return transaction;
 	}
@@ -157,6 +165,7 @@ public class PccController {
 	@RequestMapping(value = "/getTransactionPayment/", method = RequestMethod.POST)
 	@ResponseBody
 	public Transactions getTransactionByPayment(@RequestBody long orderId) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Transactions transaction = transactionsRepo.findByPaymentId(orderId);
 		return transaction;
 	}

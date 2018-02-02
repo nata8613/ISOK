@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import datacentar.dc.SifrarnikMetoda;
 import datacentar.dc.isok.model.Client;
 import datacentar.dc.isok.model.HomeInsurance;
 import datacentar.dc.isok.model.InsuranceCategory;
@@ -45,11 +48,14 @@ import datacentar.dc.isok.repo.VehicleInsuranceRepo;
 @RequestMapping("/dc/isok")
 public class IsokController {
 	
+	final static Logger logger = LogManager.getLogger(IsokController.class);
+	
 	/////////////////TODO: CLIENT METODE/////////////
 	@Transactional("isokTransactionManager")
 	@RequestMapping(value="/getClients", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Client> getAllClients(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<Client> clients = new ArrayList<Client>();
 		clients = (List<Client>) clientRepo.findAll();
 		return clients;
@@ -59,9 +65,12 @@ public class IsokController {
 	@RequestMapping(value = "/saveClient/", method = RequestMethod.POST)
 	@ResponseBody
 	public Client saveClient(@RequestBody Client client) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Client client1 = clientRepo.findOne(client.getId());
-		if (client1 != null)
+		if (client1 != null){
+			logger.error("Error in method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 			return null;
+		}
 		client1 = clientRepo.save(client);
 		return client1;
 	}
@@ -70,7 +79,7 @@ public class IsokController {
 	@RequestMapping(value = "/updateClient/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public Client updateClient(@PathVariable("id") long id, @RequestBody Client client) {
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Client client1 = clientRepo.findOne(client.getId());		
 		if(client1 == null)
 			return null;
@@ -89,9 +98,12 @@ public class IsokController {
 	@RequestMapping(value = "/deleteClient/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteClient(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Client client = clientRepo.findOne(id);
-		if(client == null)
+		if(client == null){
+			logger.error("Error in method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 			return false;
+		}
 		try {
 			for(Policy p : client.getPolicies()){
 				Policy temp = policyRepo.findOne(p.getId());
@@ -110,6 +122,7 @@ public class IsokController {
 	@RequestMapping(value = "/clientJMBG/{jmbg}", method = RequestMethod.POST)
 	@ResponseBody
 	public Client findClientJMBG(@PathVariable("jmbg") String jmbg) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Client client1 = clientRepo.findByJmbg(jmbg);		
 		return client1;
 	}
@@ -136,6 +149,7 @@ public class IsokController {
 	@RequestMapping(value="/getCategories", method = RequestMethod.GET)
 	@ResponseBody
 	public List<InsuranceCategory> getCategories(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<InsuranceCategory> categories = new ArrayList<InsuranceCategory>();
 		categories = (List<InsuranceCategory>) insCatRepo.findAll();
 		return categories;
@@ -145,9 +159,12 @@ public class IsokController {
 	@RequestMapping(value = "/saveCategory/", method = RequestMethod.POST)
 	@ResponseBody
 	public InsuranceCategory saveCategory(@RequestBody InsuranceCategory cat) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		InsuranceCategory cat1 = insCatRepo.findOne(cat.getId());
-		if (cat1 != null)
+		if (cat1 != null){
+			logger.error("Error in method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 			return null;
+		}
 		cat1 = insCatRepo.save(cat);
 		return cat1;
 	}
@@ -156,7 +173,7 @@ public class IsokController {
 	@RequestMapping(value = "/updateCategory/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public InsuranceCategory updateCategory(@PathVariable("id") long id, @RequestBody InsuranceCategory category) {
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		InsuranceCategory cat = insCatRepo.findOne(category.getId());		
 		if(cat == null)
 			return null;
@@ -174,6 +191,7 @@ public class IsokController {
 	@RequestMapping(value = "/deleteCategory/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteCategory(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		InsuranceCategory cat = insCatRepo.findOne(id);
 		if(cat == null)
 			return false;
@@ -190,6 +208,7 @@ public class IsokController {
 	@RequestMapping(value = "/categoryName/{name}", method = RequestMethod.POST)
 	@ResponseBody
 	public InsuranceCategory findCategoryName(@PathVariable("name") String name) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		InsuranceCategory client1 = insCatRepo.findByCategoryName(name);		
 		return client1;
 	}
@@ -200,6 +219,7 @@ public class IsokController {
 	@RequestMapping(value="/getHomeIns", method = RequestMethod.GET)
 	@ResponseBody
 	public List<HomeInsurance> getHomeInsurance(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<HomeInsurance> insurances = (List<HomeInsurance>) homeInsRepo.findAll();
 		return insurances;
 	}
@@ -208,6 +228,7 @@ public class IsokController {
 	@RequestMapping(value = "/saveHomeIns/", method = RequestMethod.POST)
 	@ResponseBody
 	public HomeInsurance saveHomeInsurance(@RequestBody HomeInsurance insurance) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		System.out.println("Here" + insurance.getJmbg());
 		System.out.println(insurance.getOwnerName());
 		System.out.println(insurance.getOwnerSurname());
@@ -222,7 +243,7 @@ public class IsokController {
 	@RequestMapping(value = "/updateHomeIns/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public HomeInsurance updateHomeInsurance(@PathVariable("id") long id, @RequestBody HomeInsurance insurance) {
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		HomeInsurance cat = homeInsRepo.findOne(insurance.getId());		
 		if(cat == null)
 			return null;
@@ -238,6 +259,7 @@ public class IsokController {
 	@RequestMapping(value = "/deleteHomeIns/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteHomeInsurance(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		HomeInsurance cat = homeInsRepo.findOne(id);
 		if(cat == null)
 			return false;
@@ -254,6 +276,7 @@ public class IsokController {
 	@RequestMapping(value = "/homeInsOwner/{owner}", method = RequestMethod.POST)
 	@ResponseBody
 	public List<HomeInsurance> findHomeOwner(@PathVariable("owner") String owner) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		String[] ownerDetails = owner.split(" ");
 		List<HomeInsurance> insurances = homeInsRepo.findByOwnerNameContainingOrOwnerSurnameContaining(ownerDetails[0],
 				ownerDetails[1]);		
@@ -266,6 +289,7 @@ public class IsokController {
 	@RequestMapping(value="/getPolicies", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Policy> getPolicies(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<Policy> policies = (List<Policy>) policyRepo.findAll();
 		return policies;
 	}
@@ -274,9 +298,12 @@ public class IsokController {
 	@RequestMapping(value = "/savePolicy/", method = RequestMethod.POST)
 	@ResponseBody
 	public Policy savePolicy(@RequestBody Policy policy) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Policy pol = policyRepo.findOne(policy.getId());
-		if (pol != null)
+		if (pol != null){
+			logger.error("Error in method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 			return null;
+		}
 		pol = policyRepo.save(policy);
 		return pol;
 	}
@@ -285,6 +312,7 @@ public class IsokController {
 	@RequestMapping(value = "/updatePolicy/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public Policy updatePolicy(@PathVariable("id") long id, @RequestBody Policy policy) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Policy cat = policyRepo.findOne(policy.getId());		
 		if(cat == null)
 			return null;
@@ -325,6 +353,7 @@ public class IsokController {
 	@RequestMapping(value = "/deletePolicy/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deletePolicy(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Policy cat = policyRepo.findOne(id);
 		if(cat == null)
 			return false;
@@ -341,6 +370,7 @@ public class IsokController {
 	@RequestMapping(value = "/PolicyOwner/", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Policy> getPolicyOwner(@RequestBody Client client) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Client owner = clientRepo.findOne(client.getId());
 		List<Policy> cat = policyRepo.findByInsuranceOwner(owner);
 		return cat;
@@ -350,6 +380,7 @@ public class IsokController {
 	@RequestMapping(value = "/PolicyStart/", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Policy> getPolicyStart(@RequestBody Date startDate) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<Policy> cat = policyRepo.findByContractStart(startDate);
 		return cat;
 	}
@@ -358,6 +389,7 @@ public class IsokController {
 	@RequestMapping(value = "/PolicyEnd/", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Policy> getPolicyEnd(@RequestBody Date endDate) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<Policy> cat = policyRepo.findByContractEndLessThan(endDate);
 		return cat;
 	}
@@ -366,6 +398,7 @@ public class IsokController {
 	@RequestMapping(value = "/PolicyTravel/", method = RequestMethod.POST)
 	@ResponseBody
 	public Policy getPolicyTravel(@RequestBody TravelInsurance insurance) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Policy cat = policyRepo.findByTravelInsurance(insurance);
 		return cat;
 	}
@@ -384,6 +417,7 @@ public class IsokController {
 	@RequestMapping(value="/getImpacts", method = RequestMethod.GET)
 	@ResponseBody
 	public List<PriceImpacts> getImpacts(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<PriceImpacts> policies = (List<PriceImpacts>) priceImpRepo.findAll();
 		return policies;
 	}
@@ -392,12 +426,15 @@ public class IsokController {
 	@RequestMapping(value = "/saveImpact/", method = RequestMethod.POST)
 	@ResponseBody
 	public PriceImpacts saveImpact(@RequestBody HashMap<String, Object> impact) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		ObjectMapper mapper = new ObjectMapper();
 		PriceImpacts pol = mapper.convertValue(impact.get("impact"), PriceImpacts.class);
 		RiskItem item = mapper.convertValue(impact.get("item"),  new TypeReference<RiskItem>() {});
 		PriceImpacts postoji = priceImpRepo.findOne(pol.getId());
-		if (postoji != null)
+		if (postoji != null){
+			logger.error("Error in method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 			return null;
+		}
 		if(item != null){
 			item = riskItemRepo.findOne(item.getId());
 			pol.setItem(item);
@@ -410,6 +447,7 @@ public class IsokController {
 	@RequestMapping(value = "/updateImpact/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public PriceImpacts updateImpact(@PathVariable("id") long id, @RequestBody HashMap<String, Object> impact) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		ObjectMapper mapper = new ObjectMapper();
 		PriceImpacts pol = mapper.convertValue(impact.get("impact"), PriceImpacts.class);
 		RiskItem item = mapper.convertValue(impact.get("item"),  new TypeReference<RiskItem>() {});
@@ -439,6 +477,7 @@ public class IsokController {
 	@RequestMapping(value = "/deleteImpact/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deletePriceImpact(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		PriceImpacts cat = priceImpRepo.findOne(id);
 		if(cat == null)
 			return false;
@@ -460,6 +499,7 @@ public class IsokController {
 	@RequestMapping(value = "/ImpactRisk/", method = RequestMethod.POST)
 	@ResponseBody
 	public PriceImpacts getImpactByRisk(@RequestBody HashMap<String, String> map) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		RiskItem item = riskItemRepo.findOne(Long.valueOf(map.get("riskId")).longValue());
 		PriceImpacts cat = priceImpRepo.findByItem(item);
 		return cat;
@@ -486,6 +526,7 @@ public class IsokController {
 	@RequestMapping(value="/getPricelists", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Pricelist> getPricelists(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<Pricelist> lists = (List<Pricelist>) pricelistRepo.findAll();
 		return lists;
 	}
@@ -494,6 +535,7 @@ public class IsokController {
 	@RequestMapping(value = "/savePricelist/", method = RequestMethod.POST)
 	@ResponseBody
 	public Pricelist savePricelist(@RequestBody Pricelist list) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Pricelist plist = pricelistRepo.findOne(list.getId());
 		if (plist != null)
 			return null;
@@ -514,9 +556,12 @@ public class IsokController {
 	@RequestMapping(value = "/updatePricelist/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public Pricelist updatePricelist(@PathVariable("id") long id, @RequestBody Pricelist list) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Pricelist cat = pricelistRepo.findOne(list.getId());		
-		if(cat == null)
+		if(cat == null){
+			logger.error("Error in method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 			return null;
+		}
 		cat.setValidFrom(list.getValidFrom());
 		cat.setValidTo(list.getValidTo());
 		if(!list.getImpacts().isEmpty()){
@@ -534,6 +579,7 @@ public class IsokController {
 	@RequestMapping(value = "/deletePricelist/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deletePricelist(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Pricelist cat = pricelistRepo.findOne(id);
 		if(cat == null)
 			return false;
@@ -550,6 +596,7 @@ public class IsokController {
 	@RequestMapping(value = "/PricelistDateFrom/", method = RequestMethod.POST)
 	@ResponseBody
 	public Pricelist getPricelistDateFrom(@RequestBody Date dateFrom) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<Pricelist> cat = pricelistRepo.findByValidFromGreaterThanAndValidToLessThanOrderByValidFromDesc(dateFrom, dateFrom);
 		return cat.get(0);
 	}
@@ -567,6 +614,7 @@ public class IsokController {
 	@RequestMapping(value="/getRiskItems", method = RequestMethod.GET)
 	@ResponseBody
 	public List<RiskItem> getRiskItems(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<RiskItem> items = (List<RiskItem>) riskItemRepo.findAll();
 		return items;
 	}
@@ -575,6 +623,7 @@ public class IsokController {
 	@RequestMapping(value="/getRiskItem/", method = RequestMethod.POST)
 	@ResponseBody
 	public RiskItem getRiskItem(@RequestBody HashMap<String, String> map){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Long id2 = Long.parseLong(map.get("id"));
 		RiskItem item = riskItemRepo.findOne(id2);
 		return item;
@@ -584,6 +633,7 @@ public class IsokController {
 	@RequestMapping(value = "/saveRiskItem/", method = RequestMethod.POST)
 	@ResponseBody
 	public RiskItem saveItem(@RequestBody HashMap<String, Object> risk) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		ObjectMapper mapper = new ObjectMapper();
 		RiskItem pol = mapper.convertValue(risk.get("item"), RiskItem.class);
 		Risk parentRisk = mapper.convertValue(risk.get("risk"),  new TypeReference<Risk>() {}); 
@@ -602,6 +652,7 @@ public class IsokController {
 	@RequestMapping(value = "/updateRiskItem/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public RiskItem updateRiskItem(@PathVariable("id") long id, @RequestBody HashMap<String,Object> item) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		ObjectMapper mapper = new ObjectMapper();
 		RiskItem pol = mapper.convertValue(item.get("item"), RiskItem.class);
 		Risk risk = mapper.convertValue(item.get("risk"), Risk.class);
@@ -637,6 +688,7 @@ public class IsokController {
 	@RequestMapping(value = "/deleteRiskItem/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteItem(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		RiskItem cat = riskItemRepo.findOne(id);
 		if(cat == null)
 			return false;
@@ -653,7 +705,8 @@ public class IsokController {
 	@RequestMapping(value = "/RiskItemByRisk/", method = RequestMethod.POST)
 	@ResponseBody
 	public List<RiskItem> getItemByRisk(@RequestBody Risk risk) {
-		Risk r = riskRepo.findOne(risk.getId());		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
+		Risk r = riskRepo.findOne(risk.getId());
 		if(r == null)
 			return null;
 		List<RiskItem> items = riskItemRepo.findByRisk(r);
@@ -666,7 +719,7 @@ public class IsokController {
 	@RequestMapping(value="/getRisks", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Risk> getAllRisks(){
-		
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<Risk> risks = new ArrayList<Risk>();
 		risks = (List<Risk>) riskRepo.findAll();
 		return risks;
@@ -679,13 +732,16 @@ public class IsokController {
 	@RequestMapping(value = "/saveRisk/", method = RequestMethod.POST)
 	@ResponseBody
 	public Risk saveRisk(@RequestBody HashMap<String,Object> risk) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		ObjectMapper mapper = new ObjectMapper();
 		Risk pol = mapper.convertValue(risk.get("risk"), Risk.class);
 		System.out.println(pol.getRiskName());
 		List<InsuranceCategory> categories = mapper.convertValue(risk.get("categories"),  new TypeReference<List<InsuranceCategory>>() {}); 
-		
-		if (pol == null)
+		Risk postoji = riskRepo.findOne(pol.getId());
+		if (postoji != null){
+			logger.error("Error in method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 			return null;
+		}
 		pol = riskRepo.save(pol);
 		
 		//jer je manytomany veza namapirana sa strane kategorija
@@ -709,6 +765,7 @@ public class IsokController {
 	@RequestMapping(value = "/updateRisk/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public Risk updateRisk(@PathVariable("id") long id, @RequestBody  HashMap<String,Object> risk) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		ObjectMapper mapper = new ObjectMapper();
 		Risk pol = mapper.convertValue(risk.get("risk"), Risk.class);
 		List<InsuranceCategory> categories = mapper.convertValue(risk.get("categories"),  new TypeReference<List<InsuranceCategory>>() {}); 
@@ -744,6 +801,7 @@ public class IsokController {
 	@RequestMapping(value = "/deleteRisk/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteRisk(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Risk cat = riskRepo.findOne(id);
 		if(cat == null)
 			return false;
@@ -765,6 +823,7 @@ public class IsokController {
 	@RequestMapping(value = "/RiskName/", method = RequestMethod.POST)
 	@ResponseBody
 	public Risk getRiskByName(@RequestBody HashMap<String, String> params) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		System.out.println("NAME JE" + params.get("name"));
 		Risk cat = riskRepo.findByRiskName(params.get("name"));
 		System.out.println("FOUND " + cat.getRiskItems().size());
@@ -777,6 +836,7 @@ public class IsokController {
 	@RequestMapping(value="/getRules", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Rules> getAllRules(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<Rules> rules = (List<Rules>) rulesRepo.findAll();
 		return rules;
 	}
@@ -785,6 +845,7 @@ public class IsokController {
 	@RequestMapping(value = "/saveRule/", method = RequestMethod.POST)
 	@ResponseBody
 	public Rules saveRule(@RequestBody Rules rule) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Rules pol = rulesRepo.findOne(rule.getId());
 		if (pol != null)
 			return null;
@@ -796,6 +857,7 @@ public class IsokController {
 	@RequestMapping(value = "/updateRules/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public Rules updateRule(@PathVariable("id") long id, @RequestBody Rules rule) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Rules cat = rulesRepo.findOne(rule.getId());		
 		if(cat == null)
 			return null;
@@ -808,6 +870,7 @@ public class IsokController {
 	@RequestMapping(value = "/deleteRule/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteRule(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Rules cat = rulesRepo.findOne(id);
 		if(cat == null)
 			return false;
@@ -826,6 +889,7 @@ public class IsokController {
 	@RequestMapping(value="/getTravelInsurance", method = RequestMethod.GET)
 	@ResponseBody
 	public List<TravelInsurance> getAllTravels(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<TravelInsurance> travels = (List<TravelInsurance>) travelInsRepo.findAll();
 		return travels;
 	}
@@ -834,6 +898,7 @@ public class IsokController {
 	@RequestMapping(value = "/saveTravelInsurance/", method = RequestMethod.POST)
 	@ResponseBody
 	public TravelInsurance saveTravel(@RequestBody TravelInsurance trav) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		TravelInsurance pol = travelInsRepo.findOne(trav.getId());
 		if (pol != null)
 			return null;
@@ -845,6 +910,7 @@ public class IsokController {
 	@RequestMapping(value = "/updateTravelInsurance/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public TravelInsurance updateTravel(@PathVariable("id") long id, @RequestBody TravelInsurance travel) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		TravelInsurance cat = travelInsRepo.findOne(travel.getId());		
 		if(cat == null)
 			return null;
@@ -859,6 +925,7 @@ public class IsokController {
 	@RequestMapping(value = "/deleteTravelInsurance/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteTravel(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		TravelInsurance cat = travelInsRepo.findOne(id);
 		if(cat == null)
 			return false;
@@ -884,6 +951,7 @@ public class IsokController {
 	@RequestMapping(value="/getVehicleInsurance", method = RequestMethod.GET)
 	@ResponseBody
 	public List<VehicleInsurance> getAllVehicles(){
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		List<VehicleInsurance> travels = (List<VehicleInsurance>) vehicleInsRepo.findAll();
 		return travels;
 	}
@@ -892,6 +960,7 @@ public class IsokController {
 	@RequestMapping(value = "/saveVehicleInsurance/", method = RequestMethod.POST)
 	@ResponseBody
 	public VehicleInsurance saveVehicle(@RequestBody VehicleInsurance trav) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		VehicleInsurance pol = vehicleInsRepo.findOne(trav.getId());
 		if (pol != null)
 			return null;
@@ -903,6 +972,7 @@ public class IsokController {
 	@RequestMapping(value = "/updateVehicleInsurance/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public VehicleInsurance updateVehicle(@PathVariable("id") long id, @RequestBody VehicleInsurance travel) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		VehicleInsurance cat = vehicleInsRepo.findOne(travel.getId());		
 		if(cat == null)
 			return null;
@@ -921,6 +991,7 @@ public class IsokController {
 	@RequestMapping(value = "/deleteVehicleInsurance/{id}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean deleteVehicle(@PathVariable("id") long id) {
+		logger.warn("Executing method " + SifrarnikMetoda.methods.get(Thread.currentThread().getStackTrace()[1].getMethodName()));
 		VehicleInsurance cat = vehicleInsRepo.findOne(id);
 		if(cat == null)
 			return false;
