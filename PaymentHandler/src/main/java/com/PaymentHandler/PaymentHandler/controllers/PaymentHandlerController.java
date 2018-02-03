@@ -52,7 +52,8 @@ public class PaymentHandlerController {
 		System.out.println("-----PaymentHandler got "+payment.getPaymentURL() +"payment URL and" + payment.getPaymentID()+"payment ID-----");
 		
 		String paymentIDandURL = payment.getPaymentURL()+payment.getPaymentID();
-		String paymentID = paymentIDandURL.replace("http://localhost:4300/Payment/", "");
+		String paymentID = Long.toString(payment.getPaymentID());
+		
 		
 		Transaction transakcija = new Transaction();
 		transakcija.setAmount((new Double(amount)).longValue());
@@ -66,7 +67,7 @@ public class PaymentHandlerController {
 		Transaction transaction = template1.postForObject(urlDC, transakcija, Transaction.class);
 		System.out.println("----------------------Transaction for DC created zapoceta-------------------------");
 		
-		return paymentIDandURL;
+		return paymentID;
 		
 	}
 	
@@ -97,6 +98,7 @@ public class PaymentHandlerController {
 			while(!out);
 		
 		long MerchID = rand.nextLong();
+		if(MerchID<0){MerchID= 0-MerchID;}
 		Order merchOrder = new Order(amount, MerchID, new Date(Calendar.getInstance().getTimeInMillis()));
 		
 		//TODO: sacuvaj u bazu merchOrder

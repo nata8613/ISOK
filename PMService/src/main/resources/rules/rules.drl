@@ -1,13 +1,11 @@
 package rules
 
 import com.PM.PMService.models.Policy
-import com.PM.PMService.models.RiskItem
 
 rule "25% popusta"
 	when 
-		 policyObject : Policy(homeInsurance==null,vehicleInsurance==null)
+		 policyObject : Policy(homeInsurance!=null,vehicleInsurance!=null)
 		 
-		 RiskItem(itemName == "Evropa") from policyObject.riskItems
 	then
 		
 		policyObject.setPriceSummed(policyObject.getPriceSummed() - policyObject.getPriceSummed()*0.25);

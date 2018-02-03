@@ -46,10 +46,12 @@ public class IssuerController {
 			}
 			while(!out);
 			
+			long PayID = rand.nextLong();
+			if(PayID<0){PayID= 0-PayID;}
 			DataIssToAcq returnData = new DataIssToAcq();
 			returnData.setAcquirerOrderId(data.getAcquirerOrderId());
 			returnData.setAcquirerTimestamp(data.getAcquirerTimestamp());
-			returnData.setIssuerOrderId(rand.nextLong());
+			returnData.setIssuerOrderId(PayID);
 			returnData.setIssuerTimestamp(new Date());
 			returnData.setResult("SUCCESS_URL");
 			System.out.println("--------------ISSUER-------DataIsstoAcq Created------SUCCESS");

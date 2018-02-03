@@ -14,6 +14,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +36,7 @@ import com.Acquirer.Acquirer.repo.TransactionRepo;
 
 
 @Controller
+@CrossOrigin("*")
 public class AcquirerController {
 	
 	@Autowired
@@ -98,6 +100,7 @@ public class AcquirerController {
 			while(!out);
 			
 			long PayID = rand.nextLong();
+			if(PayID<0){PayID= 0-PayID;}
 			//TODO izmeni url ako Mica stavi nesto drugo
 			//Payment payment = new Payment("http://"+ip+":4300/Payment/", PayID);
 			Payment payment = new Payment("http://localhost:4300/Payment/", PayID);
@@ -108,7 +111,11 @@ public class AcquirerController {
 			transaction.setAcquirerTimestamp(null);
 			transaction.setAmount(data.getOrder().getAmount());
 			transaction.setMerchant(merch);
-			transaction.setPaymentID(PayID);
+			long payID = PayID%1000;
+			long pp = payment.getPaymentID()-payID;
+			payment.setPaymentID(pp);
+			String paymentID = Long.toString(pp);
+			transaction.setPaymentID(pp);
 			transaction.setStatus("zapoceta");
 			transaction.setMerchantOrderId(data.getOrder().getOrderId());
 			
@@ -123,9 +130,10 @@ public class AcquirerController {
 	}
 	
 	//metoda za unos podataka preko acquirer web aplikacije
-	@RequestMapping("/getData")
+	@RequestMapping("/getData/")
 	@ResponseBody
 	public DataIssToAcq getData(@RequestParam("id") long id, @RequestBody DataAcqToPCC data){
+		System.out.println("*************Web app*******************");
 	/*	public DataIssToAcq getData(@RequestParam("var") String var){	
 		Long id = Long.parseLong(var);
 		DataAcqToPCC data = new DataAcqToPCC();
@@ -138,12 +146,13 @@ public class AcquirerController {
 		data.setCardHolderName("Sinisa Sinisic");
 		data.setAmount(tr.findByPaymentID(Long.parseLong("6538047422558411908")).getAmount());
 		*/
-		
+		System.out.println("ID TRANSAKCIJE 2222222222" + id);
+		System.out.println("TRANSAKCIJAAAA///////////////"+tr.findByPaymentID(id));
 		data.setAmount(tr.findByPaymentID(id).getAmount());
 		String pan = Long.toString(data.getPAN());
 		String banka = pan.substring(1, 7);
 		
-		Transaction transaction = tr.findByPaymentID(Long.parseLong("6538047422558411908"));
+		Transaction transaction = tr.findByPaymentID(id);
 		System.out.println("************TRANSAKCIJA -*---------------"+transaction.getAcquirerId()+"****"+transaction.getMerchantOrderId()+"***"+transaction.getPaymentID());
 		if(transaction.getAcquirerId()!=null)return null;
 		transaction.setAcquirerId(Long.toString(data.getAcquirerOrderId()));
